@@ -1,0 +1,6 @@
+@Tapir.Services.News_HostAddress = http://localhost:5232
+
+GET {{Tapir.Services.News_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
