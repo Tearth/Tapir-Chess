@@ -1,0 +1,6 @@
+services:
+  tapir.services.news:
+    image: ${DOCKER_REGISTRY-}tapirservicesnews
+    build:
+      context: .
+      dockerfile: Tapir.Services.News/Dockerfile
