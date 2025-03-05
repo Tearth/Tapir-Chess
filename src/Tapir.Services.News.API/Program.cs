@@ -1,3 +1,5 @@
+using Tapir.Services.News.Application;
+
 namespace Tapir.Services.News.API
 {
     public class Program
@@ -6,6 +8,7 @@ namespace Tapir.Services.News.API
         {
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddControllers();
+            builder.Services.AddApplication();
 
             var app = builder.Build();
             app.UseHttpsRedirection();
