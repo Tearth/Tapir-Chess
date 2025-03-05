@@ -3,4 +3,4 @@ services:
     image: ${DOCKER_REGISTRY-}tapirservicesnews
     build:
       context: .
-      dockerfile: Tapir.Services.News/Dockerfile
+      dockerfile: src/Tapir.Services.News.API/Dockerfile

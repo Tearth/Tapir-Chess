@@ -3,9 +3,28 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35825.156
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Services.News", "Tapir.Services.News\Tapir.Services.News.csproj", "{4FB9AEBD-4BB7-4608-98CA-ACB258617012}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Services.News.API", "src\Tapir.Services.News.API\Tapir.Services.News.API.csproj", "{4FB9AEBD-4BB7-4608-98CA-ACB258617012}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{81DDED9D-158B-E303-5F62-77A2896D2A5A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{FF808455-853D-4B75-937B-3ED33C2CA374}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "News", "News", "{816255C8-FB2A-4BD9-9176-B391F4957BDC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Services.News.Domain", "src\Tapir.Services.News.Domain\Tapir.Services.News.Domain.csproj", "{1DDB15C7-F7D1-4619-9B50-24E61FCDA25A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{6774117C-9D3B-4BCB-B28F-6B8D8688ACC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Common.Infrastructure", "src\Tapir.Common.Infrastructure\Tapir.Common.Infrastructure.csproj", "{B4CAA4CF-A6FA-4F9F-878D-AB48C3D7A36F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Services.News.Application", "src\Tapir.Services.News.Application\Tapir.Services.News.Application.csproj", "{681C8F00-6344-4959-AF88-31D43D4A0593}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +40,31 @@ Global
 		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DDB15C7-F7D1-4619-9B50-24E61FCDA25A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DDB15C7-F7D1-4619-9B50-24E61FCDA25A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DDB15C7-F7D1-4619-9B50-24E61FCDA25A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DDB15C7-F7D1-4619-9B50-24E61FCDA25A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4CAA4CF-A6FA-4F9F-878D-AB48C3D7A36F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4CAA4CF-A6FA-4F9F-878D-AB48C3D7A36F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4CAA4CF-A6FA-4F9F-878D-AB48C3D7A36F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4CAA4CF-A6FA-4F9F-878D-AB48C3D7A36F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{681C8F00-6344-4959-AF88-31D43D4A0593}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{681C8F00-6344-4959-AF88-31D43D4A0593}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{681C8F00-6344-4959-AF88-31D43D4A0593}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{681C8F00-6344-4959-AF88-31D43D4A0593}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4FB9AEBD-4BB7-4608-98CA-ACB258617012} = {816255C8-FB2A-4BD9-9176-B391F4957BDC}
+		{81DDED9D-158B-E303-5F62-77A2896D2A5A} = {8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}
+		{FF808455-853D-4B75-937B-3ED33C2CA374} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{816255C8-FB2A-4BD9-9176-B391F4957BDC} = {FF808455-853D-4B75-937B-3ED33C2CA374}
+		{1DDB15C7-F7D1-4619-9B50-24E61FCDA25A} = {816255C8-FB2A-4BD9-9176-B391F4957BDC}
+		{6774117C-9D3B-4BCB-B28F-6B8D8688ACC6} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{B4CAA4CF-A6FA-4F9F-878D-AB48C3D7A36F} = {6774117C-9D3B-4BCB-B28F-6B8D8688ACC6}
+		{681C8F00-6344-4959-AF88-31D43D4A0593} = {816255C8-FB2A-4BD9-9176-B391F4957BDC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0CBFA5DE-DAE7-416F-BF01-40C96FA4551D}

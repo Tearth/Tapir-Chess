@@ -1,4 +1,4 @@
-namespace Tapir.Services.News
+namespace Tapir.Services.News.API
 {
     public class Program
     {
