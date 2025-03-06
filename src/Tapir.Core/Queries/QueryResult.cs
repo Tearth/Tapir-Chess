@@ -1,4 +1,4 @@
-﻿namespace Tapir.Common.Infrastructure.Queries
+﻿namespace Tapir.Core.Queries
 {
     public class QueryResult<T>
     {

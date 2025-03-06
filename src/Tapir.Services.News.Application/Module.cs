@@ -2,12 +2,12 @@
 
 namespace Tapir.Services.News.Application
 {
-    public static class DependencyInjection
+    public static class Module
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
-            services.AddMediatR(configuration => configuration.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
-            
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Module).Assembly));
+
             return services;
         }
     }

@@ -20,11 +20,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "News", "News", "{816255C8-F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Services.News.Domain", "src\Tapir.Services.News.Domain\Tapir.Services.News.Domain.csproj", "{1DDB15C7-F7D1-4619-9B50-24E61FCDA25A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{6774117C-9D3B-4BCB-B28F-6B8D8688ACC6}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{6774117C-9D3B-4BCB-B28F-6B8D8688ACC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Common.Infrastructure", "src\Tapir.Common.Infrastructure\Tapir.Common.Infrastructure.csproj", "{B4CAA4CF-A6FA-4F9F-878D-AB48C3D7A36F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Core", "src\Tapir.Core\Tapir.Core.csproj", "{B4CAA4CF-A6FA-4F9F-878D-AB48C3D7A36F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Services.News.Application", "src\Tapir.Services.News.Application\Tapir.Services.News.Application.csproj", "{681C8F00-6344-4959-AF88-31D43D4A0593}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Providers", "Providers", "{F8A81F53-D6BE-489C-BCDB-11D62A804A91}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Providers.MongoDB", "src\Tapir.Providers.MongoDB\Tapir.Providers.MongoDB.csproj", "{FBC17413-6220-4610-9869-A39B7404D1AD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{82001A63-DCF6-40AA-8C9A-00EBB1153EC8}"
+	ProjectSection(SolutionItems) = preProject
+		scripts\mongo-init.js = scripts\mongo-init.js
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -52,6 +61,10 @@ Global
 		{681C8F00-6344-4959-AF88-31D43D4A0593}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{681C8F00-6344-4959-AF88-31D43D4A0593}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{681C8F00-6344-4959-AF88-31D43D4A0593}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBC17413-6220-4610-9869-A39B7404D1AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBC17413-6220-4610-9869-A39B7404D1AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBC17413-6220-4610-9869-A39B7404D1AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBC17413-6220-4610-9869-A39B7404D1AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,6 +78,8 @@ Global
 		{6774117C-9D3B-4BCB-B28F-6B8D8688ACC6} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{B4CAA4CF-A6FA-4F9F-878D-AB48C3D7A36F} = {6774117C-9D3B-4BCB-B28F-6B8D8688ACC6}
 		{681C8F00-6344-4959-AF88-31D43D4A0593} = {816255C8-FB2A-4BD9-9176-B391F4957BDC}
+		{F8A81F53-D6BE-489C-BCDB-11D62A804A91} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{FBC17413-6220-4610-9869-A39B7404D1AD} = {F8A81F53-D6BE-489C-BCDB-11D62A804A91}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0CBFA5DE-DAE7-416F-BF01-40C96FA4551D}

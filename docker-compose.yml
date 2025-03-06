@@ -6,3 +6,7 @@ services:
     build:
       context: .
       dockerfile: src/Tapir.Services.News.API/Dockerfile
+
+  mongodb:
+    image: mongo:latest
+    hostname: mongodb
