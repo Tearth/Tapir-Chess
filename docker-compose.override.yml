@@ -1,5 +1,7 @@
+version: '3.4'
+
 services:
-  tapir.services.news:
+  tapir-services-news:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
