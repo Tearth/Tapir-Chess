@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Tapir.Core\Tapir.Core.csproj" />
+    <ProjectReference Include="..\Tapir.Services.News.Domain\Tapir.Services.News.Domain.csproj" />
   </ItemGroup>
 
 </Project>

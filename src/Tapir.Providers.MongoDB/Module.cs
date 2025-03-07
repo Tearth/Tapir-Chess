@@ -1,7 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Serializers;
+using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using Tapir.Core.Interfaces;
 using Tapir.Providers.MongoDB.Implementations;
+using Tapir.Core.Domain;
 
 namespace Tapir.Providers.MongoDB
 {
@@ -20,8 +24,15 @@ namespace Tapir.Providers.MongoDB
                     new MongoInternalIdentity(configuration.DatabaseName, configuration.Username),
                     new PasswordEvidence(configuration.Password))
             }));
-            services.AddTransient<IEventStorage, EventStorage>();
+            services.AddTransient<IDomainEventStorage, EventStorage>();
             services.AddSingleton(configuration);
+
+            BsonClassMap.RegisterClassMap<DomainEvent>(cm =>
+            {
+                cm.AutoMap();
+                cm.MapIdMember(c => c.Guid);
+            });
+            BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
 
             return services;
         }
