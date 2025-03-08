@@ -24,7 +24,7 @@ namespace Tapir.Core.Domain
             _events.Add(type.Name, typeof(TEvent));
         }
 
-        public Type GetAssemblyType(Guid streamGuid, string type)
+        public Type GetAssemblyType(Guid streamId, string type)
         {
             if (!_events.ContainsKey(type))
             {

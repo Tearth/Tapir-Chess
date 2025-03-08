@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Tapir.Core.Domain;
 using Tapir.Core.Interfaces;
+using Tapir.Services.News.Domain.News.Entities;
 using Tapir.Services.News.Domain.News.Events;
 
 namespace Tapir.Services.News.Domain
@@ -17,6 +18,7 @@ namespace Tapir.Services.News.Domain
             eventRegistry.Add<NewsTitleUpdatedEvent>();
 
             services.AddSingleton<IDomainEventRegistry>(eventRegistry);
+            services.AddTransient<IAggregateRepository<NewsEntity>, AggregateRepository<NewsEntity>>();
 
             return services;
         }

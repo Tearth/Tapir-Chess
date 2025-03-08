@@ -13,13 +13,13 @@ namespace Tapir.Services.News.Domain.News.Entities
 
         public NewsEntity()
         {
-            var @event = new NewsCreatedEvent(Guid, DateTime.UtcNow);
+            var @event = new NewsCreatedEvent(Id, DateTime.UtcNow);
 
             ApplyEvent(@event);
             ApplyUncommittedEvent(@event);
         }
 
-        public NewsEntity(Guid guid) : base(guid)
+        public NewsEntity(Guid id) : base(id)
         {
 
         }
@@ -31,7 +31,7 @@ namespace Tapir.Services.News.Domain.News.Entities
                 throw new DomainException("Title is required.");
             }
 
-            var @event = new NewsTitleUpdatedEvent(Guid, title);
+            var @event = new NewsTitleUpdatedEvent(Id, title);
 
             ApplyEvent(@event);
             ApplyUncommittedEvent(@event);
@@ -44,7 +44,7 @@ namespace Tapir.Services.News.Domain.News.Entities
                 throw new DomainException("Alias is required.");
             }
 
-            var @event = new NewsAliasUpdatedEvent(Guid, alias);
+            var @event = new NewsAliasUpdatedEvent(Id, alias);
 
             ApplyEvent(@event);
             ApplyUncommittedEvent(@event);
@@ -57,7 +57,7 @@ namespace Tapir.Services.News.Domain.News.Entities
                 throw new DomainException("Content is required.");
             }
 
-            var @event = new NewsContentUpdatedEvent(Guid, content);
+            var @event = new NewsContentUpdatedEvent(Id, content);
 
             ApplyEvent(@event);
             ApplyUncommittedEvent(@event);

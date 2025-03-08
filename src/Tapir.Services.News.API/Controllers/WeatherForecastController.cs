@@ -1,7 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Tapir.Services.News.Application.Models;
-using Tapir.Services.News.Application.Queries.GetNews;
+using Tapir.Services.News.Application.Commands;
 
 namespace Tapir.Services.News.API.Controllers;
 
@@ -21,13 +20,11 @@ public class WeatherForecastController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        var result = await _mediator.Send(new GetNewsQuery());
-
-        if (!result.IsValid)
+        await _mediator.Send(new AddNewsCommand
         {
-            return NotFound();
-        }
+           
+        });
 
-        return new JsonResult(result.Value);
+        return Ok();
     }
 }

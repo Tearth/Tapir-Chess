@@ -4,7 +4,7 @@ namespace Tapir.Core.Interfaces
 {
     public interface IDomainEventStorage
     {
-        Task AddAsync<T>(T @event) where T: DomainEvent;
-        Task<IEnumerable<DomainEvent>> GetByStreamGuid(Guid streamGuid);
+        Task AddAsync(DomainEvent @event);
+        Task<IEnumerable<DomainEvent>> GetByStreamGuid(Guid streamId);
     }
 }

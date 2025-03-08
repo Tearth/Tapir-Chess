@@ -7,7 +7,7 @@ using Tapir.Core.Interfaces;
 
 namespace Tapir.Providers.MongoDB.Implementations
 {
-    public class EventStorage : IDomainEventStorage
+    public class DomainEventStorage : IDomainEventStorage
     {
         private Configuration _configuration;
         private IMongoClient _mongoClient;
@@ -16,7 +16,7 @@ namespace Tapir.Providers.MongoDB.Implementations
 
         private const string EventsCollectionName = "events";
 
-        public EventStorage(Configuration configuration, IMongoClient mongoClient, IDomainEventRegistry eventRegistry)
+        public DomainEventStorage(Configuration configuration, IMongoClient mongoClient, IDomainEventRegistry eventRegistry)
         {
             _configuration = configuration;
             _mongoClient = mongoClient;
@@ -24,21 +24,21 @@ namespace Tapir.Providers.MongoDB.Implementations
             _eventRegistry = eventRegistry;
         }
 
-        public async Task AddAsync<T>(T @event) where T : DomainEvent
+        public async Task AddAsync(DomainEvent @event)
         {
-            await _mongoDatabase.GetCollection<T>(EventsCollectionName).InsertOneAsync(@event);
+            await _mongoDatabase.GetCollection<DomainEvent>(EventsCollectionName).InsertOneAsync(@event);
         }
 
-        public async Task<IEnumerable<DomainEvent>> GetByStreamGuid(Guid streamGuid)
+        public async Task<IEnumerable<DomainEvent>> GetByStreamGuid(Guid streamId)
         {
             var events = new List<DomainEvent>();
-            var filter = Builders<BsonDocument>.Filter.Eq("StreamGuid", streamGuid);
+            var filter = Builders<BsonDocument>.Filter.Eq("StreamId", streamId);
             var documents = await _mongoDatabase.GetCollection<BsonDocument>(EventsCollectionName).Find(filter).ToListAsync();
 
             foreach (var document in documents)
             {
                 var type = document["Type"].AsString;
-                var assemblyType = _eventRegistry.GetAssemblyType(streamGuid, type);
+                var assemblyType = _eventRegistry.GetAssemblyType(streamId, type);
 
                 events.Add((DomainEvent)BsonSerializer.Deserialize(document, assemblyType));
             }

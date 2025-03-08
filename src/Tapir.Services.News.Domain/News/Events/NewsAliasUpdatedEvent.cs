@@ -6,7 +6,7 @@ namespace Tapir.Services.News.Domain.News.Events
     {
         public string Alias { get; set; }
 
-        public NewsAliasUpdatedEvent(Guid streamGuid, string alias) : base(streamGuid)
+        public NewsAliasUpdatedEvent(Guid streamId, string alias) : base(streamId)
         {
             Alias = alias;
         }

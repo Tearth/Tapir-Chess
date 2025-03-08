@@ -8,7 +8,7 @@ namespace Tapir.Core.Domain
 
         }
 
-        protected AggregateRoot(Guid guid) : base(guid)
+        protected AggregateRoot(Guid id) : base(id)
         {
 
         }

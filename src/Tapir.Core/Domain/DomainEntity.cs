@@ -2,18 +2,18 @@
 {
     public abstract class DomainEntity
     {
-        public Guid Guid { get; set; }
+        public Guid Id { get; set; }
 
         private List<DomainEvent> _uncommittedEvents = new List<DomainEvent>();
 
         public DomainEntity()
         {
-            Guid = Guid.NewGuid();
+            Id = Guid.NewGuid();
         }
 
-        public DomainEntity(Guid guid)
+        public DomainEntity(Guid id)
         {
-            Guid = guid;
+            Id = id;
         }
 
         public IEnumerable<DomainEvent> GetUncommittedEvents()

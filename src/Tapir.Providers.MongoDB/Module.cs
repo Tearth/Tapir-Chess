@@ -24,13 +24,13 @@ namespace Tapir.Providers.MongoDB
                     new MongoInternalIdentity(configuration.DatabaseName, configuration.Username),
                     new PasswordEvidence(configuration.Password))
             }));
-            services.AddTransient<IDomainEventStorage, EventStorage>();
+            services.AddTransient<IDomainEventStorage, DomainEventStorage>();
             services.AddSingleton(configuration);
 
             BsonClassMap.RegisterClassMap<DomainEvent>(cm =>
             {
                 cm.AutoMap();
-                cm.MapIdMember(c => c.Guid);
+                cm.MapIdMember(c => c.Id);
             });
             BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
 
