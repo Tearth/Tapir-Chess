@@ -23,7 +23,21 @@ services:
         MONGO_INITDB_ROOT_PASSWORD: GTbBbzC86GJ73OZ
     volumes:
       - ./scripts/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - ./scripts/mongo-replica.js:/scripts/mongo-replica.js:ro
       - mongodb:/data
+    entrypoint: >
+        /bin/bash -c '
+        openssl rand -base64 756 > /data/keyfile.key &&
+        chmod 400 /data/keyfile.key &&
+        chown mongodb:mongodb /data/keyfile.key &&
+        /usr/local/bin/docker-entrypoint.sh mongod --replSet rs0 --keyFile /data/keyfile.key --bind_ip_all'
+    healthcheck:
+      test: mongosh -u $${MONGO_INITDB_ROOT_USERNAME} -p $${MONGO_INITDB_ROOT_PASSWORD} --file /scripts/mongo-replica.js
+      interval: 5s
+      timeout: 30s
+      start_period: 0s
+      start_interval: 1s
+      retries: 30
 
 volumes:
   mongodb:

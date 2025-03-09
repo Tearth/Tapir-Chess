@@ -26,8 +26,16 @@ namespace Tapir.Services.News.API
                     throw new InvalidOperationException("MongoDb settings not found.");
                 }
 
-                cfg.Host = settings.MongoDb.Host;
-                cfg.Port = settings.MongoDb.Port;
+                if (settings.MongoDb.Servers == null || settings.MongoDb.Servers.Count == 0)
+                {
+                    throw new InvalidOperationException("MongoDb server settings not found.");
+                }
+
+                cfg.Servers = settings.MongoDb.Servers.Select(p => new ServerConfiguration
+                {
+                    Host = p.Host,
+                    Port = p.Port
+                }).ToList();
                 cfg.DatabaseName = settings.MongoDb.DatabaseName;
 
                 cfg.AuthenticationMethod = settings.MongoDb.AuthenticationMethod;

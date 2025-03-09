@@ -18,11 +18,11 @@ namespace Tapir.Providers.EventStore.MongoDB
 
             services.AddTransient<IMongoClient, MongoClient>(p => new MongoClient(new MongoClientSettings
             {
-                Server = new MongoServerAddress(configuration.Host, configuration.Port ?? 0),
+                Servers = configuration.Servers.Select(s => new MongoServerAddress(s.Host, s.Port ?? 0)),
                 Credential = new MongoCredential(
                     configuration.AuthenticationMethod,
                     new MongoInternalIdentity(configuration.DatabaseName, configuration.Username),
-                    new PasswordEvidence(configuration.Password))
+                    new PasswordEvidence(configuration.Password)),
             }));
             services.AddTransient<IDomainEventStore, DomainEventStore>();
             services.AddSingleton(configuration);

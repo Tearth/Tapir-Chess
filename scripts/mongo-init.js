@@ -1,7 +1,3 @@
-print('===================================');
-print('MongoDB initialization script START');
-print('===================================');
-
 db = db.getSiblingDB('news');
 db.createUser({
     user: "tapir",
@@ -11,7 +7,3 @@ db.createUser({
         db: "news"
     }]
 });
-
-print('=================================');
-print('MongoDB initialization script END');
-print('=================================');

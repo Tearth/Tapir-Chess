@@ -33,6 +33,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{82001A63-DCF6-40AA-8C9A-00EBB1153EC8}"
 	ProjectSection(SolutionItems) = preProject
 		scripts\mongo-init.js = scripts\mongo-init.js
+		scripts\mongo-replica.js = scripts\mongo-replica.js
 	EndProjectSection
 EndProject
 Global
