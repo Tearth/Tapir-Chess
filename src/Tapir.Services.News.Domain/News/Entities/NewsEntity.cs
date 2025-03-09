@@ -7,9 +7,9 @@ namespace Tapir.Services.News.Domain.News.Entities
     public class NewsEntity : AggregateRoot
     {
         public DateTime CreatedAt { get; private set; }
-        public string Title { get; private set; }
-        public string Alias { get; private set; }
-        public string Content { get; private set; }
+        public string Title { get; private set; } = "";
+        public string Alias { get; private set; } = "";
+        public string Content { get; private set; } = "";
 
         public NewsEntity()
         {
@@ -72,6 +72,8 @@ namespace Tapir.Services.News.Domain.News.Entities
                 case NewsAliasUpdatedEvent titleAliasEvent: ExecuteEvent(titleAliasEvent); break;
                 case NewsContentUpdatedEvent titleContentEvent: ExecuteEvent(titleContentEvent); break;
             }
+
+            base.ApplyEvent(@event);
         }
 
         private void ExecuteEvent(NewsCreatedEvent @event)

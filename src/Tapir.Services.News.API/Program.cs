@@ -1,5 +1,5 @@
 using Tapir.Services.News.Application;
-using Tapir.Providers.MongoDB;
+using Tapir.Providers.EventStore.MongoDB;
 
 namespace Tapir.Services.News.API
 {
@@ -14,8 +14,18 @@ namespace Tapir.Services.News.API
            
             var settings = builder.Configuration.Get<AppSettings>();
 
-            builder.Services.AddMongoDB(cfg =>
+            if (settings == null)
             {
+                throw new InvalidOperationException("AppSettings not found.");
+            }
+
+            builder.Services.AddMongoDBEventStore(cfg =>
+            {
+                if (settings.MongoDb == null)
+                {
+                    throw new InvalidOperationException("MongoDb settings not found.");
+                }
+
                 cfg.Host = settings.MongoDb.Host;
                 cfg.Port = settings.MongoDb.Port;
                 cfg.DatabaseName = settings.MongoDb.DatabaseName;

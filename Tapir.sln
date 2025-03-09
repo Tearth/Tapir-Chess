@@ -28,7 +28,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Services.News.Applica
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Providers", "Providers", "{F8A81F53-D6BE-489C-BCDB-11D62A804A91}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Providers.MongoDB", "src\Tapir.Providers.MongoDB\Tapir.Providers.MongoDB.csproj", "{FBC17413-6220-4610-9869-A39B7404D1AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Providers.EventStore.MongoDB", "src\Tapir.Providers.EventStore.MongoDB\Tapir.Providers.EventStore.MongoDB.csproj", "{FBC17413-6220-4610-9869-A39B7404D1AD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{82001A63-DCF6-40AA-8C9A-00EBB1153EC8}"
 	ProjectSection(SolutionItems) = preProject

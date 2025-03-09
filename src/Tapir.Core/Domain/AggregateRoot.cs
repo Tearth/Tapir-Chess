@@ -3,6 +3,8 @@ namespace Tapir.Core.Domain
 {
     public abstract class AggregateRoot : DomainEntity
     {
+        public int Version { get; private set; }
+
         protected AggregateRoot()
         {
 
@@ -13,6 +15,9 @@ namespace Tapir.Core.Domain
 
         }
 
-        public abstract void ApplyEvent(DomainEvent @event);
+        public virtual void ApplyEvent(DomainEvent @event)
+        {
+            Version += 1;
+        }
     }
 }

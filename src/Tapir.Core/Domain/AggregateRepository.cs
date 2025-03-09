@@ -1,22 +1,27 @@
-﻿using Tapir.Core.Interfaces;
+﻿using MediatR;
+using Tapir.Core.Interfaces;
 
 namespace Tapir.Core.Domain
 {
-    public class AggregateRepository<T> : IAggregateRepository<T> where T: AggregateRoot
+    public class AggregateRepository<TRoot> : IAggregateRepository<TRoot> where TRoot: AggregateRoot
     {
-        private IDomainEventStorage _eventStorage;
+        private readonly IMediator _mediator;
+        private readonly IDomainEventStore _eventStore;
 
-        public AggregateRepository(IDomainEventStorage eventStorage)
+        public AggregateRepository(IMediator mediator, IDomainEventStore eventStore)
         {
-            _eventStorage = eventStorage;
+            _mediator = mediator;
+            _eventStore = eventStore;
         }
 
-        public async Task<T> Load(Guid id)
+        public async Task<TRoot> Load(Guid id)
         {
-            var entity = (T)Activator.CreateInstance(typeof(T), id);
-            var events = await _eventStorage.GetByStreamGuid(id);
+            if (Activator.CreateInstance(typeof(TRoot), id) is not TRoot entity)
+            {
+                throw new InvalidOperationException($"Aggregate root {typeof(TRoot).Name} could not be instantiated.");
+            }
 
-            foreach (var @event in events)
+            foreach (var @event in await _eventStore.GetByStreamId(id))
             {
                 entity.ApplyEvent(@event);
             }
@@ -24,12 +29,16 @@ namespace Tapir.Core.Domain
             return entity;
         }
 
-        public async Task Save(T entity)
+        public async Task Save(TRoot entity)
         {
-            foreach (var @event in entity.GetUncommittedEvents())
+            var events = entity.GetUncommittedEvents();
+
+            await _eventStore.AddAsync(events);
+            foreach (var @event in events)
             {
-                await _eventStorage.AddAsync(@event);
+                await _mediator.Publish(@event);
             }
+
             entity.ClearUncommittedEvents();
         }
     }

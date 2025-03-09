@@ -1,8 +1,9 @@
-﻿using Tapir.Core.Domain;
+﻿using MediatR;
+using Tapir.Core.Domain;
 
 namespace Tapir.Services.News.Domain.News.Events
 {
-    public class NewsCreatedEvent : DomainEvent
+    public class NewsCreatedEvent : DomainEvent, INotification
     {
         public DateTime CreatedAt { get; set; }
 

@@ -5,7 +5,7 @@ namespace Tapir.Core.Domain
 {
     public class DomainEventRegistry : IDomainEventRegistry
     {
-        private Dictionary<string, Type> _events = new Dictionary<string, Type>();
+        private readonly Dictionary<string, Type> _events = [];
 
         public void Add<TEvent>() where TEvent : DomainEvent
         {
@@ -13,12 +13,12 @@ namespace Tapir.Core.Domain
 
             if (_events.ContainsKey(type.Name))
             {
-                throw new EventAlreadyRegisteredException($"Event {type.Name} is already registered.");
+                throw new InvalidOperationException($"Event {type.Name} is already registered.");
             }
 
             if (type.BaseType != typeof(DomainEvent))
             {
-                throw new EventInvalidException($"Event {type.Name} is not a valid event.");
+                throw new InvalidOperationException($"Event {type.Name} is not a valid event.");
             }
 
             _events.Add(type.Name, typeof(TEvent));
@@ -26,12 +26,12 @@ namespace Tapir.Core.Domain
 
         public Type GetAssemblyType(Guid streamId, string type)
         {
-            if (!_events.ContainsKey(type))
+            if (!_events.TryGetValue(type, out var value))
             {
-                throw new EventNotRegisteredException($"Event {type} is not registered.");
+                throw new InvalidOperationException($"Event {type} is not registered.");
             }
 
-            return _events[type];
+            return value;
         }
     }
 }

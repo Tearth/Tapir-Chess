@@ -5,9 +5,9 @@ using System.Reflection;
 using Tapir.Core.Domain;
 using Tapir.Core.Interfaces;
 
-namespace Tapir.Providers.MongoDB.Implementations
+namespace Tapir.Providers.EventStore.MongoDB.Implementations
 {
-    public class DomainEventStorage : IDomainEventStorage
+    public class DomainEventStore : IDomainEventStore
     {
         private Configuration _configuration;
         private IMongoClient _mongoClient;
@@ -16,7 +16,7 @@ namespace Tapir.Providers.MongoDB.Implementations
 
         private const string EventsCollectionName = "events";
 
-        public DomainEventStorage(Configuration configuration, IMongoClient mongoClient, IDomainEventRegistry eventRegistry)
+        public DomainEventStore(Configuration configuration, IMongoClient mongoClient, IDomainEventRegistry eventRegistry)
         {
             _configuration = configuration;
             _mongoClient = mongoClient;
@@ -29,7 +29,26 @@ namespace Tapir.Providers.MongoDB.Implementations
             await _mongoDatabase.GetCollection<DomainEvent>(EventsCollectionName).InsertOneAsync(@event);
         }
 
-        public async Task<IEnumerable<DomainEvent>> GetByStreamGuid(Guid streamId)
+        public async Task AddAsync(IEnumerable<DomainEvent> events)
+        {
+            using (var session = _mongoClient.StartSession())
+            {
+                session.StartTransaction();
+
+                try
+                {
+                    await _mongoDatabase.GetCollection<DomainEvent>(EventsCollectionName).InsertManyAsync(session, events);
+                    await session.CommitTransactionAsync();
+                }
+                catch
+                {
+                    await session.AbortTransactionAsync();
+                    throw;
+                }
+            }
+        }
+
+        public async Task<IEnumerable<DomainEvent>> GetByStreamId(Guid streamId)
         {
             var events = new List<DomainEvent>();
             var filter = Builders<BsonDocument>.Filter.Eq("StreamId", streamId);

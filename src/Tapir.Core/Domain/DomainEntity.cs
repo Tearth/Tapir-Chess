@@ -4,7 +4,7 @@
     {
         public Guid Id { get; set; }
 
-        private List<DomainEvent> _uncommittedEvents = new List<DomainEvent>();
+        private readonly List<DomainEvent> _uncommittedEvents = [];
 
         public DomainEntity()
         {

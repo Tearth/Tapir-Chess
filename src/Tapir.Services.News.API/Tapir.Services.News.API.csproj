@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tapir.Providers.MongoDB\Tapir.Providers.MongoDB.csproj" />
+    <ProjectReference Include="..\Tapir.Providers.EventStore.MongoDB\Tapir.Providers.EventStore.MongoDB.csproj" />
     <ProjectReference Include="..\Tapir.Services.News.Application\Tapir.Services.News.Application.csproj" />
   </ItemGroup>
 

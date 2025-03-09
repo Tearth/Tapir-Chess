@@ -1,8 +1,9 @@
-﻿using Tapir.Core.Domain;
+﻿using MediatR;
+using Tapir.Core.Domain;
 
 namespace Tapir.Services.News.Domain.News.Events
 {
-    public class NewsContentUpdatedEvent : DomainEvent
+    public class NewsContentUpdatedEvent : DomainEvent, INotification
     {
         public string Content { get; set; }
 

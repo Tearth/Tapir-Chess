@@ -2,9 +2,9 @@
 
 namespace Tapir.Core.Interfaces
 {
-    public interface IAggregateRepository<T> where T: AggregateRoot
+    public interface IAggregateRepository<TRoot> where TRoot: AggregateRoot
     {
-        Task<T> Load(Guid id);
-        Task Save(T @entity);
+        Task<TRoot> Load(Guid id);
+        Task Save(TRoot @entity);
     }
 }
