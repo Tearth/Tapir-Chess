@@ -7,6 +7,10 @@ services:
       context: .
       dockerfile: src/Tapir.Services.News.API/Dockerfile
 
+  postgresql:
+    image: postgres:latest
+    hostname: postgresql
+
   mongodb:
     image: mongo:latest
     hostname: mongodb

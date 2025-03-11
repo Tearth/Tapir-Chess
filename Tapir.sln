@@ -36,6 +36,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{8200
 		scripts\mongo-replica.js = scripts\mongo-replica.js
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Providers.Database.PostgreSQL", "src\Tapir.Providers.Database.PostgreSQL\Tapir.Providers.Database.PostgreSQL.csproj", "{2902D185-C2D9-4FE5-9829-256484CC4289}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Services.News.Infrastructure", "src\Tapir.Services.News.Infrastructure\Tapir.Services.News.Infrastructure.csproj", "{7ADE8B2F-1CCC-4724-A8A1-6CC5748CB8CF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +70,14 @@ Global
 		{FBC17413-6220-4610-9869-A39B7404D1AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBC17413-6220-4610-9869-A39B7404D1AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FBC17413-6220-4610-9869-A39B7404D1AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2902D185-C2D9-4FE5-9829-256484CC4289}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2902D185-C2D9-4FE5-9829-256484CC4289}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2902D185-C2D9-4FE5-9829-256484CC4289}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2902D185-C2D9-4FE5-9829-256484CC4289}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7ADE8B2F-1CCC-4724-A8A1-6CC5748CB8CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7ADE8B2F-1CCC-4724-A8A1-6CC5748CB8CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7ADE8B2F-1CCC-4724-A8A1-6CC5748CB8CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7ADE8B2F-1CCC-4724-A8A1-6CC5748CB8CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,6 +93,8 @@ Global
 		{681C8F00-6344-4959-AF88-31D43D4A0593} = {816255C8-FB2A-4BD9-9176-B391F4957BDC}
 		{F8A81F53-D6BE-489C-BCDB-11D62A804A91} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{FBC17413-6220-4610-9869-A39B7404D1AD} = {F8A81F53-D6BE-489C-BCDB-11D62A804A91}
+		{2902D185-C2D9-4FE5-9829-256484CC4289} = {F8A81F53-D6BE-489C-BCDB-11D62A804A91}
+		{7ADE8B2F-1CCC-4724-A8A1-6CC5748CB8CF} = {816255C8-FB2A-4BD9-9176-B391F4957BDC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0CBFA5DE-DAE7-416F-BF01-40C96FA4551D}

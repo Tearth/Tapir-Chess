@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -15,8 +15,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Tapir.Providers.Database.PostgreSQL\Tapir.Providers.Database.PostgreSQL.csproj" />
     <ProjectReference Include="..\Tapir.Providers.EventStore.MongoDB\Tapir.Providers.EventStore.MongoDB.csproj" />
     <ProjectReference Include="..\Tapir.Services.News.Application\Tapir.Services.News.Application.csproj" />
+    <ProjectReference Include="..\Tapir.Services.News.Infrastructure\Tapir.Services.News.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
