@@ -3,13 +3,13 @@
     public abstract class DomainEvent
     {
         public Guid Id { get; set; }
-        public Guid StreamId { get; set; }
+        public Guid AggregateId { get; set; }
         public DateTime Timestamp { get; set; }
 
-        public DomainEvent(Guid streamId)
+        public DomainEvent(Guid aggregateId)
         {
             Id = Guid.NewGuid();
-            StreamId = streamId;
+            AggregateId = aggregateId;
             Timestamp = DateTime.UtcNow;
         }
     }

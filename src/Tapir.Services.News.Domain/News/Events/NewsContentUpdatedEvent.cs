@@ -7,7 +7,7 @@ namespace Tapir.Services.News.Domain.News.Events
     {
         public string Content { get; set; }
 
-        public NewsContentUpdatedEvent(Guid streamId, string content) : base(streamId)
+        public NewsContentUpdatedEvent(Guid aggregateId, string content) : base(aggregateId)
         {
             Content = content;
         }

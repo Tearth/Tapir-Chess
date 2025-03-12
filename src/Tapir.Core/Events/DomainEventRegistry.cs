@@ -1,7 +1,8 @@
-﻿using Tapir.Core.Exceptions;
+﻿using Tapir.Core.Domain;
+using Tapir.Core.Exceptions;
 using Tapir.Core.Interfaces;
 
-namespace Tapir.Core.Domain
+namespace Tapir.Core.Events
 {
     public class DomainEventRegistry : IDomainEventRegistry
     {
@@ -24,7 +25,7 @@ namespace Tapir.Core.Domain
             _events.Add(type.Name, typeof(TEvent));
         }
 
-        public Type GetAssemblyType(Guid streamId, string type)
+        public Type GetAssemblyType(string type)
         {
             if (!_events.TryGetValue(type, out var value))
             {

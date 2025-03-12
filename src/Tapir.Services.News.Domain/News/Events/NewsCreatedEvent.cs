@@ -7,7 +7,7 @@ namespace Tapir.Services.News.Domain.News.Events
     {
         public DateTime CreatedAt { get; set; }
 
-        public NewsCreatedEvent(Guid streamId, DateTime createdAt) : base(streamId)
+        public NewsCreatedEvent(Guid aggregateId, DateTime createdAt) : base(aggregateId)
         {
             CreatedAt = createdAt;
         }

@@ -7,3 +7,5 @@ db.createUser({
         db: "news"
     }]
 });
+db.events.createIndex({ "AggregateId": 1 });
+db.events.createIndex({ "Timestamp": 1 });

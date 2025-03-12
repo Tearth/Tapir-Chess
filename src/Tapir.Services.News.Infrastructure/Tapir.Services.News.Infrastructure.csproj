@@ -7,11 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Migrations\001_Init.sql" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\001_Init.sql" />
+    <EmbeddedResource Include="Migrations\001_News.sql" />
   </ItemGroup>
 
   <ItemGroup>

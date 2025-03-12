@@ -1,6 +1,8 @@
-﻿using MongoDB.Bson;
+﻿using Microsoft.Extensions.Logging;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
+using System.IO;
 using System.Reflection;
 using Tapir.Core.Domain;
 using Tapir.Core.Interfaces;
@@ -15,6 +17,9 @@ namespace Tapir.Providers.EventStore.MongoDB.Implementations
         private IDomainEventRegistry _eventRegistry;
 
         private const string EventsCollectionName = "events";
+        private const string MetaDataCollectionName = "metadata";
+
+        private const string LastSynchronizationTimeKey = "LastSynchronizationTime";
 
         public DomainEventStore(Configuration configuration, IMongoClient mongoClient, IDomainEventRegistry eventRegistry)
         {
@@ -48,21 +53,51 @@ namespace Tapir.Providers.EventStore.MongoDB.Implementations
             }
         }
 
-        public async Task<IEnumerable<DomainEvent>> GetByStreamId(Guid streamId)
+        public async Task<IEnumerable<DomainEvent>> GetByAggregateId(Guid aggregateId)
         {
-            var events = new List<DomainEvent>();
-            var filter = Builders<BsonDocument>.Filter.Eq("StreamId", streamId);
+            var filter = Builders<BsonDocument>.Filter.Eq("AggregateId", aggregateId);
             var documents = await _mongoDatabase.GetCollection<BsonDocument>(EventsCollectionName).Find(filter).ToListAsync();
 
-            foreach (var document in documents)
-            {
-                var type = document["Type"].AsString;
-                var assemblyType = _eventRegistry.GetAssemblyType(streamId, type);
+            return documents.Select(DeserializeEvent);
+        }
 
-                events.Add((DomainEvent)BsonSerializer.Deserialize(document, assemblyType));
+        public async Task<IEnumerable<DomainEvent>> GetByTimestamp(DateTime from, DateTime to)
+        {
+            var filter = Builders<BsonDocument>.Filter.Gt("Timestamp", from) & Builders<BsonDocument>.Filter.Lte("Timestamp", to);
+            var documents = await _mongoDatabase.GetCollection<BsonDocument>(EventsCollectionName).Find(filter).ToListAsync();
+
+            return documents.Select(DeserializeEvent);
+        }
+
+        private DomainEvent DeserializeEvent(BsonDocument document)
+        {
+            var type = document["_t"].AsString;
+            var assemblyType = _eventRegistry.GetAssemblyType(type);
+           
+            return (DomainEvent)BsonSerializer.Deserialize(document, assemblyType);
+        }
+
+        public async Task<DateTime?> GetLastSynchronizationTime()
+        {
+            var filter = Builders<BsonDocument>.Filter.Eq("Name", LastSynchronizationTimeKey);
+            var documents = await _mongoDatabase.GetCollection<BsonDocument>(MetaDataCollectionName).FindAsync(filter);
+            var result = await documents.FirstOrDefaultAsync();
+
+            if (result != null)
+            {
+                return result["Value"].AsNullableUniversalTime;
             }
 
-            return events;
+            return null;
+        }
+
+        public async Task SetLastSynchronizationTime(DateTime? time)
+        {
+            var filter = Builders<BsonDocument>.Filter.Eq("Name", LastSynchronizationTimeKey);
+            var update = Builders<BsonDocument>.Update.Set("Value", time);
+            var options = new UpdateOptions { IsUpsert = true };
+
+            await _mongoDatabase.GetCollection<BsonDocument>(MetaDataCollectionName).UpdateOneAsync(filter, update, options);
         }
     }
 }

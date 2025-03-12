@@ -1,7 +1,8 @@
 ﻿using MediatR;
+using Tapir.Core.Domain;
 using Tapir.Core.Interfaces;
 
-namespace Tapir.Core.Domain
+namespace Tapir.Core.Persistence
 {
     public class AggregateRepository<TRoot> : IAggregateRepository<TRoot> where TRoot: AggregateRoot
     {
@@ -21,7 +22,7 @@ namespace Tapir.Core.Domain
                 throw new InvalidOperationException($"Aggregate root {typeof(TRoot).Name} could not be instantiated.");
             }
 
-            foreach (var @event in await _eventStore.GetByStreamId(id))
+            foreach (var @event in await _eventStore.GetByAggregateId(id))
             {
                 entity.ApplyEvent(@event);
             }
@@ -34,11 +35,6 @@ namespace Tapir.Core.Domain
             var events = entity.GetUncommittedEvents();
 
             await _eventStore.AddAsync(events);
-            foreach (var @event in events)
-            {
-                await _mediator.Publish(@event);
-            }
-
             entity.ClearUncommittedEvents();
         }
     }
