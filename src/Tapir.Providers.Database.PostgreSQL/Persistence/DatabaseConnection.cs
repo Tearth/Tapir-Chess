@@ -1,8 +1,8 @@
 ﻿using Npgsql;
 using System.Data;
-using Tapir.Core.Interfaces;
+using Tapir.Core.Persistence;
 
-namespace Tapir.Providers.Database.PostgreSQL.Implementations
+namespace Tapir.Providers.Database.PostgreSQL.Persistence
 {
     public class DatabaseConnection : IDatabaseConnection
     {

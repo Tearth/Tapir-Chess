@@ -6,12 +6,12 @@
 
         private readonly List<DomainEvent> _uncommittedEvents = [];
 
-        public DomainEntity()
+        protected DomainEntity()
         {
             Id = Guid.NewGuid();
         }
 
-        public DomainEntity(Guid id)
+        protected DomainEntity(Guid id)
         {
             Id = id;
         }

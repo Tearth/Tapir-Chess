@@ -1,5 +1,5 @@
 ﻿using Tapir.Core.Domain;
-using Tapir.Core.Exceptions;
+using Tapir.Core.Domain.Exceptions;
 using Tapir.Services.News.Domain.News.Events;
 
 namespace Tapir.Services.News.Domain.News.Entities

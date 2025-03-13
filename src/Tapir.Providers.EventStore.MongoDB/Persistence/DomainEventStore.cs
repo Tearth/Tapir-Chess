@@ -5,9 +5,10 @@ using MongoDB.Driver;
 using System.IO;
 using System.Reflection;
 using Tapir.Core.Domain;
-using Tapir.Core.Interfaces;
+using Tapir.Core.Events;
+using Tapir.Core.Persistence;
 
-namespace Tapir.Providers.EventStore.MongoDB.Implementations
+namespace Tapir.Providers.EventStore.MongoDB.Persistence
 {
     public class DomainEventStore : IDomainEventStore
     {

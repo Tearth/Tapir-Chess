@@ -1,6 +1,4 @@
 ﻿using Tapir.Core.Domain;
-using Tapir.Core.Exceptions;
-using Tapir.Core.Interfaces;
 
 namespace Tapir.Core.Events
 {

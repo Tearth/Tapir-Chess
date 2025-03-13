@@ -1,9 +1,9 @@
 ﻿using Dapper;
 using MediatR;
-using Tapir.Core.Interfaces;
+using Tapir.Core.Persistence;
 using Tapir.Services.News.Domain.News.Events;
 
-namespace Tapir.Services.News.Application.Projectors
+namespace Tapir.Services.News.Application.News.Projectors
 {
     public class NewsAliasUpdatedProjector : INotificationHandler<NewsAliasUpdatedEvent>
     {

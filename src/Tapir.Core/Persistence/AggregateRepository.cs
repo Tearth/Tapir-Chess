@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Tapir.Core.Domain;
-using Tapir.Core.Interfaces;
 
 namespace Tapir.Core.Persistence
 {

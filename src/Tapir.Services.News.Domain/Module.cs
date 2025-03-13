@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Tapir.Core.Events;
-using Tapir.Core.Interfaces;
 using Tapir.Core.Persistence;
 using Tapir.Services.News.Domain.News.Entities;
 using Tapir.Services.News.Domain.News.Events;

@@ -1,6 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Tapir.Services.News.Application.Commands;
+using Tapir.Services.News.Application.News.Commands;
 
 namespace Tapir.Services.News.API.Controllers;
 

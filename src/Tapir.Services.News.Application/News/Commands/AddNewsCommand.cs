@@ -1,8 +1,8 @@
 ﻿using MediatR;
-using Tapir.Core.Interfaces;
+using Tapir.Core.Persistence;
 using Tapir.Services.News.Domain.News.Entities;
 
-namespace Tapir.Services.News.Application.Commands
+namespace Tapir.Services.News.Application.News.Commands
 {
     public class AddNewsCommand : IRequest<Unit>
     {

@@ -1,4 +1,4 @@
-﻿namespace Tapir.Services.News.API
+﻿namespace Tapir.Services.News.Infrastructure
 {
     public class AppSettings
     {

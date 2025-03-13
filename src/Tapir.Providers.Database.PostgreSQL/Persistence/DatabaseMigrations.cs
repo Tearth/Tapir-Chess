@@ -1,7 +1,7 @@
 ﻿
 using DbUp;
 
-namespace Tapir.Providers.Database.PostgreSQL.Implementations
+namespace Tapir.Providers.Database.PostgreSQL.Persistence
 {
     public class DatabaseMigrations
     {

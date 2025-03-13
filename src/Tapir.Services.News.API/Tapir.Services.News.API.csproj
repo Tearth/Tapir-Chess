@@ -11,12 +11,13 @@
 
   <ItemGroup>
     <PackageReference Include="MediatR" Version="12.4.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.3" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tapir.Providers.Database.PostgreSQL\Tapir.Providers.Database.PostgreSQL.csproj" />
-    <ProjectReference Include="..\Tapir.Providers.EventStore.MongoDB\Tapir.Providers.EventStore.MongoDB.csproj" />
     <ProjectReference Include="..\Tapir.Services.News.Application\Tapir.Services.News.Application.csproj" />
     <ProjectReference Include="..\Tapir.Services.News.Infrastructure\Tapir.Services.News.Infrastructure.csproj" />
   </ItemGroup>

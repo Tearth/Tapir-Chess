@@ -6,7 +6,7 @@
         public Guid AggregateId { get; set; }
         public DateTime Timestamp { get; set; }
 
-        public DomainEvent(Guid aggregateId)
+        protected DomainEvent(Guid aggregateId)
         {
             Id = Guid.NewGuid();
             AggregateId = aggregateId;

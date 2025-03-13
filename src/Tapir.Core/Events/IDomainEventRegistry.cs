@@ -1,7 +1,6 @@
-﻿
-using Tapir.Core.Domain;
+﻿using Tapir.Core.Domain;
 
-namespace Tapir.Core.Interfaces
+namespace Tapir.Core.Events
 {
     public interface IDomainEventRegistry
     {

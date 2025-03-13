@@ -1,6 +1,6 @@
 ﻿using Tapir.Core.Domain;
 
-namespace Tapir.Core.Interfaces
+namespace Tapir.Core.Persistence
 {
     public interface IAggregateRepository<TRoot> where TRoot: AggregateRoot
     {

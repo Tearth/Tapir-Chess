@@ -1,4 +1,4 @@
-﻿namespace Tapir.Core.Interfaces
+﻿namespace Tapir.Core.Events
 {
     public interface IDomainEventSynchronizer
     {

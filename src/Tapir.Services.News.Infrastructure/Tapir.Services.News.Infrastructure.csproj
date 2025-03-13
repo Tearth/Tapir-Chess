@@ -7,11 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\001_News.sql" />
+    <EmbeddedResource Include="Migrations\001_CreateNews.sql" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tapir.Providers.Database.PostgreSQL\Tapir.Providers.Database.PostgreSQL.csproj" />
+    <ProjectReference Include="..\Tapir.Providers.EventStore.MongoDB\Tapir.Providers.EventStore.MongoDB.csproj" />
   </ItemGroup>
 
 </Project>

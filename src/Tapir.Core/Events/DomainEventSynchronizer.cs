@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Tapir.Core.Interfaces;
+using Tapir.Core.Persistence;
 
 namespace Tapir.Core.Events
 {
@@ -25,7 +25,7 @@ namespace Tapir.Core.Events
                 {
                     await _mediator.Publish(@event);
                 }
-                catch (Exception ex)
+                catch
                 {
                     // Log error
                     throw;

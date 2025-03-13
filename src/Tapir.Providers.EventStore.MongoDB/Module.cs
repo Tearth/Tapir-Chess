@@ -3,9 +3,9 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
-using Tapir.Core.Interfaces;
-using Tapir.Providers.EventStore.MongoDB.Implementations;
 using Tapir.Core.Domain;
+using Tapir.Core.Persistence;
+using Tapir.Providers.EventStore.MongoDB.Persistence;
 
 namespace Tapir.Providers.EventStore.MongoDB
 {
@@ -15,6 +15,11 @@ namespace Tapir.Providers.EventStore.MongoDB
         {
             var configuration = new Configuration();
             userConfiguration(configuration);
+
+            if (configuration.Servers == null || configuration.Servers.Count == 0)
+            {
+                throw new InvalidOperationException("No servers configured.");
+            }
 
             services.AddTransient<IMongoClient, MongoClient>(p => new MongoClient(new MongoClientSettings
             {

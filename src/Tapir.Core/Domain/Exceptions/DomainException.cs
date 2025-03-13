@@ -1,4 +1,4 @@
-﻿namespace Tapir.Core.Exceptions
+﻿namespace Tapir.Core.Domain.Exceptions
 {
     public class DomainException : Exception
     {
