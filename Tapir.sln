@@ -40,6 +40,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Providers.Database.Po
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Services.News.Infrastructure", "src\Tapir.Services.News.Infrastructure\Tapir.Services.News.Infrastructure.csproj", "{7ADE8B2F-1CCC-4724-A8A1-6CC5748CB8CF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Providers.Scheduler.Quartz", "src\Tapir.Providers.Scheduler.Quartz\Tapir.Providers.Scheduler.Quartz.csproj", "{BA313774-3E4B-46E3-828B-44D95BAFD4C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,6 +80,10 @@ Global
 		{7ADE8B2F-1CCC-4724-A8A1-6CC5748CB8CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7ADE8B2F-1CCC-4724-A8A1-6CC5748CB8CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7ADE8B2F-1CCC-4724-A8A1-6CC5748CB8CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA313774-3E4B-46E3-828B-44D95BAFD4C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA313774-3E4B-46E3-828B-44D95BAFD4C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA313774-3E4B-46E3-828B-44D95BAFD4C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA313774-3E4B-46E3-828B-44D95BAFD4C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,6 +101,7 @@ Global
 		{FBC17413-6220-4610-9869-A39B7404D1AD} = {F8A81F53-D6BE-489C-BCDB-11D62A804A91}
 		{2902D185-C2D9-4FE5-9829-256484CC4289} = {F8A81F53-D6BE-489C-BCDB-11D62A804A91}
 		{7ADE8B2F-1CCC-4724-A8A1-6CC5748CB8CF} = {816255C8-FB2A-4BD9-9176-B391F4957BDC}
+		{BA313774-3E4B-46E3-828B-44D95BAFD4C1} = {F8A81F53-D6BE-489C-BCDB-11D62A804A91}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0CBFA5DE-DAE7-416F-BF01-40C96FA4551D}

@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Migrations\000_InitQuartz.sql" />
     <EmbeddedResource Include="Migrations\001_CreateNews.sql" />
   </ItemGroup>
 
@@ -20,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Tapir.Providers.Database.PostgreSQL\Tapir.Providers.Database.PostgreSQL.csproj" />
     <ProjectReference Include="..\Tapir.Providers.EventStore.MongoDB\Tapir.Providers.EventStore.MongoDB.csproj" />
+    <ProjectReference Include="..\Tapir.Providers.Scheduler.Quartz\Tapir.Providers.Scheduler.Quartz.csproj" />
   </ItemGroup>
 
 </Project>

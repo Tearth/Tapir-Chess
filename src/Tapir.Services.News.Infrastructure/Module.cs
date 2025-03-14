@@ -4,6 +4,8 @@ using Tapir.Providers.EventStore.MongoDB;
 using Tapir.Providers.Database.PostgreSQL;
 using Microsoft.AspNetCore.Builder;
 using System.Reflection;
+using Tapir.Providers.Scheduler.Quartz;
+using MongoDB.Driver.Core.Configuration;
 
 namespace Tapir.Services.News.Infrastructure
 {
@@ -54,10 +56,22 @@ namespace Tapir.Services.News.Infrastructure
                 cfg.Password = settings.MongoDb.Password;
             });
 
+            services.AddQuartzScheduler(cfg =>
+            {
+                var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+                if (string.IsNullOrEmpty(connectionString))
+                {
+                    throw new InvalidOperationException("Connection string not found.");
+                }
+
+                cfg.ConnectionString = connectionString;
+            });
+
             return services;
         }
 
-        public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
+        public static async Task<IApplicationBuilder> UseInfrastructure(this IApplicationBuilder app)
         {
             return app.UsePostgreSqlMigrations();
         }
