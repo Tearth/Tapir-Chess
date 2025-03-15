@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Quartz;
 using Tapir.Core.Scheduler;
 
@@ -7,10 +8,12 @@ namespace Tapir.Providers.Scheduler.Quartz.Tasks
     public class TaskScheduler : ITaskScheduler
     {
         private readonly ISchedulerFactory _schedulerFactory;
+        private readonly ILogger<TaskScheduler> _logger;
 
-        public TaskScheduler(ISchedulerFactory schedulerFactory)
+        public TaskScheduler(ISchedulerFactory schedulerFactory, ILogger<TaskScheduler> logger)
         {
             _schedulerFactory = schedulerFactory;
+            _logger = logger;
         }
 
         public async Task Run<TTask>(TTask task) where TTask : ITask
@@ -35,6 +38,8 @@ namespace Tapir.Providers.Scheduler.Quartz.Tasks
         {
             var scheduler = await _schedulerFactory.GetScheduler();
             var key = new JobKey(task.GetType().Name, "SCHEDULED");
+
+            _logger.LogInformation($"Registering task {key} with cron '{cron}'");
 
             var job = JobBuilder.Create<TaskWrapper>()
                 .WithIdentity(key)

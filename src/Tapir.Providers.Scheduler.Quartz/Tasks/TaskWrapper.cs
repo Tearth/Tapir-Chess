@@ -18,18 +18,25 @@ namespace Tapir.Providers.Scheduler.Quartz.Tasks
             var type = context.JobDetail.JobDataMap.GetString("Type");
             var data = context.JobDetail.JobDataMap.GetString("Data");
 
+            if (string.IsNullOrEmpty(type))
+            {
+                throw new InvalidOperationException("Task assembly type is not set.");
+            }
+
+            if (string.IsNullOrEmpty(data))
+            {
+                throw new InvalidOperationException("Task data is not set.");
+            }
+
             var assemblyType = Type.GetType(type);
             if (assemblyType == null)
             {
-                // TODO: log this
-                return;
+                throw new InvalidOperationException("Job assembly type not found.");
             }
 
-            var task = _serviceProvider.GetService(assemblyType) as ITask;
-            if (task == null)
+            if (_serviceProvider.GetService(assemblyType) is not ITask task)
             {
-                // TODO: Log this
-                return;
+                throw new InvalidOperationException("Job assembly type is not a valid task.");
             }
 
             JsonConvert.PopulateObject(data, task);

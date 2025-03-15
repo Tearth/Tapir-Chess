@@ -14,7 +14,7 @@ namespace Tapir.Providers.Scheduler.Quartz
 
             services.AddQuartz(configurator =>
             {
-                if (configuration.ConnectionString == null)
+                if (string.IsNullOrEmpty(configuration.ConnectionString))
                 {
                     throw new InvalidOperationException("Connection string not found.");
                 }
