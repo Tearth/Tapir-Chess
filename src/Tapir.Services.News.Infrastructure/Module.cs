@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using System.Reflection;
 using Tapir.Providers.Scheduler.Quartz;
 using MongoDB.Driver.Core.Configuration;
+using Serilog;
 
 namespace Tapir.Services.News.Infrastructure
 {
@@ -66,6 +67,11 @@ namespace Tapir.Services.News.Infrastructure
                 }
 
                 cfg.ConnectionString = connectionString;
+            });
+
+            services.AddSerilog((context, cfg) =>
+            {
+                cfg.ReadFrom.Configuration(configuration);
             });
 
             return services;
