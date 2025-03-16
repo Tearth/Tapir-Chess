@@ -16,6 +16,7 @@ namespace Tapir.Services.News.Domain
             eventRegistry.Add<NewsContentUpdatedEvent>();
             eventRegistry.Add<NewsCreatedEvent>();
             eventRegistry.Add<NewsTitleUpdatedEvent>();
+            eventRegistry.Add<NewsDeletedEvent>();
 
             services.AddSingleton<IDomainEventRegistry>(eventRegistry);
             services.AddTransient<IAggregateRepository<NewsEntity>, AggregateRepository<NewsEntity>>();

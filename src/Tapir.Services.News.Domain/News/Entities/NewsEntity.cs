@@ -10,6 +10,7 @@ namespace Tapir.Services.News.Domain.News.Entities
         public string Title { get; private set; } = "";
         public string Alias { get; private set; } = "";
         public string Content { get; private set; } = "";
+        public bool Deleted { get; private set; }
 
         public NewsEntity()
         {
@@ -58,6 +59,14 @@ namespace Tapir.Services.News.Domain.News.Entities
             }
 
             var @event = new NewsContentUpdatedEvent(Id, content);
+
+            ApplyEvent(@event);
+            ApplyUncommittedEvent(@event);
+        }
+
+        public void Delete()
+        {
+            var @event = new NewsDeletedEvent(Id, DateTime.UtcNow);
 
             ApplyEvent(@event);
             ApplyUncommittedEvent(@event);
