@@ -15,12 +15,19 @@ namespace Tapir.Core.Persistence
 
         public async Task<TRoot> Load(Guid id)
         {
+            var events = await _eventStore.GetByAggregateId(id);
+
+            if (events.Count == 0)
+            {
+                throw new AggregateNotFoundException($"Aggregate {id} not found.");
+            }
+
             if (Activator.CreateInstance(typeof(TRoot), id) is not TRoot entity)
             {
                 throw new InvalidOperationException($"Aggregate root {typeof(TRoot).Name} could not be instantiated.");
             }
 
-            foreach (var @event in await _eventStore.GetByAggregateId(id))
+            foreach (var @event in events)
             {
                 entity.ApplyEvent(@event);
             }
