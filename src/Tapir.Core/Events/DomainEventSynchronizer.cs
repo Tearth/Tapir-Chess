@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.Extensions.Logging;
 using Tapir.Core.Persistence;
 
 namespace Tapir.Core.Events
@@ -7,11 +8,13 @@ namespace Tapir.Core.Events
     {
         private readonly IMediator _mediator;
         private readonly IDomainEventStore _eventStore;
+        private readonly ILogger<DomainEventSynchronizer> _logger;
 
-        public DomainEventSynchronizer(IMediator mediator, IDomainEventStore eventStore)
+        public DomainEventSynchronizer(IMediator mediator, IDomainEventStore eventStore, ILogger<DomainEventSynchronizer> logger)
         {
             _mediator = mediator;
             _eventStore = eventStore;
+            _logger = logger;
         }
 
         public async Task PublishUncommittedEvents(DateTime? from = null, DateTime? to = null)
@@ -25,10 +28,9 @@ namespace Tapir.Core.Events
                 {
                     await _mediator.Publish(@event);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    // Log error
-                    throw;
+                    _logger.LogError(ex, $"Failed to publish event {@event.Id} from aggregate {@event.AggregateId}");
                 }
             }
 

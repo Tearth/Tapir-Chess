@@ -16,7 +16,7 @@
             Id = id;
         }
 
-        public IEnumerable<DomainEvent> GetUncommittedEvents()
+        public IReadOnlyList<DomainEvent> GetUncommittedEvents()
         {
             return _uncommittedEvents;
         }

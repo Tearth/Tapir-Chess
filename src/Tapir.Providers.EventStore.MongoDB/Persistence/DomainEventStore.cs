@@ -7,6 +7,7 @@ using System.Reflection;
 using Tapir.Core.Domain;
 using Tapir.Core.Events;
 using Tapir.Core.Persistence;
+using Tapir.Providers.EventStore.MongoDB.Documents;
 
 namespace Tapir.Providers.EventStore.MongoDB.Persistence
 {
@@ -17,6 +18,7 @@ namespace Tapir.Providers.EventStore.MongoDB.Persistence
         private IMongoDatabase _mongoDatabase;
         private IDomainEventRegistry _eventRegistry;
 
+        private const string AggregatesCollectionName = "aggregates";
         private const string EventsCollectionName = "events";
         private const string MetaDataCollectionName = "metadata";
 
@@ -30,13 +32,24 @@ namespace Tapir.Providers.EventStore.MongoDB.Persistence
             _eventRegistry = eventRegistry;
         }
 
-        public async Task AddAsync(DomainEvent @event)
+        public async Task<bool> AddAsync(Guid aggregateId, DomainEvent @event, int expectedVersion)
         {
+            if (!await SetAggregateVersion(aggregateId, expectedVersion))
+            {
+                return false;
+            }
+
             await _mongoDatabase.GetCollection<DomainEvent>(EventsCollectionName).InsertOneAsync(@event);
+            return true;
         }
 
-        public async Task AddAsync(IEnumerable<DomainEvent> events)
+        public async Task<bool> AddAsync(Guid aggregateId, List<DomainEvent> events, int expectedVersion)
         {
+            if (!await SetAggregateVersion(aggregateId, expectedVersion))
+            {
+                return false;
+            }
+
             using (var session = _mongoClient.StartSession())
             {
                 session.StartTransaction();
@@ -52,6 +65,8 @@ namespace Tapir.Providers.EventStore.MongoDB.Persistence
                     throw;
                 }
             }
+
+            return true;
         }
 
         public async Task<IEnumerable<DomainEvent>> GetByAggregateId(Guid aggregateId)
@@ -68,14 +83,6 @@ namespace Tapir.Providers.EventStore.MongoDB.Persistence
             var documents = await _mongoDatabase.GetCollection<BsonDocument>(EventsCollectionName).Find(filter).ToListAsync();
 
             return documents.Select(DeserializeEvent);
-        }
-
-        private DomainEvent DeserializeEvent(BsonDocument document)
-        {
-            var type = document["_t"].AsString;
-            var assemblyType = _eventRegistry.GetAssemblyType(type);
-           
-            return (DomainEvent)BsonSerializer.Deserialize(document, assemblyType);
         }
 
         public async Task<DateTime?> GetLastSynchronizationTime()
@@ -99,6 +106,40 @@ namespace Tapir.Providers.EventStore.MongoDB.Persistence
             var options = new UpdateOptions { IsUpsert = true };
 
             await _mongoDatabase.GetCollection<BsonDocument>(MetaDataCollectionName).UpdateOneAsync(filter, update, options);
+        }
+
+        private async Task<bool> SetAggregateVersion(Guid aggregateId, int expectedVersion)
+        {
+            var collection = _mongoDatabase.GetCollection<AggregateDocument>(AggregatesCollectionName);
+            var filter = Builders<AggregateDocument>.Filter.Eq("_id", aggregateId);
+
+            if (await collection.CountDocumentsAsync(filter) == 0)
+            {
+                await collection.InsertOneAsync(new AggregateDocument
+                {
+                    Id = aggregateId,
+                    Version = expectedVersion
+                });
+
+                return true;
+            }
+            else
+            {
+                filter &= Builders<AggregateDocument>.Filter.Eq("Version", expectedVersion);
+
+                var update = Builders<AggregateDocument>.Update.Inc("Version", expectedVersion);
+                var result = await _mongoDatabase.GetCollection<AggregateDocument>(AggregatesCollectionName).FindOneAndUpdateAsync(filter, update);
+
+                return result != null;
+            }
+        }
+
+        private DomainEvent DeserializeEvent(BsonDocument document)
+        {
+            var type = document["_t"].AsString;
+            var assemblyType = _eventRegistry.GetAssemblyType(type);
+
+            return (DomainEvent)BsonSerializer.Deserialize(document, assemblyType);
         }
     }
 }

@@ -6,6 +6,7 @@ using MongoDB.Driver;
 using Tapir.Core.Domain;
 using Tapir.Core.Persistence;
 using Tapir.Providers.EventStore.MongoDB.Persistence;
+using Tapir.Providers.EventStore.MongoDB.Documents;
 
 namespace Tapir.Providers.EventStore.MongoDB
 {
@@ -34,6 +35,11 @@ namespace Tapir.Providers.EventStore.MongoDB
 
             BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
             BsonClassMap.RegisterClassMap<DomainEvent>(cm =>
+            {
+                cm.AutoMap();
+                cm.MapIdMember(c => c.Id);
+            });
+            BsonClassMap.RegisterClassMap<AggregateDocument>(cm =>
             {
                 cm.AutoMap();
                 cm.MapIdMember(c => c.Id);

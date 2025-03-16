@@ -4,8 +4,8 @@ namespace Tapir.Core.Persistence
 {
     public interface IDomainEventStore
     {
-        Task AddAsync(DomainEvent @event);
-        Task AddAsync(IEnumerable<DomainEvent> events);
+        Task<bool> AddAsync(Guid aggregateId, DomainEvent @event, int expectedVersion);
+        Task<bool> AddAsync(Guid aggregateId, List<DomainEvent> events, int expectedVersion);
         Task<IEnumerable<DomainEvent>> GetByAggregateId(Guid aggregateId);
         Task<IEnumerable<DomainEvent>> GetByTimestamp(DateTime from, DateTime to);
 
