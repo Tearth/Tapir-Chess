@@ -80,10 +80,5 @@ namespace Tapir.Services.News.Infrastructure
 
             return services;
         }
-
-        public static async Task<IApplicationBuilder> UseInfrastructure(this IApplicationBuilder app)
-        {
-            return app.UsePostgreSqlMigrations();
-        }
     }
 }

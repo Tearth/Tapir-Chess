@@ -20,7 +20,6 @@ namespace Tapir.Services.News.API
             });
 
             var app = builder.Build();
-            await app.UseInfrastructure();
             await app.UseApplication();
             app.UseHttpsRedirection();
             app.UseAuthorization();

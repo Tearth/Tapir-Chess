@@ -1,9 +1,10 @@
 ﻿
 using DbUp;
+using Microsoft.Extensions.Hosting;
 
 namespace Tapir.Providers.Database.PostgreSQL.Persistence
 {
-    public class DatabaseMigrations
+    public class DatabaseMigrations : BackgroundService
     {
         private readonly Configuration _configuration;
 
@@ -12,7 +13,7 @@ namespace Tapir.Providers.Database.PostgreSQL.Persistence
             _configuration = configuration;
         }
 
-        public void Execute()
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             var builder = DeployChanges.To.PostgresqlDatabase(_configuration.ConnectionString).JournalToPostgresqlTable("public", "schema_version");
             var migrator = builder.WithScriptsEmbeddedInAssembly(_configuration.MigrationsAssembly).Build();
@@ -22,6 +23,8 @@ namespace Tapir.Providers.Database.PostgreSQL.Persistence
             {
                 throw result.Error;
             }
+
+            return Task.CompletedTask;
         }
     }
 }

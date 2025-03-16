@@ -20,22 +20,10 @@ namespace Tapir.Providers.Database.PostgreSQL
             services.AddTransient<IDatabaseConnection, DatabaseConnection>(p => new DatabaseConnection(
                 configuration.ConnectionString    
             ));
+            services.AddHostedService<DatabaseMigrations>();
             services.AddSingleton(configuration);
 
             return services;
-        }
-
-        public static IApplicationBuilder UsePostgreSqlMigrations(this IApplicationBuilder app)
-        {
-            var configuration = app.ApplicationServices.GetService<Configuration>();
-            if (configuration == null)
-            {
-                throw new InvalidOperationException("Database connection not found.");
-            }
-
-            new DatabaseMigrations(configuration).Execute();
-
-            return app;
         }
     }
 }
