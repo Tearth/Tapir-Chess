@@ -6,7 +6,7 @@ namespace Tapir.Core.Persistence
     {
         Task<bool> AddAsync(Guid aggregateId, DomainEvent @event, int expectedVersion);
         Task<bool> AddAsync(Guid aggregateId, List<DomainEvent> events, int expectedVersion);
-        Task<IEnumerable<DomainEvent>> GetByAggregateId(Guid aggregateId);
+        Task<IReadOnlyList<DomainEvent>> GetByAggregateId(Guid aggregateId);
         Task<IEnumerable<DomainEvent>> GetByTimestamp(DateTime from, DateTime to);
 
         Task<DateTime?> GetLastSynchronizationTime();
