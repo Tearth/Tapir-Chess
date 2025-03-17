@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Tapir.Core.Persistence;
 using Tapir.Providers.Database.PostgreSQL.Persistence;
 
@@ -20,7 +19,7 @@ namespace Tapir.Providers.Database.PostgreSQL
             services.AddTransient<IDatabaseConnection, DatabaseConnection>(p => new DatabaseConnection(
                 configuration.ConnectionString    
             ));
-            services.AddHostedService<DatabaseMigrations>();
+            services.AddHostedService<Startup>();
             services.AddSingleton(configuration);
 
             return services;

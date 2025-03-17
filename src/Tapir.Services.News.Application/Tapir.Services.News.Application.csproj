@@ -12,11 +12,11 @@
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.3" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="News\EventHandlers\" />
-    <Folder Include="News\Queries\DTOs\" />
   </ItemGroup>
 
   <ItemGroup>
