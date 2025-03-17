@@ -1,4 +1,32 @@
 @HostAddress = https://localhost:9001
 
-GET {{HostAddress}}/weatherforecast/
+GET {{HostAddress}}/news/?pageSize=3&pageNumber=3
 Accept: application/json
+
+###
+
+GET {{HostAddress}}/news/cdd407cd-196f-43a2-ba00-9d15f0a459ec
+Accept: application/json
+
+###
+
+POST {{HostAddress}}/news/
+Content-Type: application/json
+{
+
+}
+
+###
+
+PATCH {{HostAddress}}/news/c0d407cd-196f-43a2-ba00-9d15f0a459ec
+Content-Type: application/json
+{
+    "id": "c0d407cd-196f-43a2-ba00-9d15f0a459ec",
+    "title": "Title",
+    "alias": "Alias",
+    "content": "Content"
+}
+
+###
+
+DELETE {{HostAddress}}/news/9c91f778-ed52-4204-84ab-68885e6f3df3

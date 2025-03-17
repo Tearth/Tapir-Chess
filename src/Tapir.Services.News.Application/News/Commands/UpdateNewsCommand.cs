@@ -7,9 +7,9 @@ namespace Tapir.Services.News.Application.News.Commands
     public class UpdateNewsCommand : IRequest<Unit>
     {
         public Guid Id { get; set; }
-        public string Title { get; set; }
-        public string Alias { get; set; }
-        public string Content { get; set; }
+        public string? Title { get; set; }
+        public string? Alias { get; set; }
+        public string? Content { get; set; }
     }
 
     public class UpdateNewsCommandHandler : IRequestHandler<UpdateNewsCommand, Unit>
@@ -25,9 +25,20 @@ namespace Tapir.Services.News.Application.News.Commands
         {
             var aggregate = await _newsRepository.Load(request.Id);
 
-            aggregate.SetTitle(request.Title);
-            aggregate.SetAlias(request.Alias);
-            aggregate.SetContent(request.Content);
+            if (request.Title != null)
+            {
+                aggregate.SetTitle(request.Title);
+            }
+
+            if (request.Alias != null)
+            {
+                aggregate.SetAlias(request.Alias);
+            }
+
+            if (request.Content != null)
+            {
+                aggregate.SetContent(request.Content);
+            }
 
             await _newsRepository.Save(aggregate);
             return Unit.Value;

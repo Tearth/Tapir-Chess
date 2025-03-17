@@ -3,64 +3,83 @@ using Microsoft.AspNetCore.Mvc;
 using Tapir.Services.News.Application.News.Commands;
 using Tapir.Services.News.Application.News.Queries;
 
-namespace Tapir.Services.News.API.Controllers;
-
-[ApiController]
-[Route("[controller]")]
-public class NewsController : ControllerBase
+namespace Tapir.Services.News.API.Controllers
 {
-    private readonly IMediator _mediator;
-
-    public NewsController(IMediator mediator)
+    [ApiController]
+    [Route("[controller]")]
+    public class NewsController : ControllerBase
     {
-        _mediator = mediator;
-    }
+        private readonly IMediator _mediator;
 
-    [HttpGet]
-    [Route("{id}")]
-    public async Task<IActionResult> Get(Guid id)
-    {
-        var news = await _mediator.Send(new GetNewsQuery
+        public NewsController(IMediator mediator)
         {
-            Id = id
-        });
-
-        if (news == null)
-        {
-            return NotFound();
+            _mediator = mediator;
         }
 
-        return Ok(news);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateNewsCommand command)
-    {
-        await _mediator.Send(command);
-        return Ok();
-    }
-
-    [HttpPatch]
-    [Route("{id}")]
-    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateNewsCommand command)
-    {
-        if (id != command.Id)
+        [HttpGet]
+        [Route("")]
+        public async Task<IActionResult> Get(int pageNumber = 1, int pageSize = 10)
         {
-            return BadRequest();
+            var news = await _mediator.Send(new GetNewsListQuery
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            });
+
+            if (news == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(news);
         }
 
-        await _mediator.Send(command);
-        return Ok();
-    }
-
-    [HttpDelete]
-    [Route("{id}")]
-    public async Task<IActionResult> Delete(Guid id)
-    {
-        await _mediator.Send(new DeleteNewsCommand
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> Get(Guid id)
         {
-            Id = id
-        });
-        return Ok();
+            var news = await _mediator.Send(new GetNewsQuery
+            {
+                Id = id
+            });
+
+            if (news == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(news);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateNewsCommand command)
+        {
+            await _mediator.Send(command);
+            return Ok();
+        }
+
+        [HttpPatch]
+        [Route("{id}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] UpdateNewsCommand command)
+        {
+            if (id != command.Id)
+            {
+                return BadRequest();
+            }
+
+            await _mediator.Send(command);
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            await _mediator.Send(new DeleteNewsCommand
+            {
+                Id = id
+            });
+            return Ok();
+        }
     }
 }

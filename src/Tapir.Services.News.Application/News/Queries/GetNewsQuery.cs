@@ -23,7 +23,7 @@ namespace Tapir.Services.News.Application.News.Queries
         {
             using (var connection = _database.Open())
             {
-                return await connection.QueryFirstOrDefaultAsync<NewsDto>("SELECT * FROM News WHERE Id = @Id AND Deleted = 0", new
+                return await connection.QueryFirstOrDefaultAsync<NewsDto>("SELECT * FROM News WHERE Id = @Id AND Deleted = false", new
                 {
                     request.Id,
                 });
