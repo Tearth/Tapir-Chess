@@ -18,10 +18,10 @@ namespace Tapir.Services.News.Application.News.Projectors
         {
             using (var connection = _database.Open())
             {
-                await connection.ExecuteAsync("INSERT INTO News (AggregateId, CreatedAt) VALUES (@AggregateId, @CreatedAt)", new
+                await connection.ExecuteAsync("INSERT INTO News (Id, CreatedAt) VALUES (@AggregateId, @CreatedAt)", new
                 {
+                    notification.AggregateId,
                     notification.CreatedAt,
-                    notification.AggregateId
                 });
             }
         }

@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Tapir.Services.News.Application.News.Commands;
+using Tapir.Services.News.Application.News.Queries;
 
 namespace Tapir.Services.News.API.Controllers;
 
@@ -13,6 +14,23 @@ public class NewsController : ControllerBase
     public NewsController(IMediator mediator)
     {
         _mediator = mediator;
+    }
+
+    [HttpGet]
+    [Route("{id}")]
+    public async Task<IActionResult> Get(Guid id)
+    {
+        var news = await _mediator.Send(new GetNewsQuery
+        {
+            Id = id
+        });
+
+        if (news == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(news);
     }
 
     [HttpPost]

@@ -18,7 +18,7 @@ namespace Tapir.Services.News.Application.News.Projectors
         {
             using (var connection = _database.Open())
             {
-                await connection.ExecuteAsync("UPDATE News SET Content = @Content, UpdatedAt = NOW() WHERE AggregateId = @AggregateId", new
+                await connection.ExecuteAsync("UPDATE News SET Content = @Content, UpdatedAt = NOW() WHERE Id = @AggregateId", new
                 {
                     notification.Content,
                     notification.AggregateId,
