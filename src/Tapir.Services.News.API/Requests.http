@@ -13,7 +13,9 @@ Accept: application/json
 POST {{HostAddress}}/news/
 Content-Type: application/json
 {
-
+    "title": "Title",
+    "alias": "alias",
+    "content": "Content"
 }
 
 ###
@@ -23,7 +25,7 @@ Content-Type: application/json
 {
     "id": "c0d407cd-196f-43a2-ba00-9d15f0a459ec",
     "title": "Title",
-    "alias": "Alias",
+    "alias": "alias",
     "content": "Content"
 }
 
