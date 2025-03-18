@@ -6,7 +6,9 @@ namespace Tapir.Services.News.Application.News.Commands
 {
     public class CreateNewsCommand : IRequest<Unit>
     {
-
+        public string Title { get; set; }
+        public string Alias { get; set; }
+        public string Content { get; set; }
     }
 
     public class CreateNewsCommandHandler : IRequestHandler<CreateNewsCommand, Unit>
@@ -20,7 +22,12 @@ namespace Tapir.Services.News.Application.News.Commands
 
         public async Task<Unit> Handle(CreateNewsCommand request, CancellationToken cancellationToken)
         {
-            await _newsRepository.Save(new NewsEntity());
+            var news = new NewsEntity();
+            news.SetTitle(request.Title);
+            news.SetAlias(request.Alias);
+            news.SetContent(request.Content);
+
+            await _newsRepository.Save(news);
             return Unit.Value;
         }
     }
