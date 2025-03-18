@@ -45,6 +45,11 @@ namespace Tapir.Services.News.Domain.News.Entities
                 throw new DomainException("Alias is required.");
             }
 
+            if (!Regex.IsMatch(alias, "^[a-z0-9-]+$"))
+            {
+                throw new DomainException("Alias can contain only lowercase letters, numbers and hyphens.");
+            }
+
             var @event = new NewsAliasUpdatedEvent(Id, alias);
 
             ApplyEvent(@event);
