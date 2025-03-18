@@ -1,4 +1,5 @@
-﻿using Tapir.Core.Domain;
+﻿using System.Text.RegularExpressions;
+using Tapir.Core.Domain;
 using Tapir.Core.Domain.Exceptions;
 using Tapir.Services.News.Domain.News.Events;
 
@@ -7,9 +8,9 @@ namespace Tapir.Services.News.Domain.News.Entities
     public class NewsEntity : AggregateRoot
     {
         public DateTime CreatedAt { get; private set; }
-        public string Title { get; private set; } = "";
-        public string Alias { get; private set; } = "";
-        public string Content { get; private set; } = "";
+        public string Title { get; private set; }
+        public string Alias { get; private set; }
+        public string Content { get; private set; }
         public bool Deleted { get; private set; }
 
         public NewsEntity()
@@ -71,6 +72,11 @@ namespace Tapir.Services.News.Domain.News.Entities
 
         public void Delete()
         {
+            if (Deleted)
+            {
+                throw new DomainException("News is already deleted.");
+            }
+
             var @event = new NewsDeletedEvent(Id, DateTime.UtcNow);
 
             ApplyEvent(@event);
@@ -82,6 +88,7 @@ namespace Tapir.Services.News.Domain.News.Entities
             switch (@event)
             {
                 case NewsCreatedEvent newsCreatedEvent: ExecuteEvent(newsCreatedEvent); break;
+                case NewsDeletedEvent newsDeletedEvent: ExecuteEvent(newsDeletedEvent); break;
                 case NewsTitleUpdatedEvent titleUpdatedEvent: ExecuteEvent(titleUpdatedEvent); break;
                 case NewsAliasUpdatedEvent titleAliasEvent: ExecuteEvent(titleAliasEvent); break;
                 case NewsContentUpdatedEvent titleContentEvent: ExecuteEvent(titleContentEvent); break;
@@ -93,6 +100,11 @@ namespace Tapir.Services.News.Domain.News.Entities
         private void ExecuteEvent(NewsCreatedEvent @event)
         {
             CreatedAt = @event.CreatedAt;
+        }
+
+        private void ExecuteEvent(NewsDeletedEvent @event)
+        {
+            Deleted = true;
         }
 
         private void ExecuteEvent(NewsTitleUpdatedEvent @event)
