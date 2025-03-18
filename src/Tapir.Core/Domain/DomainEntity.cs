@@ -21,6 +21,11 @@
             return _uncommittedEvents;
         }
 
+        public IReadOnlyList<TEvent> GetUncommittedEvents<TEvent>() where TEvent : DomainEvent
+        {
+            return GetUncommittedEvents().OfType<TEvent>().ToList();
+        }
+
         public void ClearUncommittedEvents()
         {
             _uncommittedEvents.Clear();
