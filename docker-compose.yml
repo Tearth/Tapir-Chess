@@ -1,8 +1,13 @@
-version: '3.4'
-
 services:
+  tapir-gateway:
+    image: ${DOCKER_REGISTRY-}tapirgateway
+    build:
+      context: .
+      dockerfile: src/Tapir.Gateway/Dockerfile
+
   tapir-services-news:
     image: ${DOCKER_REGISTRY-}tapirservicesnews
+    hostname: tapir-services-news
     build:
       context: .
       dockerfile: src/Tapir.Services.News.API/Dockerfile

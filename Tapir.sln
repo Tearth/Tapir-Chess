@@ -46,6 +46,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D6F40452
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Services.News.Tests", "test\Tapir.Services.News.Tests\Tapir.Services.News.Tests.csproj", "{D01A66D4-051C-4062-9BB9-E546BF2A0094}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{028C8913-76D6-42CA-9401-0DE3D65226D4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{23F88844-3E53-485B-9A26-04C961A4DC60}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Gateway", "src\Tapir.Gateway\Tapir.Gateway.csproj", "{6B3C38B3-4E9E-4602-AB6A-0CE023038E26}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{4CA453E2-E194-485F-806E-CFE6DE086AF0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -92,6 +103,10 @@ Global
 		{D01A66D4-051C-4062-9BB9-E546BF2A0094}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D01A66D4-051C-4062-9BB9-E546BF2A0094}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D01A66D4-051C-4062-9BB9-E546BF2A0094}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B3C38B3-4E9E-4602-AB6A-0CE023038E26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B3C38B3-4E9E-4602-AB6A-0CE023038E26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B3C38B3-4E9E-4602-AB6A-0CE023038E26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B3C38B3-4E9E-4602-AB6A-0CE023038E26}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -111,6 +126,10 @@ Global
 		{7ADE8B2F-1CCC-4724-A8A1-6CC5748CB8CF} = {816255C8-FB2A-4BD9-9176-B391F4957BDC}
 		{BA313774-3E4B-46E3-828B-44D95BAFD4C1} = {F8A81F53-D6BE-489C-BCDB-11D62A804A91}
 		{D01A66D4-051C-4062-9BB9-E546BF2A0094} = {D6F40452-611E-45CC-AE31-CD62CA89D95F}
+		{028C8913-76D6-42CA-9401-0DE3D65226D4} = {8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}
+		{23F88844-3E53-485B-9A26-04C961A4DC60} = {028C8913-76D6-42CA-9401-0DE3D65226D4}
+		{6B3C38B3-4E9E-4602-AB6A-0CE023038E26} = {4CA453E2-E194-485F-806E-CFE6DE086AF0}
+		{4CA453E2-E194-485F-806E-CFE6DE086AF0} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0CBFA5DE-DAE7-416F-BF01-40C96FA4551D}

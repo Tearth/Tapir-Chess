@@ -19,7 +19,6 @@ namespace Tapir.Services.News.API
             });
 
             var app = builder.Build();
-            app.UseHttpsRedirection();
             app.UseAuthorization();
             app.MapControllers();
             app.UseSwagger();

@@ -8,7 +8,7 @@ using Tapir.Services.News.Application.News.Queries.DTOs;
 namespace Tapir.Services.News.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class NewsController : ControllerBase
     {
         private readonly IMediator _mediator;
