@@ -1,9 +1,17 @@
 services:
   tapir-gateway:
     image: ${DOCKER_REGISTRY-}tapirgateway
+    hostname: tapir-gateway
     build:
       context: .
       dockerfile: src/Tapir.Gateway/Dockerfile
+
+  tapir-identity:
+    image: ${DOCKER_REGISTRY-}tapiridentity
+    hostname: tapir-identity
+    build:
+      context: .
+      dockerfile: src/Tapir.Identity.API/Dockerfile
 
   tapir-services-news:
     image: ${DOCKER_REGISTRY-}tapirservicesnews

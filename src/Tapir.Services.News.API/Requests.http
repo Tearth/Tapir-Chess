@@ -1,4 +1,4 @@
-@HostAddress = http://localhost:9010
+@HostAddress = http://localhost:9020
 
 GET {{HostAddress}}/api/news?pageSize=3&pageNumber=3
 Accept: application/json
