@@ -1,0 +1,4 @@
+@HostAddress = http://localhost:9010
+
+GET {{HostAddress}}/api/auth
+Accept: application/json
