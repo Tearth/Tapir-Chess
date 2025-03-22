@@ -27,3 +27,7 @@ services:
   mongodb:
     image: mongo:latest
     hostname: mongodb
+
+  mailpit:
+    image: axllent/mailpit:latest
+    hostname: mailpit

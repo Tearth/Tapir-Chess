@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Tapir.Identity.Infrastructure.Models;
 using Tapir.Identity.Infrastructure.Persistence;
+using Tapir.Providers.Mailing.MailKit;
 
 namespace Tapir.Identity.Infrastructure
 {
@@ -61,6 +62,15 @@ namespace Tapir.Identity.Infrastructure
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(settings.JWT.Secret))
                     };
                 });
+
+            services.AddMailKitMailing(options =>
+            {
+                options.Host = configuration["Mailing:Host"];
+                options.Port = int.Parse(configuration["Mailing:Port"]);
+                options.UseSsl = bool.Parse(configuration["Mailing:UseSsl"]);
+                options.Username = configuration["Mailing:Username"];
+                options.Password = configuration["Mailing:Password"];
+            });
 
             services.AddHostedService<Startup>();
 

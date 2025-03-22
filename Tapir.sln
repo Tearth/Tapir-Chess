@@ -65,6 +65,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Identity.Infrastructu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Identity.API", "src\Tapir.Identity.API\Tapir.Identity.API.csproj", "{821201E7-6408-4D7B-AA51-34BE7565F570}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Providers.Mailing.MailKit", "src\Tapir.Providers.Mailing.MailKit\Tapir.Providers.Mailing.MailKit.csproj", "{D448DBAE-2E50-4023-A202-561139224D51}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -127,6 +129,10 @@ Global
 		{821201E7-6408-4D7B-AA51-34BE7565F570}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{821201E7-6408-4D7B-AA51-34BE7565F570}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{821201E7-6408-4D7B-AA51-34BE7565F570}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D448DBAE-2E50-4023-A202-561139224D51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D448DBAE-2E50-4023-A202-561139224D51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D448DBAE-2E50-4023-A202-561139224D51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D448DBAE-2E50-4023-A202-561139224D51}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -154,6 +160,7 @@ Global
 		{B394DA4E-9606-4303-87D1-45C4EB35E8C0} = {CE13DE68-04C9-4312-AFDE-3AD3DB088003}
 		{4936B41C-E531-43B4-93B1-FAEE98783998} = {CE13DE68-04C9-4312-AFDE-3AD3DB088003}
 		{821201E7-6408-4D7B-AA51-34BE7565F570} = {CE13DE68-04C9-4312-AFDE-3AD3DB088003}
+		{D448DBAE-2E50-4023-A202-561139224D51} = {F8A81F53-D6BE-489C-BCDB-11D62A804A91}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0CBFA5DE-DAE7-416F-BF01-40C96FA4551D}
