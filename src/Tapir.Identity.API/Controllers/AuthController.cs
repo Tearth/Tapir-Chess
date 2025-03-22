@@ -50,5 +50,22 @@ namespace Tapir.Identity.API.Controllers
 
             return Ok(result);
         }
+
+        [HttpPost]
+        [Route("refresh-token")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(PagedResult<RefreshTokenResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PagedResult<RefreshTokenResponse>), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> RefreshToken(RefreshTokenRequest request)
+        {
+            var result = await _authService.RefreshToken(request);
+
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
     }
 }

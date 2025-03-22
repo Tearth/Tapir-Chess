@@ -6,6 +6,8 @@ namespace Tapir.Identity.Infrastructure.Persistence
 {
     public class DatabaseContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
     {
+        public DbSet<RefreshToken<Guid>> RefreshTokens { get; set; }
+
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
 
