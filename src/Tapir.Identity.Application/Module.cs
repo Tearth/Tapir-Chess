@@ -9,6 +9,7 @@ namespace Tapir.Identity.Application
         public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddTransient<AuthService>();
+            services.AddTransient<TokenService>();
             return services;
         }
     }

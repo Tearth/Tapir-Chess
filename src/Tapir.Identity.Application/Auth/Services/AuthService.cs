@@ -15,17 +15,15 @@ namespace Tapir.Identity.Application.Auth.Services
 {
     public class AuthService
     {
-        private readonly IConfiguration _configuration;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly DatabaseContext _databaseContext;
+        private readonly TokenService _tokenService;
 
-        private const int REFRESH_TOKEN_LENGTH = 128;
-
-        public AuthService(IConfiguration configuration, UserManager<ApplicationUser> userManager, DatabaseContext databaseContext)
+        public AuthService(UserManager<ApplicationUser> userManager, DatabaseContext databaseContext, TokenService tokenService)
         {
-            _configuration = configuration;
             _userManager = userManager;
             _databaseContext = databaseContext;
+            _tokenService = tokenService;
         }
 
         public async Task<LoginResponse> Login(LoginRequest request)
@@ -42,8 +40,8 @@ namespace Tapir.Identity.Application.Auth.Services
 
             if (await _userManager.CheckPasswordAsync(user, request.Password))
             {
-                var accessToken = GenerateAccessToken(user.Id, user.UserName, user.Email);
-                var refreshToken = GenerateRefreshToken();
+                var accessToken = _tokenService.GenerateAccessToken(user.Id, user.UserName, user.Email);
+                var refreshToken = _tokenService.GenerateRefreshToken();
 
                 await _databaseContext.RefreshTokens.AddAsync(new RefreshToken<Guid>
                 {
@@ -91,8 +89,8 @@ namespace Tapir.Identity.Application.Auth.Services
             if (userToken?.Value == request.RefreshToken)
             {
                 var user = await _userManager.FindByIdAsync(userToken.UserId.ToString());
-                var accessToken = GenerateAccessToken(user.Id, user.UserName, user.Email);
-                var refreshToken = GenerateRefreshToken();
+                var accessToken = _tokenService.GenerateAccessToken(user.Id, user.UserName, user.Email);
+                var refreshToken = _tokenService.GenerateRefreshToken();
 
                 _databaseContext.RefreshTokens.Remove(userToken);
                 await _databaseContext.RefreshTokens.AddAsync(new RefreshToken<Guid>
@@ -117,41 +115,6 @@ namespace Tapir.Identity.Application.Auth.Services
                     Success = false
                 };
             }
-        }
-
-        private string GenerateAccessToken(Guid userId, string username, string email)
-        {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            var claims = new[]
-            {
-                 new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
-                 new Claim(JwtRegisteredClaimNames.Name, username),
-                 new Claim(JwtRegisteredClaimNames.Email, email),
-                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-             };
-
-            var token = new JwtSecurityToken(
-                _configuration["JWT:Issuer"],
-                _configuration["JWT:Audience"],
-                claims,
-                DateTime.Now.AddMinutes(int.Parse(_configuration["JWT:ExpirationTime"])),
-                signingCredentials: credentials);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-        private string GenerateRefreshToken()
-        {
-            var randomNumber = new byte[REFRESH_TOKEN_LENGTH];
-
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(randomNumber);
-            }
-
-            return Convert.ToBase64String(randomNumber);
         }
     }
 }

@@ -19,19 +19,32 @@ namespace Tapir.Identity.API.Controllers
 
         [HttpPost]
         [Route("login")]
-        [Produces("application/json")]
-        [ProducesResponseType(typeof(PagedResult<LoginResponse>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(PagedResult<LoginResponse>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Login(LoginRequest request)
         {
             var result = await _authService.Login(request);
             
             if (!result.Success)
             {
-                return BadRequest(result);
+                return BadRequest();
             }
 
-            return Ok(result);
+            Response.Cookies.Append("access_token", result.AccessToken, new CookieOptions
+            {
+                SameSite = SameSiteMode.Strict,
+                HttpOnly = true,
+                Secure = true
+            });
+            Response.Cookies.Append("refresh_token", result.RefreshToken, new CookieOptions
+            {
+                Path = "/api/auth/refresh-token",
+                SameSite = SameSiteMode.Strict,
+                HttpOnly = true,
+                Secure = true
+            });
+
+            return Ok();
         }
 
         [HttpPost]
@@ -53,17 +66,40 @@ namespace Tapir.Identity.API.Controllers
 
         [HttpPost]
         [Route("refresh-token")]
-        [Produces("application/json")]
-        [ProducesResponseType(typeof(PagedResult<RefreshTokenResponse>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(PagedResult<RefreshTokenResponse>), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> RefreshToken(RefreshTokenRequest request)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> RefreshToken()
         {
-            var result = await _authService.RefreshToken(request);
+            var refreshToken = Request.Headers["X-Refresh-Token"].FirstOrDefault();
+
+            if (string.IsNullOrEmpty(refreshToken))
+            {
+                return BadRequest();
+            }
+
+            var result = await _authService.RefreshToken(new RefreshTokenRequest
+            {
+                RefreshToken = refreshToken
+            });
 
             if (!result.Success)
             {
-                return BadRequest(result);
+                return BadRequest();
             }
+
+            Response.Cookies.Append("access_token", result.AccessToken, new CookieOptions
+            {
+                SameSite = SameSiteMode.Strict,
+                HttpOnly = true,
+                Secure = true
+            });
+            Response.Cookies.Append("refresh_token", result.RefreshToken, new CookieOptions
+            {
+                Path = "/api/auth/refresh-token",
+                SameSite = SameSiteMode.Strict,
+                HttpOnly = true,
+                Secure = true
+            });
 
             return Ok(result);
         }
