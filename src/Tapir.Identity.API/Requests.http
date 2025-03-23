@@ -1,4 +1,53 @@
-@HostAddress = http://localhost:9010
+@HostAddress = http://localhost:9000
 
-GET {{HostAddress}}/api/auth
+POST {{HostAddress}}/api/auth/login
 Accept: application/json
+Content-Type: application/json
+{
+    "Username": "test",
+    "Password": "Asd123!"
+}
+
+###
+
+POST {{HostAddress}}/api/auth/register
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyZDg4Y2M5Yy0wMGMyLTQ0MDEtYWYxOC01NTEwYjAwMjFiNjkiLCJlbWFpbCI6InRlc3RAdGVzdC5wbCIsImp0aSI6ImI1NjM3Zjc0LWQ1OTctNDM3Mi1iMzRkLTY3YjZmYWQ3YThlZiIsImV4cCI6MTc0MjU4NzQ0NCwiaXNzIjoiVGFwaXIgQ2hlc3MiLCJhdWQiOiJodHRwczovL3RhcGlyY2hlc3MuZGV2In0.E-_fXlQqUF2gRK2QJ8xHBmnhX-Mt-8XcDAGi7mYIAKo
+Accept: application/json
+Content-Type: application/json
+{
+    "Username": "tesg31edd",
+    "Email": "test1g232@test.pl",
+    "Password": "Asd123!"
+}
+
+###
+
+POST {{HostAddress}}/api/auth/refresh-token
+Accept: application/json
+Cookie: access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1MTVmNWFlMi0yOTExLTQwNWUtYWNiYi1hNjEyNTUwMjNhOTEiLCJuYW1lIjoidGVzdCIsImVtYWlsIjoidGVzdEB0ZXN0LnBsIiwianRpIjoiZDBlMGZjYWItYTFkYS00MWMzLWEzNGMtYzA0YzZiOTljNDQxIiwiZXhwIjoxNzQyNjQ2MDM2LCJpc3MiOiJUYXBpciBDaGVzcyIsImF1ZCI6Imh0dHBzOi8vdGFwaXJjaGVzcy5kZXYifQ.Dyk5xXOlabrbvrRN_oa3BpBuREek81KwZws8_I-uffI
+Content-Type: application/json
+{
+    "RefreshToken": "k+CYh2ag2EBlU3cOzqCy34G3u9a67DD7JzOPnZ+VeqGCzeOBi7+4K7oIWgwHcOJQr57L97TVHBnLQCdYP6i3J5ySAhM2OeQ0Qe0kANm68kUkPx3qVjnDOaRFY/jawQz4h8OPGSCQRbOS/cZ1agXrnJ2C2yqUjLLhi5hHaaR8RFM="
+}
+
+###
+
+POST {{HostAddress}}/api/auth/reset-password
+Accept: application/json
+Content-Type: application/json
+{
+    "Email": "test1g232@test.pl"
+}
+
+###
+
+POST {{HostAddress}}/api/auth/reset-password/confirm
+Accept: application/json
+Content-Type: application/json
+{
+    "UserId": "bbdf0685-ff22-4c30-93af-4cb180b34f23",
+    "Token": "CfDJ8EnWZ4ivI+RAkSndYvP2g214AKWqLArpvZmPC3LIS/BA/WJMSv1UL0SQd2e7Yfng7pW3pv39VN/kM+FBNoLdhi+TPOz62AbermHrMnUXbbkRi/mxxvheuAmGVF3F7JJPmo/qv/MPRTTXTb8Q9hLYOpjoDS+asLFdmLRRFDkzOVCQQMFOtqo1b+x6J9+Vhp9gp8cMx/XCNMyP8s22qTiqDSmfx2cj9W5++WluBo2FjoDB",
+    "Password": "Test123!"
+}
+
+###

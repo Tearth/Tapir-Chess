@@ -12,10 +12,12 @@ namespace Tapir.Identity.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly AuthService _authService;
+        private readonly IConfiguration _configuration;
 
-        public AuthController(AuthService authService)
+        public AuthController(AuthService authService, IConfiguration configuration)
         {
             _authService = authService;
+            _configuration = configuration;
         }
 
         [HttpPost]
@@ -67,14 +69,43 @@ namespace Tapir.Identity.API.Controllers
 
         [HttpGet]
         [Route("register/confirm")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status302Found)]
         public async Task<IActionResult> ConfirmEmail(string userId, string token)
         {
-            var result = await _authService.ConfirmEmail(
-                Encoding.UTF8.GetString(Convert.FromBase64String(userId)),
-                Encoding.UTF8.GetString(Convert.FromBase64String(token))
-            );
+            var result = await _authService.ConfirmEmail(userId, token);
+
+            if (!result)
+            {
+                return Redirect(_configuration["Endpoints:EmailConfirmationOnError"]);
+            }
+
+            return Redirect(_configuration["Endpoints:EmailConfirmationOnSuccess"]);
+        }
+
+
+        [HttpPost]
+        [Route("reset-password")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ResetPassword(ResetPasswordRequest request)
+        {
+            var result = await _authService.ResetPassword(request);
+
+            if (!result)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("reset-password/confirm")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ConfirmPassword(ConfirmPasswordRequest request)
+        {
+            var result = await _authService.ConfirmPassword(request);
 
             if (!result)
             {
@@ -91,11 +122,6 @@ namespace Tapir.Identity.API.Controllers
         public async Task<IActionResult> RefreshToken()
         {
             var refreshToken = Request.Headers["X-Refresh-Token"].FirstOrDefault();
-
-            if (string.IsNullOrEmpty(refreshToken))
-            {
-                return BadRequest();
-            }
 
             var result = await _authService.RefreshToken(new RefreshTokenRequest
             {

@@ -12,6 +12,7 @@ namespace Tapir.Identity.Application
             services.AddTransient<AuthService>();
             services.AddTransient<TokenService>();
             services.AddTransient<EmailConfirmationMailTask>();
+            services.AddTransient<PasswordResetMailTask>();
             return services;
         }
     }

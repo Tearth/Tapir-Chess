@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
+using System.Text;
 using Tapir.Core.Scheduler;
 using Tapir.Identity.Application.Auth.Mails;
 using Tapir.Identity.Application.Auth.Requests;
@@ -26,6 +29,14 @@ namespace Tapir.Identity.Application.Auth.Services
 
         public async Task<LoginResponse> Login(LoginRequest request)
         {
+            if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Password))
+            {
+                return new LoginResponse
+                {
+                    Success = false
+                };
+            }
+
             var user = await _userManager.FindByNameAsync(request.Username);
 
             if (user == null)
@@ -67,6 +78,14 @@ namespace Tapir.Identity.Application.Auth.Services
 
         public async Task<RegisterResponse> Register(RegisterRequest request)
         {
+            if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Password) || string.IsNullOrEmpty(request.Email))
+            {
+                return new RegisterResponse
+                {
+                    Success = false
+                };
+            }
+
             var user = new ApplicationUser
             {
                 UserName = request.Username,
@@ -100,6 +119,14 @@ namespace Tapir.Identity.Application.Auth.Services
 
         public async Task<bool> ConfirmEmail(string userId, string token)
         {
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
+            {
+                return false;
+            }
+
+            userId = Encoding.UTF8.GetString(Convert.FromBase64String(userId));
+            token = Encoding.UTF8.GetString(Convert.FromBase64String(token));
+
             var user = await _userManager.FindByIdAsync(userId);
 
             if (user == null)
@@ -111,8 +138,62 @@ namespace Tapir.Identity.Application.Auth.Services
             return result.Succeeded;
         }
 
+        public async Task<bool> ResetPassword(ResetPasswordRequest request)
+        {
+            if (string.IsNullOrEmpty(request.Email))
+            {
+                return false;
+            }
+
+            var user = await _userManager.FindByEmailAsync(request.Email);
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            await _taskScheduler.Run(new PasswordResetMailTask
+            {
+                To = user.Email,
+                UserId = user.Id.ToString(),
+                Token = token
+            });
+
+            return true;
+        }
+
+        public async Task<bool> ConfirmPassword(ConfirmPasswordRequest request)
+        {
+            if (string.IsNullOrEmpty(request.UserId) || string.IsNullOrEmpty(request.Token) || string.IsNullOrEmpty(request.Password))
+            {
+                return false;
+            }
+
+            var userId = Encoding.UTF8.GetString(Convert.FromBase64String(request.UserId));
+            var token = Encoding.UTF8.GetString(Convert.FromBase64String(request.Token));
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            var result = await _userManager.ResetPasswordAsync(user, token, request.Password);
+            return result.Succeeded;
+        }
+
         public async Task<RefreshTokenResponse> RefreshToken(RefreshTokenRequest request)
         {
+            if (string.IsNullOrEmpty(request.RefreshToken))
+            {
+                return new RefreshTokenResponse
+                {
+                    Success = false
+                };
+            }
+
             var userToken = await _databaseContext.RefreshTokens.FirstOrDefaultAsync(p => p.Value == request.RefreshToken);
             if (userToken?.Value == request.RefreshToken)
             {
