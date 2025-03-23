@@ -18,7 +18,7 @@ namespace Tapir.Providers.Mailing.MailKit.Client
         public async Task Send(MailMessage message)
         {
             var mimeMessage = new MimeMessage();
-            mimeMessage.From.Add(new MailboxAddress(message.From, message.From));
+            mimeMessage.From.Add(new MailboxAddress(_configuration.From, _configuration.From));
             mimeMessage.To.Add(new MailboxAddress(message.To, message.To));
             mimeMessage.Subject = message.Subject;
             mimeMessage.Body = new TextPart("html")

@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
+using Tapir.Core.Scheduler;
+using Tapir.Identity.Application.Auth.Mails;
 using Tapir.Identity.Application.Auth.Requests;
 using Tapir.Identity.Application.Auth.Responses;
 using Tapir.Identity.Infrastructure.Models;
@@ -18,12 +14,14 @@ namespace Tapir.Identity.Application.Auth.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly DatabaseContext _databaseContext;
         private readonly TokenService _tokenService;
+        private readonly ITaskScheduler _taskScheduler;
 
-        public AuthService(UserManager<ApplicationUser> userManager, DatabaseContext databaseContext, TokenService tokenService)
+        public AuthService(UserManager<ApplicationUser> userManager, DatabaseContext databaseContext, TokenService tokenService, ITaskScheduler taskScheduler)
         {
             _userManager = userManager;
             _databaseContext = databaseContext;
             _tokenService = tokenService;
+            _taskScheduler = taskScheduler;
         }
 
         public async Task<LoginResponse> Login(LoginRequest request)
@@ -75,12 +73,42 @@ namespace Tapir.Identity.Application.Auth.Services
                 Email = request.Email
             };
             var result = await _userManager.CreateAsync(user, request.Password);
+            
+            if (!result.Succeeded)
+            {
+                return new RegisterResponse
+                {
+                    Success = result.Succeeded,
+                    Errors = result.Errors.Select(e => e.Description).ToList()
+                };
+            }
+            
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+            await _taskScheduler.Run(new EmailConfirmationMailTask
+            {
+                To = user.Email,
+                UserId = user.Id.ToString(),
+                Token = token
+            });
 
             return new RegisterResponse
             {
-                Success = result.Succeeded,
-                Errors = result.Errors.Select(e => e.Description).ToList()
+                Success = true
             };
+        }
+
+        public async Task<bool> ConfirmEmail(string userId, string token)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            var result = await _userManager.ConfirmEmailAsync(user, token);
+            return result.Succeeded;
         }
 
         public async Task<RefreshTokenResponse> RefreshToken(RefreshTokenRequest request)

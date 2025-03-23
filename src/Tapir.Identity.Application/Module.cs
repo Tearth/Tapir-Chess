@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Tapir.Identity.Application.Auth.Mails;
 using Tapir.Identity.Application.Auth.Services;
 
 namespace Tapir.Identity.Application
@@ -10,6 +11,7 @@ namespace Tapir.Identity.Application
         {
             services.AddTransient<AuthService>();
             services.AddTransient<TokenService>();
+            services.AddTransient<EmailConfirmationMailTask>();
             return services;
         }
     }

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
 using Tapir.Core.Queries;
 using Tapir.Identity.Application.Auth.Requests;
 using Tapir.Identity.Application.Auth.Responses;
@@ -62,6 +63,25 @@ namespace Tapir.Identity.API.Controllers
             }
 
             return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("register/confirm")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            var result = await _authService.ConfirmEmail(
+                Encoding.UTF8.GetString(Convert.FromBase64String(userId)),
+                Encoding.UTF8.GetString(Convert.FromBase64String(token))
+            );
+
+            if (!result)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
         }
 
         [HttpPost]

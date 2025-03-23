@@ -8,6 +8,7 @@ using System.Text;
 using Tapir.Identity.Infrastructure.Models;
 using Tapir.Identity.Infrastructure.Persistence;
 using Tapir.Providers.Mailing.MailKit;
+using Tapir.Providers.Scheduler.Quartz;
 
 namespace Tapir.Identity.Infrastructure
 {
@@ -27,7 +28,8 @@ namespace Tapir.Identity.Infrastructure
 
             services
                 .AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<DatabaseContext>();
+                .AddEntityFrameworkStores<DatabaseContext>()
+                .AddTokenProvider<DataProtectorTokenProvider<ApplicationUser>>(TokenOptions.DefaultProvider);
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -70,6 +72,19 @@ namespace Tapir.Identity.Infrastructure
                 options.UseSsl = bool.Parse(configuration["Mailing:UseSsl"]);
                 options.Username = configuration["Mailing:Username"];
                 options.Password = configuration["Mailing:Password"];
+                options.From = configuration["Mailing:From"];
+            });
+
+            services.AddQuartzScheduler(cfg =>
+            {
+                var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+                if (string.IsNullOrEmpty(connectionString))
+                {
+                    throw new InvalidOperationException("Connection string not found.");
+                }
+
+                cfg.ConnectionString = connectionString;
             });
 
             services.AddHostedService<Startup>();
