@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Tapir.Identity.Application.Auth.Mails;
+using Tapir.Identity.Application.Auth.Mails.EmailConfirmation;
+using Tapir.Identity.Application.Auth.Mails.PasswordReset;
 using Tapir.Identity.Application.Auth.Services;
 
 namespace Tapir.Identity.Application

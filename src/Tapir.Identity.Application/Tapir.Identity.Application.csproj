@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Auth\Mails\Templates\PasswordResetMailTemplate.html" />
-    <EmbeddedResource Include="Auth\Mails\Templates\EmailConfirmationMailTemplate.html" />
+    <EmbeddedResource Include="Auth\Mails\PasswordReset\PasswordResetMailTemplate.html" />
+    <EmbeddedResource Include="Auth\Mails\EmailConfirmation\EmailConfirmationMailTemplate.html" />
   </ItemGroup>
 
   <ItemGroup>

@@ -5,7 +5,7 @@ using System.Text;
 using Tapir.Core.Mailing;
 using Tapir.Core.Scheduler;
 
-namespace Tapir.Identity.Application.Auth.Mails
+namespace Tapir.Identity.Application.Auth.Mails.PasswordReset
 {
     public class PasswordResetMailTask : MailBase, ITask
     {

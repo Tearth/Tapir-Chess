@@ -45,8 +45,8 @@ POST {{HostAddress}}/api/auth/reset-password/confirm
 Accept: application/json
 Content-Type: application/json
 {
-    "UserId": "bbdf0685-ff22-4c30-93af-4cb180b34f23",
-    "Token": "CfDJ8EnWZ4ivI+RAkSndYvP2g214AKWqLArpvZmPC3LIS/BA/WJMSv1UL0SQd2e7Yfng7pW3pv39VN/kM+FBNoLdhi+TPOz62AbermHrMnUXbbkRi/mxxvheuAmGVF3F7JJPmo/qv/MPRTTXTb8Q9hLYOpjoDS+asLFdmLRRFDkzOVCQQMFOtqo1b+x6J9+Vhp9gp8cMx/XCNMyP8s22qTiqDSmfx2cj9W5++WluBo2FjoDB",
+    "UserId": "YmJkZjA2ODUtZmYyMi00YzMwLTkzYWYtNGNiMTgwYjM0ZjIz",
+    "Token": "Q2ZESjhCVjJpUmNXUmlwTGpJakJrZFBJR1V6TW12UDFlMVRXZXN4ZGk4cnRCbHFEdjdUczUxMkcvWHhnYlluZklFNmVzVWJRaG8vL3pmL3hNclhFWXBEb1lKV1E3TTdWSmNLRkEvVnA5QUlsbEVsa3hFSG1IMHN5UUUvZHZDSTYwaDcyNEJ3b084VFdaUVNBMzVGeFRxdFRrbjluOVdzT1psTFhtMm1YVFY1b0lieUlIbG9mb2cyL1ZrQXYxcEZqQmNDWWs5RTk5T0Y2dXZma2xGS3hNK0IyMlJ0ckptMmw2N2szQTl3S2ZUMjI2TTJy",
     "Password": "Test123!"
 }
 

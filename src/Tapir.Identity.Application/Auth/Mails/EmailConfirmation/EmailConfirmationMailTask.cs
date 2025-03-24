@@ -5,7 +5,7 @@ using System.Text;
 using Tapir.Core.Mailing;
 using Tapir.Core.Scheduler;
 
-namespace Tapir.Identity.Application.Auth.Mails
+namespace Tapir.Identity.Application.Auth.Mails.EmailConfirmation
 {
     public class EmailConfirmationMailTask : MailBase, ITask
     {

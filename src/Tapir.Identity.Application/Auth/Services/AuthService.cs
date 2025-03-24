@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json.Linq;
 using System.Text;
 using Tapir.Core.Scheduler;
-using Tapir.Identity.Application.Auth.Mails;
+using Tapir.Identity.Application.Auth.Mails.EmailConfirmation;
+using Tapir.Identity.Application.Auth.Mails.PasswordReset;
 using Tapir.Identity.Application.Auth.Requests;
 using Tapir.Identity.Application.Auth.Responses;
 using Tapir.Identity.Infrastructure.Models;
@@ -117,16 +116,15 @@ namespace Tapir.Identity.Application.Auth.Services
             };
         }
 
-        public async Task<bool> ConfirmEmail(string userId, string token)
+        public async Task<bool> ConfirmEmail(ConfirmEmailRequest request)
         {
-            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
+            if (string.IsNullOrEmpty(request.UserId) || string.IsNullOrEmpty(request.Token))
             {
                 return false;
             }
 
-            userId = Encoding.UTF8.GetString(Convert.FromBase64String(userId));
-            token = Encoding.UTF8.GetString(Convert.FromBase64String(token));
-
+            var userId = Encoding.UTF8.GetString(Convert.FromBase64String(request.UserId));
+            var token = Encoding.UTF8.GetString(Convert.FromBase64String(request.Token));
             var user = await _userManager.FindByIdAsync(userId);
 
             if (user == null)

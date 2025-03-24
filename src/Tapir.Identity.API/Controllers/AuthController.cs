@@ -67,19 +67,20 @@ namespace Tapir.Identity.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("register/confirm")]
-        [ProducesResponseType(StatusCodes.Status302Found)]
-        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ConfirmEmail(ConfirmEmailRequest request)
         {
-            var result = await _authService.ConfirmEmail(userId, token);
+            var result = await _authService.ConfirmEmail(request);
 
             if (!result)
             {
-                return Redirect(_configuration["Endpoints:EmailConfirmationOnError"]);
+                return BadRequest();
             }
 
-            return Redirect(_configuration["Endpoints:EmailConfirmationOnSuccess"]);
+            return Ok();
         }
 
 
