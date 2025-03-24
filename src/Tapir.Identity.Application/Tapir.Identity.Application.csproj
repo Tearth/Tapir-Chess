@@ -19,10 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Account\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Tapir.Identity.Infrastructure\Tapir.Identity.Infrastructure.csproj" />
   </ItemGroup>
 

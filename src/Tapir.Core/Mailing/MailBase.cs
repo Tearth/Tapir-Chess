@@ -14,7 +14,7 @@ namespace Tapir.Core.Mailing
             {
                 throw new InvalidOperationException($"Template {name} not found.");
             }
-
+            
             using (var reader = new StreamReader(assembly.GetManifestResourceStream(resourceName)))
             {
                 return await reader.ReadToEndAsync();

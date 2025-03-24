@@ -5,7 +5,7 @@ Accept: application/json
 Content-Type: application/json
 {
     "Username": "test",
-    "Password": "Asd123!"
+    "Password": "Asd12345!"
 }
 
 ###
@@ -48,6 +48,17 @@ Content-Type: application/json
     "UserId": "YmJkZjA2ODUtZmYyMi00YzMwLTkzYWYtNGNiMTgwYjM0ZjIz",
     "Token": "Q2ZESjhCVjJpUmNXUmlwTGpJakJrZFBJR1V6TW12UDFlMVRXZXN4ZGk4cnRCbHFEdjdUczUxMkcvWHhnYlluZklFNmVzVWJRaG8vL3pmL3hNclhFWXBEb1lKV1E3TTdWSmNLRkEvVnA5QUlsbEVsa3hFSG1IMHN5UUUvZHZDSTYwaDcyNEJ3b084VFdaUVNBMzVGeFRxdFRrbjluOVdzT1psTFhtMm1YVFY1b0lieUlIbG9mb2cyL1ZrQXYxcEZqQmNDWWs5RTk5T0Y2dXZma2xGS3hNK0IyMlJ0ckptMmw2N2szQTl3S2ZUMjI2TTJy",
     "Password": "Test123!"
+}
+
+###
+
+POST {{HostAddress}}/api/account/change-password
+Accept: application/json
+Cookie: access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1MTVmNWFlMi0yOTExLTQwNWUtYWNiYi1hNjEyNTUwMjNhOTEiLCJuYW1lIjoidGVzdCIsImVtYWlsIjoidGVzdEB0ZXN0LnBsIiwianRpIjoiMTVkMDIwZDAtNGZkNi00NGI0LWE0ZjItYzA5ZDlkODI3N2UzIiwiZXhwIjoxNzQyODQ5ODA3LCJpc3MiOiJUYXBpciBDaGVzcyIsImF1ZCI6Imh0dHBzOi8vdGFwaXJjaGVzcy5kZXYifQ.QOnyyWv-CqIH3L03v0i7xLFfeBRXREXzybgq3fxB0Nk; path=/; secure; samesite=strict; httponly, refresh_token=jwkpkFUz%2Fxze6kLW6PUaLQK9uAn1EvCvewPj2m55ATcfO6yoQ12NrrZGXDzf7vIGLsxf7rdm9tSB%2Bsu2rvfZWIiJwT116lZk5fDWoxnvspxOEEPmnMBRcb%2FH4R608M233MqEDDxHenvLh%2BV%2BJav3u1e1JBTNlAnuLK6Cwlk9arc%3D; path=/api/auth/refresh-token; secure; samesite=strict; httponly
+Content-Type: application/json
+{
+    "OldPassword": "Asd123!",
+    "NewPassword": "Asd12345!"
 }
 
 ###
