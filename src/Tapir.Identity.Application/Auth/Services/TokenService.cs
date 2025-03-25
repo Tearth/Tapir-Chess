@@ -17,18 +17,23 @@ namespace Tapir.Identity.Application.Auth.Services
             _configuration = configuration;
         }
 
-        public string GenerateAccessToken(Guid userId, string username, string email)
+        public string GenerateAccessToken(Guid userId, string username, string email, List<string> roles)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var claims = new[]
+            var claims = new List<Claim>
             {
                  new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
                  new Claim(JwtRegisteredClaimNames.Name, username),
                  new Claim(JwtRegisteredClaimNames.Email, email),
                  new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-             };
+            };
+
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim("role", role));
+            }
 
             var token = new JwtSecurityToken(
                 _configuration["JWT:Issuer"],

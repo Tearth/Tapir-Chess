@@ -1,4 +1,8 @@
+using System.Net;
 using System.Net.Http.Headers;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Yarp.ReverseProxy.Transforms;
 
 namespace Tapir.Gateway
@@ -30,6 +34,49 @@ namespace Tapir.Gateway
                         }
                     });
                 });
+
+            builder.Services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = builder.Configuration["JWT:Issuer"],
+                        ValidAudience = builder.Configuration["JWT:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
+                    };
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            var accessToken = context.HttpContext.Request.Cookies["access_token"];
+
+                            if (!string.IsNullOrEmpty(accessToken))
+                            {
+                                context.Token = accessToken;
+                            }
+
+                            return Task.CompletedTask;
+                        }
+                    };
+                });
+
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("RequireUser", policy =>
+                {
+                    policy.RequireClaim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", "user");
+                });
+
+                options.AddPolicy("RequireAdmin", policy =>
+                {
+                    policy.RequireClaim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", "admin");
+                });
+            });
 
             var app = builder.Build();
             app.UseHttpsRedirection();

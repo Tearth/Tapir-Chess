@@ -4,8 +4,8 @@ POST {{HostAddress}}/api/auth/login
 Accept: application/json
 Content-Type: application/json
 {
-    "Username": "test",
-    "Password": "Asd12345!"
+    "Username": "admin",
+    "Password": "Admin123!"
 }
 
 ###
@@ -15,9 +15,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyZDg4Y2M5Y
 Accept: application/json
 Content-Type: application/json
 {
-    "Username": "tesg31edd",
-    "Email": "test1g232@test.pl",
-    "Password": "Asd123!"
+    "Username": "tapir2",
+    "Email": "tapir2@test.test",
+    "Password": "Tapir123!@#"
 }
 
 ###
@@ -54,11 +54,11 @@ Content-Type: application/json
 
 POST {{HostAddress}}/api/account/change-password
 Accept: application/json
-Cookie: access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1MTVmNWFlMi0yOTExLTQwNWUtYWNiYi1hNjEyNTUwMjNhOTEiLCJuYW1lIjoidGVzdCIsImVtYWlsIjoidGVzdEB0ZXN0LnBsIiwianRpIjoiMTVkMDIwZDAtNGZkNi00NGI0LWE0ZjItYzA5ZDlkODI3N2UzIiwiZXhwIjoxNzQyODQ5ODA3LCJpc3MiOiJUYXBpciBDaGVzcyIsImF1ZCI6Imh0dHBzOi8vdGFwaXJjaGVzcy5kZXYifQ.QOnyyWv-CqIH3L03v0i7xLFfeBRXREXzybgq3fxB0Nk; path=/; secure; samesite=strict; httponly, refresh_token=jwkpkFUz%2Fxze6kLW6PUaLQK9uAn1EvCvewPj2m55ATcfO6yoQ12NrrZGXDzf7vIGLsxf7rdm9tSB%2Bsu2rvfZWIiJwT116lZk5fDWoxnvspxOEEPmnMBRcb%2FH4R608M233MqEDDxHenvLh%2BV%2BJav3u1e1JBTNlAnuLK6Cwlk9arc%3D; path=/api/auth/refresh-token; secure; samesite=strict; httponly
+Cookie: access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkODA1YzY0ZC02Y2VjLTRmNGYtODEwNS0wZTEzOGE0OTRlZjciLCJuYW1lIjoidGFwaXIyIiwiZW1haWwiOiJ0YXBpcjJAdGVzdC50ZXN0IiwianRpIjoiNjgzNjU0YjQtNGNhMy00M2Q2LTgwOWEtMDZlNjcyNjJjZDVjIiwicm9sZSI6WyJhZG1pbiIsInVzZXIiXSwiZXhwIjoxNzQyODYyMDYxLCJpc3MiOiJUYXBpciBDaGVzcyIsImF1ZCI6Imh0dHBzOi8vdGFwaXJjaGVzcy5kZXYifQ.PMklcXEV7kT5E3qzf3aq1ywjcG8vLAZ4liI77ICMrhc; path=/; secure; samesite=strict; httponly, refresh_token=8xdpjLEi2j%2FebapeGFo40iQKcVNGic4OYLmjGlFG42%2FiQaQK97FtaHF0a9kHfgTmzBI1tzHVAalXxDaZAZGeJbb4GQ%2FBzvjsugX3DILMvdctLq4gsEgjmZNelDXnZR7nlBhm4BVk3xUe%2BiAZI8QoSID1hUk1gSWav36evcftQzA%3D; path=/api/auth/refresh-token; secure; samesite=strict; httponly
 Content-Type: application/json
 {
-    "OldPassword": "Asd123!",
-    "NewPassword": "Asd12345!"
+    "OldPassword": "Asd12345!",
+    "NewPassword": "Asd123!"
 }
 
 ###

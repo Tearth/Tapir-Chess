@@ -48,7 +48,8 @@ namespace Tapir.Identity.Application.Auth.Services
 
             if (await _userManager.CheckPasswordAsync(user, request.Password))
             {
-                var accessToken = _tokenService.GenerateAccessToken(user.Id, user.UserName, user.Email);
+                var roles = await _userManager.GetRolesAsync(user);
+                var accessToken = _tokenService.GenerateAccessToken(user.Id, user.UserName, user.Email, roles.ToList());
                 var refreshToken = _tokenService.GenerateRefreshToken();
 
                 await _databaseContext.RefreshTokens.AddAsync(new RefreshToken<Guid>
@@ -100,6 +101,8 @@ namespace Tapir.Identity.Application.Auth.Services
                     Errors = result.Errors.Select(e => e.Description).ToList()
                 };
             }
+
+            await _userManager.AddToRoleAsync(user, "user");
             
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
@@ -196,7 +199,8 @@ namespace Tapir.Identity.Application.Auth.Services
             if (userToken?.Value == request.RefreshToken)
             {
                 var user = await _userManager.FindByIdAsync(userToken.UserId.ToString());
-                var accessToken = _tokenService.GenerateAccessToken(user.Id, user.UserName, user.Email);
+                var roles = await _userManager.GetRolesAsync(user);
+                var accessToken = _tokenService.GenerateAccessToken(user.Id, user.UserName, user.Email, roles.ToList());
                 var refreshToken = _tokenService.GenerateRefreshToken();
 
                 _databaseContext.RefreshTokens.Remove(userToken);
