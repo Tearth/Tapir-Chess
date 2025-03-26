@@ -1,9 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Tapir.Identity.Application.Account.Services;
 using Tapir.Identity.Application.Auth.Mails.EmailConfirmation;
 using Tapir.Identity.Application.Auth.Mails.PasswordReset;
-using Tapir.Identity.Application.Auth.Services;
+using Tapir.Identity.Application.Services;
 
 namespace Tapir.Identity.Application
 {
@@ -11,11 +10,10 @@ namespace Tapir.Identity.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddTransient<AuthService>();
-            services.AddTransient<TokenService>();
-            services.AddTransient<AccountService>();
+            services.AddTransient<TokenGenerator>();
             services.AddTransient<EmailConfirmationMailTask>();
             services.AddTransient<PasswordResetMailTask>();
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Module).Assembly));
             services.AddHostedService<Startup>();
             return services;
         }

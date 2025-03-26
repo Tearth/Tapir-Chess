@@ -5,14 +5,14 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Tapir.Identity.Application.Auth.Services
+namespace Tapir.Identity.Application.Services
 {
-    public class TokenService
+    public class TokenGenerator
     {
         private readonly IConfiguration _configuration;
         private const int REFRESH_TOKEN_LENGTH = 128;
 
-        public TokenService(IConfiguration configuration)
+        public TokenGenerator(IConfiguration configuration)
         {
             _configuration = configuration;
         }

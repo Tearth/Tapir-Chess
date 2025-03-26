@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Tapir.Core.Queries;
-using Tapir.Identity.Application.Account.Requests;
-using Tapir.Identity.Application.Account.Services;
-using Tapir.Identity.Application.Auth.Responses;
-using Tapir.Identity.Application.Auth.Services;
+using Tapir.Identity.Application.Account.Commands.ChangePassword;
+using Tapir.Identity.Application.Auth.Commands.Register;
 
 namespace Tapir.Identity.API.Controllers
 {
@@ -12,21 +10,21 @@ namespace Tapir.Identity.API.Controllers
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
-        private readonly AccountService _accountService;
+        private readonly IMediator _mediator;
 
-        public AccountController(AccountService accountService)
+        public AccountController(IMediator mediator)
         {
-            _accountService = accountService;
+            _mediator = mediator;
         }
 
         [HttpPost]
         [Route("change-password")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(PagedResult<RegisterResponse>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(PagedResult<RegisterResponse>), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> ChangePassword(ChangePasswordRequest request)
+        [ProducesResponseType(typeof(PagedResult<RegisterCommandResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PagedResult<RegisterCommandResponse>), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ChangePassword(ChangePasswordCommand command)
         {
-            var result = await _accountService.ChangePassword(request);
+            var result = await _mediator.Send(command);
 
             if (!result.Success)
             {

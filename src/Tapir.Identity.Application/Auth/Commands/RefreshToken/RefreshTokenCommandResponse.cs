@@ -1,6 +1,6 @@
-﻿namespace Tapir.Identity.Application.Auth.Responses
+﻿namespace Tapir.Identity.Application.Auth.Commands.RefreshToken
 {
-    public class LoginResponse
+    public class RefreshTokenCommandResponse
     {
         public bool Success { get; set; }
         public string AccessToken { get; set; }
