@@ -27,14 +27,14 @@ namespace Tapir.Identity.API.Controllers
         [HttpPost]
         [Route("login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Login(LogInCommand command)
         {
             var result = await _mediator.Send(command);
             
             if (!result.Success)
             {
-                return BadRequest();
+                return Problem(result.ErrorCode, null, StatusCodes.Status400BadRequest, "Failed to authorize.");
             }
 
             Response.Cookies.Append("access_token", result.AccessToken, new CookieOptions
@@ -57,15 +57,15 @@ namespace Tapir.Identity.API.Controllers
         [HttpPost]
         [Route("register")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(PagedResult<RegisterCommandResponse>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(PagedResult<RegisterCommandResponse>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(PagedResult<RegisterCommandResult>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PagedResult<ProblemDetails>), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Register(RegisterCommand command)
         {
             var result = await _mediator.Send(command);
             
             if (!result.Success)
             {
-                return BadRequest(result);
+                return Problem(result.ErrorCode, null, StatusCodes.Status400BadRequest, "Failed to complete registration.");
             }
 
             return Ok(result);
@@ -74,14 +74,14 @@ namespace Tapir.Identity.API.Controllers
         [HttpPost]
         [Route("register/confirm")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ConfirmEmail(ConfirmEmailCommand command)
         {
             var result = await _mediator.Send(command);
 
-            if (!result)
+            if (!result.Success)
             {
-                return BadRequest();
+                return Problem(result.ErrorCode, null, StatusCodes.Status400BadRequest, "Failed to confirm an email.");
             }
 
             return Ok();
@@ -91,14 +91,14 @@ namespace Tapir.Identity.API.Controllers
         [HttpPost]
         [Route("reset-password")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ResetPassword(ResetPasswordCommand command)
         {
             var result = await _mediator.Send(command);
 
-            if (!result)
+            if (!result.Success)
             {
-                return BadRequest();
+                return Problem(result.ErrorCode, null, StatusCodes.Status400BadRequest, "Failed to reset password.");
             }
 
             return Ok();
@@ -107,14 +107,14 @@ namespace Tapir.Identity.API.Controllers
         [HttpPost]
         [Route("reset-password/confirm")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ConfirmPassword(ConfirmPasswordCommand command)
         {
             var result = await _mediator.Send(command);
 
-            if (!result)
+            if (!result.Success)
             {
-                return BadRequest();
+                return Problem(result.ErrorCode, null, StatusCodes.Status400BadRequest, "Failed to confirm password.");
             }
 
             return Ok();
@@ -123,7 +123,7 @@ namespace Tapir.Identity.API.Controllers
         [HttpPost]
         [Route("refresh-token")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> RefreshToken()
         {
             var refreshToken = Request.Headers["X-Refresh-Token"].FirstOrDefault();
@@ -135,7 +135,7 @@ namespace Tapir.Identity.API.Controllers
 
             if (!result.Success)
             {
-                return BadRequest();
+                return Problem(result.ErrorCode, null, StatusCodes.Status400BadRequest, "Failed to refresh token.");
             }
 
             Response.Cookies.Append("access_token", result.AccessToken, new CookieOptions

@@ -7,7 +7,7 @@ using Tapir.Identity.Infrastructure.Models;
 
 namespace Tapir.Identity.Application.Account.Commands.ChangePassword
 {
-    public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, ChangePasswordCommandResponse>
+    public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, ChangePasswordCommandResult>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -18,17 +18,17 @@ namespace Tapir.Identity.Application.Account.Commands.ChangePassword
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<ChangePasswordCommandResponse> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
+        public async Task<ChangePasswordCommandResult> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
         {
             var userId = _httpContextAccessor.HttpContext?.User.GetId();
             var user = await _userManager.FindByIdAsync(userId);
 
             var result = await _userManager.ChangePasswordAsync(user, request.OldPassword, request.NewPassword);
 
-            return new ChangePasswordCommandResponse
+            return new ChangePasswordCommandResult
             {
                 Success = result.Succeeded,
-                Errors = result.Errors.Select(e => e.Description).ToList()
+                ErrorCode = result.Errors.Select(e => e.Code).FirstOrDefault()
             };
         }
     }

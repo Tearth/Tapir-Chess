@@ -6,7 +6,7 @@ using Tapir.Identity.Infrastructure.Models;
 
 namespace Tapir.Identity.Application.Auth.Commands.Register
 {
-    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterCommandResponse>
+    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterCommandResult>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ITaskScheduler _taskScheduler;
@@ -17,7 +17,7 @@ namespace Tapir.Identity.Application.Auth.Commands.Register
             _taskScheduler = taskScheduler;
         }
 
-        public async Task<RegisterCommandResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
+        public async Task<RegisterCommandResult> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
             var user = new ApplicationUser
             {
@@ -28,10 +28,10 @@ namespace Tapir.Identity.Application.Auth.Commands.Register
 
             if (!result.Succeeded)
             {
-                return new RegisterCommandResponse
+                return new RegisterCommandResult
                 {
                     Success = result.Succeeded,
-                    Errors = result.Errors.Select(e => e.Description).ToList()
+                    ErrorCode = result.Errors.Select(e => e.Code).FirstOrDefault()
                 };
             }
 
@@ -46,7 +46,7 @@ namespace Tapir.Identity.Application.Auth.Commands.Register
                 Token = token
             });
 
-            return new RegisterCommandResponse
+            return new RegisterCommandResult
             {
                 Success = true
             };

@@ -1,11 +1,12 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System.Text;
+using Tapir.Identity.Application.Auth.Commands.ConfirmEmail;
 using Tapir.Identity.Infrastructure.Models;
 
 namespace Tapir.Identity.Application.Auth.Commands.ConfirmPassword
 {
-    public class ConfirmPasswordCommandHandler : IRequestHandler<ConfirmPasswordCommand, bool>
+    public class ConfirmPasswordCommandHandler : IRequestHandler<ConfirmPasswordCommand, ConfirmPasswordCommandResult>
     {
         private readonly UserManager<ApplicationUser> _userManager;
 
@@ -14,7 +15,7 @@ namespace Tapir.Identity.Application.Auth.Commands.ConfirmPassword
             _userManager = userManager;
         }
 
-        public async Task<bool> Handle(ConfirmPasswordCommand request, CancellationToken cancellationToken)
+        public async Task<ConfirmPasswordCommandResult> Handle(ConfirmPasswordCommand request, CancellationToken cancellationToken)
         {
             var userId = Encoding.UTF8.GetString(Convert.FromBase64String(request.UserId));
             var token = Encoding.UTF8.GetString(Convert.FromBase64String(request.Token));
@@ -22,11 +23,16 @@ namespace Tapir.Identity.Application.Auth.Commands.ConfirmPassword
 
             if (user == null)
             {
-                return false;
+                return ConfirmPasswordCommandResult.Error("UserNotFound");
             }
 
             var result = await _userManager.ResetPasswordAsync(user, token, request.Password);
-            return result.Succeeded;
+
+            return new ConfirmPasswordCommandResult
+            {
+                Success = result.Succeeded,
+                ErrorCode = result.Errors.Select(e => e.Code).FirstOrDefault()
+            };
         }
     }
 }

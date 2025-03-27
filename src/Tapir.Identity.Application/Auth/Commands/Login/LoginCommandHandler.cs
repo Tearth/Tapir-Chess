@@ -1,12 +1,13 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Tapir.Identity.Application.Auth.Commands.ConfirmPassword;
 using Tapir.Identity.Application.Services;
 using Tapir.Identity.Infrastructure.Models;
 using Tapir.Identity.Infrastructure.Persistence;
 
 namespace Tapir.Identity.Application.Auth.Commands.Login
 {
-    public class LogInCommandHandler : IRequestHandler<LogInCommand, LogInCommandResponse>
+    public class LogInCommandHandler : IRequestHandler<LogInCommand, LogInCommandResult>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly TokenGenerator _tokenGenerator;
@@ -19,16 +20,13 @@ namespace Tapir.Identity.Application.Auth.Commands.Login
             _databaseContext = databaseContext;
         }
 
-        public async Task<LogInCommandResponse> Handle(LogInCommand request, CancellationToken cancellationToken)
+        public async Task<LogInCommandResult> Handle(LogInCommand request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByNameAsync(request.Username);
 
             if (user == null)
             {
-                return new LogInCommandResponse
-                {
-                    Success = false
-                };
+                return LogInCommandResult.Error("UserNotFound");
             }
 
             if (await _userManager.CheckPasswordAsync(user, request.Password))
@@ -45,7 +43,7 @@ namespace Tapir.Identity.Application.Auth.Commands.Login
                 });
                 await _databaseContext.SaveChangesAsync();
 
-                return new LogInCommandResponse
+                return new LogInCommandResult
                 {
                     Success = true,
                     AccessToken = accessToken,
@@ -54,10 +52,7 @@ namespace Tapir.Identity.Application.Auth.Commands.Login
             }
             else
             {
-                return new LogInCommandResponse
-                {
-                    Success = false
-                };
+                return LogInCommandResult.Error("InvalidPassword");
             }
         }
     }

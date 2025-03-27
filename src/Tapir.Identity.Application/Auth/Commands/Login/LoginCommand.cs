@@ -1,14 +1,15 @@
 ﻿using MediatR;
 using System.ComponentModel.DataAnnotations;
+using Tapir.Core.Validation;
 
 namespace Tapir.Identity.Application.Auth.Commands.Login
 {
-    public class LogInCommand : IRequest<LogInCommandResponse>
+    public class LogInCommand : IRequest<LogInCommandResult>
     {
-        [Required]
+        [Required(ErrorMessage = ValidationErrorCodes.EMPTY_FIELD)]
         public required string Username { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = ValidationErrorCodes.EMPTY_FIELD)]
         public required string Password { get; set; }
     }
 }

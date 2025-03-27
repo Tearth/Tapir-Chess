@@ -1,13 +1,14 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Tapir.Identity.Application.Auth.Commands.Login;
 using Tapir.Identity.Application.Services;
 using Tapir.Identity.Infrastructure.Models;
 using Tapir.Identity.Infrastructure.Persistence;
 
 namespace Tapir.Identity.Application.Auth.Commands.RefreshToken
 {
-    public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, RefreshTokenCommandResponse>
+    public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, RefreshTokenCommandResult>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly TokenGenerator _tokenGenerator;
@@ -20,7 +21,7 @@ namespace Tapir.Identity.Application.Auth.Commands.RefreshToken
             _databaseContext = databaseContext;
         }
 
-        public async Task<RefreshTokenCommandResponse> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
+        public async Task<RefreshTokenCommandResult> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
         {
             var userToken = await _databaseContext.RefreshTokens.FirstOrDefaultAsync(p => p.Value == request.RefreshToken);
             if (userToken?.Value == request.RefreshToken)
@@ -39,7 +40,7 @@ namespace Tapir.Identity.Application.Auth.Commands.RefreshToken
                 });
                 await _databaseContext.SaveChangesAsync();
 
-                return new RefreshTokenCommandResponse
+                return new RefreshTokenCommandResult
                 {
                     Success = true,
                     AccessToken = accessToken,
@@ -48,10 +49,7 @@ namespace Tapir.Identity.Application.Auth.Commands.RefreshToken
             }
             else
             {
-                return new RefreshTokenCommandResponse
-                {
-                    Success = false
-                };
+                return RefreshTokenCommandResult.Error("InvalidRefreshToken");
             }
         }
     }

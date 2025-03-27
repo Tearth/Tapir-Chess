@@ -20,15 +20,15 @@ namespace Tapir.Identity.API.Controllers
         [HttpPost]
         [Route("change-password")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(PagedResult<RegisterCommandResponse>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(PagedResult<RegisterCommandResponse>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(PagedResult<RegisterCommandResult>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ChangePassword(ChangePasswordCommand command)
         {
             var result = await _mediator.Send(command);
 
             if (!result.Success)
             {
-                return BadRequest(result);
+                return Problem(result.ErrorCode, null, StatusCodes.Status400BadRequest, "Failed to change password.");
             }
 
             return Ok(result);

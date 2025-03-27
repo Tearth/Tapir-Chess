@@ -1,12 +1,13 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Tapir.Core.Scheduler;
+using Tapir.Identity.Application.Auth.Commands.RefreshToken;
 using Tapir.Identity.Application.Auth.Mails.PasswordReset;
 using Tapir.Identity.Infrastructure.Models;
 
 namespace Tapir.Identity.Application.Auth.Commands.ResetPassword
 {
-    public class ResetPasswordCommandHandler : IRequestHandler<ResetPasswordCommand, bool>
+    public class ResetPasswordCommandHandler : IRequestHandler<ResetPasswordCommand, ResetPasswordCommandResult>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ITaskScheduler _taskScheduler;
@@ -17,13 +18,13 @@ namespace Tapir.Identity.Application.Auth.Commands.ResetPassword
             _taskScheduler = taskScheduler;
         }
 
-        public async Task<bool> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
+        public async Task<ResetPasswordCommandResult> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
 
             if (user == null)
             {
-                return false;
+                return ResetPasswordCommandResult.Error("UserNotFound");
             }
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
@@ -35,7 +36,10 @@ namespace Tapir.Identity.Application.Auth.Commands.ResetPassword
                 Token = token
             });
 
-            return true;
+            return new ResetPasswordCommandResult
+            {
+                Success = true
+            };
         }
     }
 }

@@ -1,14 +1,15 @@
 ﻿using MediatR;
 using System.ComponentModel.DataAnnotations;
+using Tapir.Core.Validation;
 
 namespace Tapir.Identity.Application.Account.Commands.ChangePassword
 {
-    public class ChangePasswordCommand : IRequest<ChangePasswordCommandResponse>
+    public class ChangePasswordCommand : IRequest<ChangePasswordCommandResult>
     {
-        [Required]
+        [Required(ErrorMessage = ValidationErrorCodes.EMPTY_FIELD)]
         public required string OldPassword { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = ValidationErrorCodes.EMPTY_FIELD)]
         public required string NewPassword { get; set; }
     }
 }
