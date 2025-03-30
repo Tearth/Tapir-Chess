@@ -1,9 +1,8 @@
 ﻿using MediatR;
 using System.ComponentModel.DataAnnotations;
 using Tapir.Core.Validation;
-using Tapir.Identity.Application.Auth.Commands.ResetPassword;
 
-namespace Tapir.Identity.Application.Auth.Commands
+namespace Tapir.Identity.Application.Auth.Commands.ResetPassword
 {
     public class ResetPasswordCommand : IRequest<ResetPasswordCommandResult>
     {

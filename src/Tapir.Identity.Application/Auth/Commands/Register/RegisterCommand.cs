@@ -1,9 +1,8 @@
 ﻿using MediatR;
 using System.ComponentModel.DataAnnotations;
 using Tapir.Core.Validation;
-using Tapir.Identity.Application.Auth.Commands.Register;
 
-namespace Tapir.Identity.Application.Auth.Commands
+namespace Tapir.Identity.Application.Auth.Commands.Register
 {
     public class RegisterCommand : IRequest<RegisterCommandResult>
     {

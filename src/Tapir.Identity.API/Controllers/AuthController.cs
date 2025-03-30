@@ -2,12 +2,12 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 using Tapir.Core.Queries;
-using Tapir.Identity.Application.Auth.Commands;
 using Tapir.Identity.Application.Auth.Commands.ConfirmEmail;
 using Tapir.Identity.Application.Auth.Commands.ConfirmPassword;
 using Tapir.Identity.Application.Auth.Commands.Login;
 using Tapir.Identity.Application.Auth.Commands.RefreshToken;
 using Tapir.Identity.Application.Auth.Commands.Register;
+using Tapir.Identity.Application.Auth.Commands.ResetPassword;
 
 namespace Tapir.Identity.API.Controllers
 {
