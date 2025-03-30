@@ -27,6 +27,11 @@ namespace Tapir.Identity.Application.Auth.Commands.RefreshToken
             if (userToken?.Value == request.RefreshToken)
             {
                 var user = await _userManager.FindByIdAsync(userToken.UserId.ToString());
+                if (user == null)
+                {
+                    return RefreshTokenCommandResult.Error("UserNotFound");
+                }
+
                 var roles = await _userManager.GetRolesAsync(user);
                 var accessToken = _tokenGenerator.GenerateAccessToken(user.Id, user.UserName, user.Email, roles.ToList());
                 var refreshToken = _tokenGenerator.GenerateRefreshToken();

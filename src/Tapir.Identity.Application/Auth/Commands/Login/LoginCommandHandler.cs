@@ -23,7 +23,6 @@ namespace Tapir.Identity.Application.Auth.Commands.Login
         public async Task<LogInCommandResult> Handle(LogInCommand request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByNameAsync(request.Username);
-
             if (user == null)
             {
                 return LogInCommandResult.Error("UserNotFound");

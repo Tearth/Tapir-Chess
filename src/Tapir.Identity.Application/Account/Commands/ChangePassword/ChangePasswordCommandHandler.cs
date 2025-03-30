@@ -21,10 +21,18 @@ namespace Tapir.Identity.Application.Account.Commands.ChangePassword
         public async Task<ChangePasswordCommandResult> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
         {
             var userId = _httpContextAccessor.HttpContext?.User.GetId();
+            if (userId == null)
+            {
+                return ChangePasswordCommandResult.Error("UserNotFound");
+            }
+
             var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return ChangePasswordCommandResult.Error("UserNotFound");
+            }
 
             var result = await _userManager.ChangePasswordAsync(user, request.OldPassword, request.NewPassword);
-
             return new ChangePasswordCommandResult
             {
                 Success = result.Succeeded,

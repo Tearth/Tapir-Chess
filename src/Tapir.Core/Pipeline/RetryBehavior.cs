@@ -3,7 +3,7 @@ using Tapir.Core.Persistence.Exceptions;
 
 namespace Tapir.Core.Pipeline
 {
-    public class RetryBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    public class RetryBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
     {
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {

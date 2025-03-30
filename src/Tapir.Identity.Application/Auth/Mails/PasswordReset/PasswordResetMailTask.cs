@@ -4,33 +4,29 @@ using System.Reflection;
 using System.Text;
 using Tapir.Core.Mailing;
 using Tapir.Core.Scheduler;
+using Tapir.Identity.Infrastructure;
 
 namespace Tapir.Identity.Application.Auth.Mails.PasswordReset
 {
     public class PasswordResetMailTask : MailBase, ITask
     {
-        public string To { get; set; }
-        public string UserId { get; set; }
-        public string Token { get; set; }
+        public required string To { get; set; }
+        public required string UserId { get; set; }
+        public required string Token { get; set; }
 
         private readonly IMailClient _mailClient;
-        private readonly IConfiguration _configuration;
+        private readonly AppSettings _settings;
 
-        public PasswordResetMailTask()
+        public PasswordResetMailTask(IMailClient? mailClient = null, AppSettings? settings = null)
         {
-
-        }
-
-        public PasswordResetMailTask(IMailClient mailClient, IConfiguration configuration)
-        {
-            _mailClient = mailClient;
-            _configuration = configuration;
+            _mailClient = mailClient!;
+            _settings = settings!;
         }
 
         public async Task Run()
         {
             var content = await ReadTemplate("PasswordResetMailTemplate.html");
-            var urlTemplate = _configuration["Endpoints:PasswordReset"];
+            var urlTemplate = _settings.Endpoints.PasswordReset;
             
             urlTemplate = urlTemplate.Replace("{USERID}", Convert.ToBase64String(Encoding.UTF8.GetBytes(UserId)));
             urlTemplate = urlTemplate.Replace("{TOKEN}", Convert.ToBase64String(Encoding.UTF8.GetBytes(Token)));

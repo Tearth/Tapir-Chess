@@ -8,9 +8,9 @@ namespace Tapir.Services.News.Domain.News.Entities
     public class NewsEntity : AggregateRoot
     {
         public DateTime CreatedAt { get; private set; }
-        public string Title { get; private set; }
-        public string Alias { get; private set; }
-        public string Content { get; private set; }
+        public string? Title { get; private set; }
+        public string? Alias { get; private set; }
+        public string? Content { get; private set; }
         public bool Deleted { get; private set; }
 
         public NewsEntity()

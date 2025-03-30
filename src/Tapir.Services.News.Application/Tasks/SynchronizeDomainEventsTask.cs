@@ -7,14 +7,9 @@ namespace Tapir.Services.News.Application.Tasks
     {
         private readonly IDomainEventSynchronizer _synchronizer;
 
-        public SynchronizeDomainEventsTask()
+        public SynchronizeDomainEventsTask(IDomainEventSynchronizer? synchronizer = null)
         {
-
-        }
-
-        public SynchronizeDomainEventsTask(IDomainEventSynchronizer synchronizer)
-        {
-            _synchronizer = synchronizer;
+            _synchronizer = synchronizer!;
         }
 
         public async Task Run()

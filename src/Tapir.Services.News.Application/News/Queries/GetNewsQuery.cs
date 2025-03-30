@@ -5,12 +5,12 @@ using Tapir.Services.News.Application.News.Queries.DTOs;
 
 namespace Tapir.Services.News.Application.News.Queries
 {
-    public class GetNewsQuery : IRequest<NewsDto>
+    public class GetNewsQuery : IRequest<NewsDto?>
     {
         public Guid Id { get; set; }
     }
 
-    public class GetNewsQueryHandler : IRequestHandler<GetNewsQuery, NewsDto>
+    public class GetNewsQueryHandler : IRequestHandler<GetNewsQuery, NewsDto?>
     {
         private readonly IDatabaseConnection _database;
 

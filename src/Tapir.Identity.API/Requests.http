@@ -4,8 +4,8 @@ POST {{HostAddress}}/api/auth/login
 Accept: application/json
 Content-Type: application/json
 {
-    "Username": "admin",
-    "Password": "Admin123!"
+    "Username": "tapir2",
+    "Password": "Tapir123!@#"
 }
 
 ###
@@ -54,10 +54,10 @@ Content-Type: application/json
 
 POST {{HostAddress}}/api/account/change-password
 Accept: application/json
-Cookie: access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkODA1YzY0ZC02Y2VjLTRmNGYtODEwNS0wZTEzOGE0OTRlZjciLCJuYW1lIjoidGFwaXIyIiwiZW1haWwiOiJ0YXBpcjJAdGVzdC50ZXN0IiwianRpIjoiNjgzNjU0YjQtNGNhMy00M2Q2LTgwOWEtMDZlNjcyNjJjZDVjIiwicm9sZSI6WyJhZG1pbiIsInVzZXIiXSwiZXhwIjoxNzQyODYyMDYxLCJpc3MiOiJUYXBpciBDaGVzcyIsImF1ZCI6Imh0dHBzOi8vdGFwaXJjaGVzcy5kZXYifQ.PMklcXEV7kT5E3qzf3aq1ywjcG8vLAZ4liI77ICMrhc; path=/; secure; samesite=strict; httponly, refresh_token=8xdpjLEi2j%2FebapeGFo40iQKcVNGic4OYLmjGlFG42%2FiQaQK97FtaHF0a9kHfgTmzBI1tzHVAalXxDaZAZGeJbb4GQ%2FBzvjsugX3DILMvdctLq4gsEgjmZNelDXnZR7nlBhm4BVk3xUe%2BiAZI8QoSID1hUk1gSWav36evcftQzA%3D; path=/api/auth/refresh-token; secure; samesite=strict; httponly
+Cookie: access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkODA1YzY0ZC02Y2VjLTRmNGYtODEwNS0wZTEzOGE0OTRlZjciLCJuYW1lIjoidGFwaXIyIiwiZW1haWwiOiJ0YXBpcjJAdGVzdC50ZXN0IiwianRpIjoiZjNjZmVmOTMtMzYxMC00MGYxLTg5MmQtYTIzZTZiNTM1MjQ3Iiwicm9sZSI6WyJhZG1pbiIsInVzZXIiXSwiZXhwIjoxNzQzMDE4NTc3LCJpc3MiOiJUYXBpciBDaGVzcyIsImF1ZCI6Imh0dHBzOi8vdGFwaXJjaGVzcy5kZXYifQ.NcOzVNi_Qm-o4vqSQYvpiTYFI5zk8WrtJKuaXHTdTFg; path=/; secure; samesite=strict; httponly, refresh_token=5lx4PljlFI1FNt3ePodJOrbXsPVvK62hRTxNw4SB%2BW%2BtZQ9ABUKTNkVv5u8QPWQ9Tqy5fYagx4mde7mBmJH2GnYC7Ivjgn8F69fVDJg2TzWXfpKBMJnHikOwskJfk8Pmo7bi8FJSc45JLSJkCMoi5c%2BlSz6HxD8%2BHWMz3wz7KMk%3D; path=/api/auth/refresh-token; secure; samesite=strict; httponly
 Content-Type: application/json
 {
-    "OldPassword": "Asd12345!",
+    "OldPassword": "",
     "NewPassword": "Asd123!"
 }
 

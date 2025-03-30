@@ -37,13 +37,13 @@ namespace Tapir.Identity.API.Controllers
                 return Problem(result.ErrorCode, null, StatusCodes.Status400BadRequest, "Failed to authorize.");
             }
 
-            Response.Cookies.Append("access_token", result.AccessToken, new CookieOptions
+            Response.Cookies.Append("access_token", result.AccessToken!, new CookieOptions
             {
                 SameSite = SameSiteMode.Strict,
                 HttpOnly = true,
                 Secure = true
             });
-            Response.Cookies.Append("refresh_token", result.RefreshToken, new CookieOptions
+            Response.Cookies.Append("refresh_token", result.RefreshToken!, new CookieOptions
             {
                 Path = "/api/auth/refresh-token",
                 SameSite = SameSiteMode.Strict,
@@ -127,6 +127,10 @@ namespace Tapir.Identity.API.Controllers
         public async Task<IActionResult> RefreshToken()
         {
             var refreshToken = Request.Headers["X-Refresh-Token"].FirstOrDefault();
+            if (string.IsNullOrEmpty(refreshToken))
+            {
+                return Problem("XRefreshTokenNotFound", null, StatusCodes.Status400BadRequest, "Failed to refresh token.");
+            }
 
             var result = await _mediator.Send(new RefreshTokenCommand
             {
@@ -138,13 +142,13 @@ namespace Tapir.Identity.API.Controllers
                 return Problem(result.ErrorCode, null, StatusCodes.Status400BadRequest, "Failed to refresh token.");
             }
 
-            Response.Cookies.Append("access_token", result.AccessToken, new CookieOptions
+            Response.Cookies.Append("access_token", result.AccessToken!, new CookieOptions
             {
                 SameSite = SameSiteMode.Strict,
                 HttpOnly = true,
                 Secure = true
             });
-            Response.Cookies.Append("refresh_token", result.RefreshToken, new CookieOptions
+            Response.Cookies.Append("refresh_token", result.RefreshToken!, new CookieOptions
             {
                 Path = "/api/auth/refresh-token",
                 SameSite = SameSiteMode.Strict,

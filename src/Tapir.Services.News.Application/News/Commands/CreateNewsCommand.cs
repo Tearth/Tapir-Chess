@@ -6,9 +6,9 @@ namespace Tapir.Services.News.Application.News.Commands
 {
     public class CreateNewsCommand : IRequest<Unit>
     {
-        public string Title { get; set; }
-        public string Alias { get; set; }
-        public string Content { get; set; }
+        public required string Title { get; set; }
+        public required string Alias { get; set; }
+        public required string Content { get; set; }
     }
 
     public class CreateNewsCommandHandler : IRequestHandler<CreateNewsCommand, Unit>

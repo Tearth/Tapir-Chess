@@ -49,7 +49,7 @@ namespace Tapir.Identity.Infrastructure
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    if (settings.JWT == null)
+                    if (settings.Jwt == null)
                     {
                         throw new InvalidOperationException("JWT settings not found.");
                     }
@@ -60,20 +60,20 @@ namespace Tapir.Identity.Infrastructure
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        ValidIssuer = settings.JWT.Issuer,
-                        ValidAudience = settings.JWT.Audience,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(settings.JWT.Secret))
+                        ValidIssuer = settings.Jwt.Issuer,
+                        ValidAudience = settings.Jwt.Audience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(settings.Jwt.Secret))
                     };
                 });
 
             services.AddMailKitMailing(options =>
             {
-                options.Host = configuration["Mailing:Host"];
-                options.Port = int.Parse(configuration["Mailing:Port"]);
-                options.UseSsl = bool.Parse(configuration["Mailing:UseSsl"]);
-                options.Username = configuration["Mailing:Username"];
-                options.Password = configuration["Mailing:Password"];
-                options.From = configuration["Mailing:From"];
+                options.Host = settings.Mailing.Host;
+                options.Port = settings.Mailing.Port;
+                options.UseSsl = settings.Mailing.UseSsl;
+                options.Username = settings.Mailing.Username;
+                options.Password = settings.Mailing.Password;
+                options.From = settings.Mailing.From;
             });
 
             services.AddQuartzScheduler(cfg =>
@@ -88,6 +88,7 @@ namespace Tapir.Identity.Infrastructure
                 cfg.ConnectionString = connectionString;
             });
 
+            services.AddSingleton(settings);
             services.AddHostedService<Startup>();
 
             return services;

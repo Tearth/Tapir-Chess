@@ -31,7 +31,7 @@ namespace Tapir.Identity.Application.Auth.Commands.ResetPassword
 
             await _taskScheduler.Run(new PasswordResetMailTask
             {
-                To = user.Email,
+                To = user.Email!,
                 UserId = user.Id.ToString(),
                 Token = token
             });

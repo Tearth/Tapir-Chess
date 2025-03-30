@@ -22,6 +22,11 @@ namespace Tapir.Identity.Application
                 var userManager = scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
                 var roleManager = scope.ServiceProvider.GetService<RoleManager<ApplicationRole>>();
 
+                if (userManager == null || roleManager == null)
+                {
+                    throw new InvalidOperationException("Cannot resolve services to initialize users and roles.");
+                }
+
                 if (!await roleManager.RoleExistsAsync("admin"))
                 {
                     var result = await roleManager.CreateAsync(new ApplicationRole("admin"));

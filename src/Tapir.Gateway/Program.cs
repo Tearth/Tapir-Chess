@@ -12,13 +12,20 @@ namespace Tapir.Gateway
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            var settings = builder.Configuration.Get<AppSettings>();
+
+            if (settings == null)
+            {
+                throw new InvalidOperationException("AppSettings not found.");
+            }
+
             builder.Services.AddControllers();
             builder.Services
                 .AddReverseProxy()
                 .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"))
                 .AddTransforms(transformBuilderContext =>
                 {
-                    transformBuilderContext.AddRequestTransform(async transformContext =>
+                    transformBuilderContext.AddRequestTransform(transformContext =>
                     {
                         var accessToken = transformContext.HttpContext.Request.Cookies["access_token"];
                         var refreshToken = transformContext.HttpContext.Request.Cookies["refresh_token"];
@@ -32,6 +39,8 @@ namespace Tapir.Gateway
                         {
                             transformContext.ProxyRequest.Headers.Add("X-Refresh-Token", "Basic " + refreshToken);
                         }
+
+                        return ValueTask.CompletedTask;
                     });
                 });
 
@@ -45,9 +54,9 @@ namespace Tapir.Gateway
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        ValidIssuer = builder.Configuration["JWT:Issuer"],
-                        ValidAudience = builder.Configuration["JWT:Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
+                        ValidIssuer = settings.Jwt.Issuer,
+                        ValidAudience = settings.Jwt.Audience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(settings.Jwt.Secret))
                     };
                     options.Events = new JwtBearerEvents
                     {

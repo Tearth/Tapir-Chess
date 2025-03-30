@@ -52,8 +52,8 @@ namespace Tapir.Services.News.Infrastructure
                     Host = p.Host,
                     Port = p.Port
                 }).ToList();
-                cfg.DatabaseName = settings.MongoDb.DatabaseName;
 
+                cfg.DatabaseName = settings.MongoDb.DatabaseName;
                 cfg.AuthenticationMethod = settings.MongoDb.AuthenticationMethod;
                 cfg.Username = settings.MongoDb.Username;
                 cfg.Password = settings.MongoDb.Password;
