@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Tapir.Identity.Application.Auth.Commands.ConfirmPassword;
 using Tapir.Identity.Application.Services;
 using Tapir.Identity.Infrastructure.Models;
 using Tapir.Identity.Infrastructure.Persistence;

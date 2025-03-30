@@ -1,10 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System.ComponentModel;
 using Tapir.Core.Events;
-using Tapir.Core.Scheduler;
 using Tapir.Services.News.Application.Tasks;
 using Tapir.Services.News.Domain;
 

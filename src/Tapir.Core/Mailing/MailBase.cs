@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace Tapir.Core.Mailing
+﻿namespace Tapir.Core.Mailing
 {
     public abstract class MailBase
     {

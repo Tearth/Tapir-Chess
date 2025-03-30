@@ -1,7 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using MimeKit.Text;
-using System.Reflection;
-using System.Text;
+﻿using System.Text;
 using Tapir.Core.Mailing;
 using Tapir.Core.Scheduler;
 using Tapir.Identity.Infrastructure;

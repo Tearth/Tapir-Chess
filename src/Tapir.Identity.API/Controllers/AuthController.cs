@@ -1,6 +1,5 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Text;
 using Tapir.Core.Queries;
 using Tapir.Identity.Application.Auth.Commands.ConfirmEmail;
 using Tapir.Identity.Application.Auth.Commands.ConfirmPassword;

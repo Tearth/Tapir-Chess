@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Tapir.Identity.Infrastructure.Models;
-using Tapir.Identity.Infrastructure.Persistence;
 
 namespace Tapir.Identity.Application
 {

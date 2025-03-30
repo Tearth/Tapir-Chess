@@ -1,9 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
-using System.IO;
-using System.Reflection;
 using Tapir.Core.Domain;
 using Tapir.Core.Events;
 using Tapir.Core.Persistence;

@@ -1,5 +1,4 @@
-﻿using Tapir.Identity.Application.Auth.Commands.ConfirmPassword;
-using Tapir.Identity.Infrastructure.Commands;
+﻿using Tapir.Identity.Infrastructure.Commands;
 
 namespace Tapir.Identity.Application.Auth.Commands.Login
 {

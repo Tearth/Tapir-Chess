@@ -2,10 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Tapir.Providers.EventStore.MongoDB;
 using Tapir.Providers.Database.PostgreSQL;
-using Microsoft.AspNetCore.Builder;
 using System.Reflection;
 using Tapir.Providers.Scheduler.Quartz;
-using MongoDB.Driver.Core.Configuration;
 using Serilog;
 using MediatR;
 using Tapir.Core.Pipeline;

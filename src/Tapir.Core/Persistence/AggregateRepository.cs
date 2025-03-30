@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Tapir.Core.Domain;
+﻿using Tapir.Core.Domain;
 using Tapir.Core.Persistence.Exceptions;
 
 namespace Tapir.Core.Persistence

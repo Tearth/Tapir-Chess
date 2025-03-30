@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using System.Text;
 using Tapir.Core.Identity;
 using Tapir.Identity.Infrastructure.Models;
 

@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using System.ComponentModel.DataAnnotations;
 using Tapir.Core.Validation;
-using Tapir.Identity.Application.Auth.Commands.ConfirmEmail;
 
 namespace Tapir.Identity.Application.Auth.Commands.ConfirmPassword
 {

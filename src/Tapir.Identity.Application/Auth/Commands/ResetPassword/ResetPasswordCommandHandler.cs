@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Tapir.Core.Scheduler;
-using Tapir.Identity.Application.Auth.Commands.RefreshToken;
 using Tapir.Identity.Application.Auth.Mails.PasswordReset;
 using Tapir.Identity.Infrastructure.Models;
 
