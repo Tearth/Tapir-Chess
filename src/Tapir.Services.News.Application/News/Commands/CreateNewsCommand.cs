@@ -23,11 +23,13 @@ namespace Tapir.Services.News.Application.News.Commands
         public async Task<Unit> Handle(CreateNewsCommand request, CancellationToken cancellationToken)
         {
             var news = new NewsEntity();
+
             news.SetTitle(request.Title);
             news.SetAlias(request.Alias);
             news.SetContent(request.Content);
 
             await _newsRepository.Save(news);
+
             return Unit.Value;
         }
     }

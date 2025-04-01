@@ -26,13 +26,11 @@ namespace Tapir.Identity.Application.Auth.Commands.ResetPassword
                 return ResetPasswordCommandResult.Error("UserNotFound");
             }
 
-            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-
             await _taskScheduler.Run(new PasswordResetMailTask
             {
                 To = user.Email!,
                 UserId = user.Id.ToString(),
-                Token = token
+                Token = await _userManager.GeneratePasswordResetTokenAsync(user)
             });
 
             return new ResetPasswordCommandResult

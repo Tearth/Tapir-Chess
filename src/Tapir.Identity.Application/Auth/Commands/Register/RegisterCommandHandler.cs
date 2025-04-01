@@ -36,14 +36,11 @@ namespace Tapir.Identity.Application.Auth.Commands.Register
             }
 
             await _userManager.AddToRoleAsync(user, "user");
-
-            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-
             await _taskScheduler.Run(new EmailConfirmationMailTask
             {
                 To = user.Email,
                 UserId = user.Id.ToString(),
-                Token = token
+                Token = await _userManager.GenerateEmailConfirmationTokenAsync(user)
             });
 
             return new RegisterCommandResult

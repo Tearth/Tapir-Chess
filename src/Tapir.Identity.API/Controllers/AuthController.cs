@@ -36,19 +36,7 @@ namespace Tapir.Identity.API.Controllers
                 return Problem(result.ErrorCode, null, StatusCodes.Status400BadRequest, "Failed to authorize.");
             }
 
-            Response.Cookies.Append("access_token", result.AccessToken!, new CookieOptions
-            {
-                SameSite = SameSiteMode.Strict,
-                HttpOnly = true,
-                Secure = true
-            });
-            Response.Cookies.Append("refresh_token", result.RefreshToken!, new CookieOptions
-            {
-                Path = "/api/auth/refresh-token",
-                SameSite = SameSiteMode.Strict,
-                HttpOnly = true,
-                Secure = true
-            });
+            SetCookies(result.AccessToken!, result.RefreshToken!);
 
             return Ok();
         }
@@ -126,6 +114,7 @@ namespace Tapir.Identity.API.Controllers
         public async Task<IActionResult> RefreshToken()
         {
             var refreshToken = Request.Headers["X-Refresh-Token"].FirstOrDefault();
+
             if (string.IsNullOrEmpty(refreshToken))
             {
                 return Problem("XRefreshTokenNotFound", null, StatusCodes.Status400BadRequest, "Failed to refresh token.");
@@ -141,21 +130,27 @@ namespace Tapir.Identity.API.Controllers
                 return Problem(result.ErrorCode, null, StatusCodes.Status400BadRequest, "Failed to refresh token.");
             }
 
-            Response.Cookies.Append("access_token", result.AccessToken!, new CookieOptions
+            SetCookies(result.AccessToken!, result.RefreshToken!);
+
+            return Ok();
+        }
+
+        private void SetCookies(string accessToken, string refreshToken)
+        {
+            Response.Cookies.Append("access_token", accessToken, new CookieOptions
             {
                 SameSite = SameSiteMode.Strict,
                 HttpOnly = true,
                 Secure = true
             });
-            Response.Cookies.Append("refresh_token", result.RefreshToken!, new CookieOptions
+
+            Response.Cookies.Append("refresh_token", refreshToken, new CookieOptions
             {
                 Path = "/api/auth/refresh-token",
                 SameSite = SameSiteMode.Strict,
                 HttpOnly = true,
                 Secure = true
             });
-
-            return Ok(result);
         }
     }
 }

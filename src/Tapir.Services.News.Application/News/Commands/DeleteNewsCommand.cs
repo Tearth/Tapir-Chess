@@ -6,7 +6,7 @@ namespace Tapir.Services.News.Application.News.Commands
 {
     public class DeleteNewsCommand : IRequest<Unit>
     {
-        public Guid Id { get; set; }
+        public required Guid Id { get; set; }
     }
 
     public class DeleteNewsCommandHandler : IRequestHandler<DeleteNewsCommand, Unit>

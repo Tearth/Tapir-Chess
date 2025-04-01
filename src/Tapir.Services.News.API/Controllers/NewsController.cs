@@ -36,8 +36,8 @@ namespace Tapir.Services.News.API.Controllers
         [HttpGet]
         [Route("{id}")]
         [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(NewsDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Get(Guid id)
         {
             var news = await _mediator.Send(new GetNewsQuery

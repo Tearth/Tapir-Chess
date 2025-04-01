@@ -23,9 +23,11 @@ namespace Tapir.Identity.Application.Auth.Commands.RefreshToken
         public async Task<RefreshTokenCommandResult> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
         {
             var userToken = await _databaseContext.RefreshTokens.FirstOrDefaultAsync(p => p.Value == request.RefreshToken);
+
             if (userToken?.Value == request.RefreshToken)
             {
                 var user = await _userManager.FindByIdAsync(userToken.UserId.ToString());
+
                 if (user == null)
                 {
                     return RefreshTokenCommandResult.Error("UserNotFound");
@@ -36,6 +38,7 @@ namespace Tapir.Identity.Application.Auth.Commands.RefreshToken
                 var refreshToken = _tokenGenerator.GenerateRefreshToken();
 
                 _databaseContext.RefreshTokens.Remove(userToken);
+
                 await _databaseContext.RefreshTokens.AddAsync(new RefreshToken<Guid>
                 {
                     UserId = user.Id,

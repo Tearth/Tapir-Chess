@@ -6,7 +6,7 @@ namespace Tapir.Services.News.Application.News.Commands
 {
     public class UpdateNewsCommand : IRequest<Unit>
     {
-        public Guid Id { get; set; }
+        public required Guid Id { get; set; }
         public string? Title { get; set; }
         public string? Alias { get; set; }
         public string? Content { get; set; }

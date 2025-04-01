@@ -17,10 +17,10 @@ namespace Tapir.Core.Events
 
             if (type.BaseType != typeof(DomainEvent))
             {
-                throw new InvalidOperationException($"Event {type.Name} is not a valid event.");
+                throw new InvalidOperationException($"Event {type.Name} is not a valid type.");
             }
 
-            _events.Add(type.Name, typeof(TEvent));
+            _events.Add(type.Name, type);
         }
 
         public Type GetAssemblyType(string type)

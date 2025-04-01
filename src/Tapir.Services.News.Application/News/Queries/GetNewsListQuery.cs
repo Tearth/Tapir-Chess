@@ -8,8 +8,8 @@ namespace Tapir.Services.News.Application.News.Queries
 {
     public class GetNewsListQuery : IRequest<PagedResult<NewsDto>>
     {
-        public int PageNumber { get; set; }
-        public int PageSize { get; set; }
+        public required int PageNumber { get; set; }
+        public required int PageSize { get; set; }
     }
 
     public class GetNewsListQueryHandler : IRequestHandler<GetNewsListQuery, PagedResult<NewsDto>>

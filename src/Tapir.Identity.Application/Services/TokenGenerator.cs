@@ -17,7 +17,7 @@ namespace Tapir.Identity.Application.Services
             _settings = settings;
         }
 
-        public string GenerateAccessToken(Guid userId, string? username, string? email, List<string> roles)
+        public string GenerateAccessToken(Guid userId, string? username, string? email, IEnumerable<string> roles)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.Jwt.Secret));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

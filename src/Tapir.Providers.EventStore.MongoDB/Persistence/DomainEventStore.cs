@@ -31,7 +31,7 @@ namespace Tapir.Providers.EventStore.MongoDB.Persistence
 
         public async Task<bool> AddAsync(Guid aggregateId, DomainEvent @event, int expectedVersion)
         {
-            if (!await SetAggregateVersion(aggregateId, [@event], expectedVersion))
+            if (!await SetAggregateVersion(aggregateId, 1, expectedVersion))
             {
                 return false;
             }
@@ -40,9 +40,9 @@ namespace Tapir.Providers.EventStore.MongoDB.Persistence
             return true;
         }
 
-        public async Task<bool> AddAsync(Guid aggregateId, List<DomainEvent> events, int expectedVersion)
+        public async Task<bool> AddAsync(Guid aggregateId, IEnumerable<DomainEvent> events, int expectedVersion)
         {
-            if (!await SetAggregateVersion(aggregateId, events, expectedVersion))
+            if (!await SetAggregateVersion(aggregateId, events.Count(), expectedVersion))
             {
                 return false;
             }
@@ -74,12 +74,12 @@ namespace Tapir.Providers.EventStore.MongoDB.Persistence
             return documents.Select(DeserializeEvent).ToList();
         }
 
-        public async Task<IEnumerable<DomainEvent>> GetByTimestamp(DateTime from, DateTime to)
+        public async Task<IReadOnlyList<DomainEvent>> GetByTimestamp(DateTime from, DateTime to)
         {
             var filter = Builders<BsonDocument>.Filter.Gt("Timestamp", from) & Builders<BsonDocument>.Filter.Lte("Timestamp", to);
             var documents = await _mongoDatabase.GetCollection<BsonDocument>(EventsCollectionName).Find(filter).ToListAsync();
 
-            return documents.Select(DeserializeEvent);
+            return documents.Select(DeserializeEvent).ToList();
         }
 
         public async Task<DateTime?> GetLastSynchronizationTime()
@@ -105,7 +105,7 @@ namespace Tapir.Providers.EventStore.MongoDB.Persistence
             await _mongoDatabase.GetCollection<BsonDocument>(MetaDataCollectionName).UpdateOneAsync(filter, update, options);
         }
 
-        private async Task<bool> SetAggregateVersion(Guid aggregateId, List<DomainEvent> events, int expectedVersion)
+        private async Task<bool> SetAggregateVersion(Guid aggregateId, int eventsCount, int expectedVersion)
         {
             var collection = _mongoDatabase.GetCollection<AggregateDocument>(AggregatesCollectionName);
             var filter = Builders<AggregateDocument>.Filter.Eq("_id", aggregateId);
@@ -115,7 +115,7 @@ namespace Tapir.Providers.EventStore.MongoDB.Persistence
                 await collection.InsertOneAsync(new AggregateDocument
                 {
                     Id = aggregateId,
-                    Version = events.Count
+                    Version = eventsCount
                 });
 
                 return true;
@@ -124,7 +124,7 @@ namespace Tapir.Providers.EventStore.MongoDB.Persistence
             {
                 filter &= Builders<AggregateDocument>.Filter.Eq("Version", expectedVersion);
 
-                var update = Builders<AggregateDocument>.Update.Set("Version", expectedVersion + events.Count);
+                var update = Builders<AggregateDocument>.Update.Set("Version", expectedVersion + eventsCount);
                 var result = await _mongoDatabase.GetCollection<AggregateDocument>(AggregatesCollectionName).FindOneAndUpdateAsync(filter, update);
 
                 return result != null;

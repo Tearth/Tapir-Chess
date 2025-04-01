@@ -6,6 +6,7 @@ namespace Tapir.Identity.Infrastructure.Models
     {
         [Key]
         public int Id { get; set; }
+
         public required TKey UserId { get; set; }
         public required DateTime CreatedAt { get; set; }
         public required string Value { get; set; }
