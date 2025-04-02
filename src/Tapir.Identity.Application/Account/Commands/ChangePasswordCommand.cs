@@ -1,11 +1,28 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using Tapir.Core.Identity;
+using Tapir.Core.Validation;
+using Tapir.Identity.Infrastructure.Commands;
 using Tapir.Identity.Infrastructure.Models;
 
-namespace Tapir.Identity.Application.Account.Commands.ChangePassword
+namespace Tapir.Identity.Application.Account.Commands
 {
+    public class ChangePasswordCommand : IRequest<ChangePasswordCommandResult>
+    {
+        [Required(ErrorMessage = ValidationErrorCodes.EMPTY_FIELD)]
+        public required string OldPassword { get; set; }
+
+        [Required(ErrorMessage = ValidationErrorCodes.EMPTY_FIELD)]
+        public required string NewPassword { get; set; }
+    }
+
+    public class ChangePasswordCommandResult : CommandResultBase<ChangePasswordCommandResult>
+    {
+
+    }
+
     public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, ChangePasswordCommandResult>
     {
         private readonly UserManager<ApplicationUser> _userManager;

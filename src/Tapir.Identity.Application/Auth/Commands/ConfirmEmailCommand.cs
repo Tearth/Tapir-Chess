@@ -1,10 +1,27 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
+using Tapir.Core.Validation;
+using Tapir.Identity.Infrastructure.Commands;
 using Tapir.Identity.Infrastructure.Models;
 
-namespace Tapir.Identity.Application.Auth.Commands.ConfirmEmail
+namespace Tapir.Identity.Application.Auth.Commands
 {
+    public class ConfirmEmailCommand : IRequest<ConfirmEmailCommandResult>
+    {
+        [Required(ErrorMessage = ValidationErrorCodes.EMPTY_FIELD)]
+        public required string UserId { get; set; }
+
+        [Required(ErrorMessage = ValidationErrorCodes.EMPTY_FIELD)]
+        public required string Token { get; set; }
+    }
+
+    public class ConfirmEmailCommandResult : CommandResultBase<ConfirmEmailCommandResult>
+    {
+
+    }
+
     public class ConfirmEmailCommandHandler : IRequestHandler<ConfirmEmailCommand, ConfirmEmailCommandResult>
     {
         private readonly UserManager<ApplicationUser> _userManager;

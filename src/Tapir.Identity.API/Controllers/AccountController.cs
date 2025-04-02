@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Tapir.Core.Queries;
-using Tapir.Identity.Application.Account.Commands.ChangePassword;
-using Tapir.Identity.Application.Auth.Commands.Register;
+using Tapir.Identity.Application.Account.Commands;
+using Tapir.Identity.Application.Auth.Commands;
 
 namespace Tapir.Identity.API.Controllers
 {

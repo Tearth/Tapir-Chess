@@ -1,11 +1,29 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
+using Tapir.Core.Validation;
 using Tapir.Identity.Application.Services;
+using Tapir.Identity.Infrastructure.Commands;
 using Tapir.Identity.Infrastructure.Models;
 using Tapir.Identity.Infrastructure.Persistence;
 
-namespace Tapir.Identity.Application.Auth.Commands.Login
+namespace Tapir.Identity.Application.Auth.Commands
 {
+    public class LogInCommand : IRequest<LogInCommandResult>
+    {
+        [Required(ErrorMessage = ValidationErrorCodes.EMPTY_FIELD)]
+        public required string Username { get; set; }
+
+        [Required(ErrorMessage = ValidationErrorCodes.EMPTY_FIELD)]
+        public required string Password { get; set; }
+    }
+
+    public class LogInCommandResult : CommandResultBase<LogInCommandResult>
+    {
+        public string? AccessToken { get; set; }
+        public string? RefreshToken { get; set; }
+    }
+
     public class LogInCommandHandler : IRequestHandler<LogInCommand, LogInCommandResult>
     {
         private readonly UserManager<ApplicationUser> _userManager;

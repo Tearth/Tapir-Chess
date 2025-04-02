@@ -1,11 +1,32 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using Tapir.Core.Scheduler;
+using Tapir.Core.Validation;
 using Tapir.Identity.Application.Auth.Mails.EmailConfirmation;
+using Tapir.Identity.Infrastructure.Commands;
 using Tapir.Identity.Infrastructure.Models;
 
-namespace Tapir.Identity.Application.Auth.Commands.Register
+namespace Tapir.Identity.Application.Auth.Commands
 {
+    public class RegisterCommand : IRequest<RegisterCommandResult>
+    {
+        [Required(ErrorMessage = ValidationErrorCodes.EMPTY_FIELD)]
+        public required string Username { get; set; }
+
+        [Required(ErrorMessage = ValidationErrorCodes.EMPTY_FIELD)]
+        public required string Password { get; set; }
+
+        [Required(ErrorMessage = ValidationErrorCodes.EMPTY_FIELD)]
+        [EmailAddress(ErrorMessage = ValidationErrorCodes.INVALID_EMAIL)]
+        public required string Email { get; set; }
+    }
+
+    public class RegisterCommandResult : CommandResultBase<RegisterCommandResult>
+    {
+
+    }
+
     public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterCommandResult>
     {
         private readonly UserManager<ApplicationUser> _userManager;

@@ -1,12 +1,27 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using Tapir.Core.Validation;
 using Tapir.Identity.Application.Services;
+using Tapir.Identity.Infrastructure.Commands;
 using Tapir.Identity.Infrastructure.Models;
 using Tapir.Identity.Infrastructure.Persistence;
 
-namespace Tapir.Identity.Application.Auth.Commands.RefreshToken
+namespace Tapir.Identity.Application.Auth.Commands
 {
+    public class RefreshTokenCommand : IRequest<RefreshTokenCommandResult>
+    {
+        [Required(ErrorMessage = ValidationErrorCodes.EMPTY_FIELD)]
+        public required string RefreshToken { get; set; }
+    }
+
+    public class RefreshTokenCommandResult : CommandResultBase<RefreshTokenCommandResult>
+    {
+        public string? AccessToken { get; set; }
+        public string? RefreshToken { get; set; }
+    }
+
     public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, RefreshTokenCommandResult>
     {
         private readonly UserManager<ApplicationUser> _userManager;

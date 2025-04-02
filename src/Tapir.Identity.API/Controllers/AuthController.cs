@@ -1,12 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Tapir.Core.Queries;
-using Tapir.Identity.Application.Auth.Commands.ConfirmEmail;
-using Tapir.Identity.Application.Auth.Commands.ConfirmPassword;
-using Tapir.Identity.Application.Auth.Commands.Login;
-using Tapir.Identity.Application.Auth.Commands.RefreshToken;
-using Tapir.Identity.Application.Auth.Commands.Register;
-using Tapir.Identity.Application.Auth.Commands.ResetPassword;
+using Tapir.Identity.Application.Auth.Commands;
 
 namespace Tapir.Identity.API.Controllers
 {
@@ -15,12 +10,10 @@ namespace Tapir.Identity.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IConfiguration _configuration;
 
-        public AuthController(IMediator mediator, IConfiguration configuration)
+        public AuthController(IMediator mediator)
         {
             _mediator = mediator;
-            _configuration = configuration;
         }
 
         [HttpPost]
