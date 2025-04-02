@@ -34,6 +34,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{8200
 	ProjectSection(SolutionItems) = preProject
 		scripts\mongo-init.js = scripts\mongo-init.js
 		scripts\mongo-replica.js = scripts\mongo-replica.js
+		scripts\postgresql-init.sh = scripts\postgresql-init.sh
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Providers.Database.PostgreSQL", "src\Tapir.Providers.Database.PostgreSQL\Tapir.Providers.Database.PostgreSQL.csproj", "{2902D185-C2D9-4FE5-9829-256484CC4289}"
