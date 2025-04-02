@@ -67,6 +67,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Identity.API", "src\T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Providers.Mailing.MailKit", "src\Tapir.Providers.Mailing.MailKit\Tapir.Providers.Mailing.MailKit.csproj", "{D448DBAE-2E50-4023-A202-561139224D51}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Players", "Players", "{9A947378-FBAA-431C-97C6-78BEDB903701}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Services.Players.API", "src\Tapir.Services.Players.API\Tapir.Services.Players.API.csproj", "{D3951F0D-7F37-4197-9ABC-6127F02565C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Services.Players.Application", "src\Tapir.Services.Players.Application\Tapir.Services.Players.Application.csproj", "{FADA5C11-D577-4BA0-A387-10C93B2BE2A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Services.Players.Domain", "src\Tapir.Services.Players.Domain\Tapir.Services.Players.Domain.csproj", "{4498F5EC-B44B-4A10-A99D-2D1CC0570DED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Services.Players.Infrastructure", "src\Tapir.Services.Players.Infrastructure\Tapir.Services.Players.Infrastructure.csproj", "{367ACFD2-5611-4E6F-A13E-DC27D37728A0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -133,6 +143,22 @@ Global
 		{D448DBAE-2E50-4023-A202-561139224D51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D448DBAE-2E50-4023-A202-561139224D51}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D448DBAE-2E50-4023-A202-561139224D51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3951F0D-7F37-4197-9ABC-6127F02565C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3951F0D-7F37-4197-9ABC-6127F02565C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3951F0D-7F37-4197-9ABC-6127F02565C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3951F0D-7F37-4197-9ABC-6127F02565C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FADA5C11-D577-4BA0-A387-10C93B2BE2A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FADA5C11-D577-4BA0-A387-10C93B2BE2A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FADA5C11-D577-4BA0-A387-10C93B2BE2A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FADA5C11-D577-4BA0-A387-10C93B2BE2A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4498F5EC-B44B-4A10-A99D-2D1CC0570DED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4498F5EC-B44B-4A10-A99D-2D1CC0570DED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4498F5EC-B44B-4A10-A99D-2D1CC0570DED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4498F5EC-B44B-4A10-A99D-2D1CC0570DED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{367ACFD2-5611-4E6F-A13E-DC27D37728A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{367ACFD2-5611-4E6F-A13E-DC27D37728A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{367ACFD2-5611-4E6F-A13E-DC27D37728A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{367ACFD2-5611-4E6F-A13E-DC27D37728A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -161,6 +187,11 @@ Global
 		{4936B41C-E531-43B4-93B1-FAEE98783998} = {CE13DE68-04C9-4312-AFDE-3AD3DB088003}
 		{821201E7-6408-4D7B-AA51-34BE7565F570} = {CE13DE68-04C9-4312-AFDE-3AD3DB088003}
 		{D448DBAE-2E50-4023-A202-561139224D51} = {F8A81F53-D6BE-489C-BCDB-11D62A804A91}
+		{9A947378-FBAA-431C-97C6-78BEDB903701} = {FF808455-853D-4B75-937B-3ED33C2CA374}
+		{D3951F0D-7F37-4197-9ABC-6127F02565C4} = {9A947378-FBAA-431C-97C6-78BEDB903701}
+		{FADA5C11-D577-4BA0-A387-10C93B2BE2A1} = {9A947378-FBAA-431C-97C6-78BEDB903701}
+		{4498F5EC-B44B-4A10-A99D-2D1CC0570DED} = {9A947378-FBAA-431C-97C6-78BEDB903701}
+		{367ACFD2-5611-4E6F-A13E-DC27D37728A0} = {9A947378-FBAA-431C-97C6-78BEDB903701}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0CBFA5DE-DAE7-416F-BF01-40C96FA4551D}

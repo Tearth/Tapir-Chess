@@ -19,6 +19,13 @@ services:
     build:
       context: .
       dockerfile: src/Tapir.Services.News.API/Dockerfile
+      
+  tapir-services-players:
+    image: ${DOCKER_REGISTRY-}tapirservicesplayers
+    hostname: tapir-services-players
+    build:
+      context: .
+      dockerfile: src/Tapir.Services.Players.API/Dockerfile
 
   postgresql:
     image: postgres:latest
