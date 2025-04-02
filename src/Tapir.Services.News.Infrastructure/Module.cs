@@ -33,28 +33,28 @@ namespace Tapir.Services.News.Infrastructure
                 cfg.MigrationsAssembly = Assembly.GetExecutingAssembly();
             });
 
-            services.AddMongoDBEventStore(cfg =>
+            services.AddMongoDbEventStore(cfg =>
             {
-                if (settings.MongoDb == null)
+                if (settings.Database == null)
                 {
                     throw new InvalidOperationException("MongoDb settings not found.");
                 }
 
-                if (settings.MongoDb.Servers == null || settings.MongoDb.Servers.Count == 0)
+                if (settings.Database.Servers == null || settings.Database.Servers.Count == 0)
                 {
                     throw new InvalidOperationException("MongoDb server settings not found.");
                 }
 
-                cfg.Servers = settings.MongoDb.Servers.Select(p => new ServerConfiguration
+                cfg.Servers = settings.Database.Servers.Select(p => new ServerConfiguration
                 {
                     Host = p.Host,
                     Port = p.Port
                 }).ToList();
 
-                cfg.DatabaseName = settings.MongoDb.DatabaseName;
-                cfg.AuthenticationMethod = settings.MongoDb.AuthenticationMethod;
-                cfg.Username = settings.MongoDb.Username;
-                cfg.Password = settings.MongoDb.Password;
+                cfg.DatabaseName = settings.Database.DatabaseName;
+                cfg.AuthenticationMethod = settings.Database.AuthenticationMethod;
+                cfg.Username = settings.Database.Username;
+                cfg.Password = settings.Database.Password;
             });
 
             services.AddQuartzScheduler(cfg =>

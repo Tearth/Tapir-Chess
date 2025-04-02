@@ -2,19 +2,19 @@
 {
     public class AppSettings
     {
-        public MongoDbSettings? MongoDb { get; set; }
+        public DatabaseSettings? Database { get; set; }
     }
 
-    public class MongoDbSettings
+    public class DatabaseSettings
     {
-        public List<MongoDbServer>? Servers { get; set; }
+        public List<DatabaseServer>? Servers { get; set; }
         public string? DatabaseName { get; set; }
         public string? AuthenticationMethod { get; set; }
         public string? Username { get; set; }
         public string? Password { get; set; }
     }
 
-    public class MongoDbServer
+    public class DatabaseServer
     {
         public string? Host { get; set; }
         public int? Port { get; set; }
