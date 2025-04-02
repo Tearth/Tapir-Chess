@@ -10,11 +10,11 @@ namespace Tapir.Identity.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddHostedService<Startup>();
             services.AddTransient<TokenGenerator>();
             services.AddTransient<EmailConfirmationMailTask>();
             services.AddTransient<PasswordResetMailTask>();
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Module).Assembly));
-            services.AddHostedService<Startup>();
             return services;
         }
     }

@@ -11,11 +11,11 @@ namespace Tapir.Services.News.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddHostedService<Startup>();
             services.AddDomain();
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Module).Assembly));
             services.AddTransient<IDomainEventSynchronizer, DomainEventSynchronizer>();
             services.AddTransient<SynchronizeDomainEventsTask>();
-            services.AddHostedService<Startup>();
 
             return services;
         }

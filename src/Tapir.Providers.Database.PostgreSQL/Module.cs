@@ -16,10 +16,12 @@ namespace Tapir.Providers.Database.PostgreSQL
                 throw new InvalidOperationException("Connection string not found.");
             }
 
+            services.AddHostedService<Startup>();
+
             services.AddTransient<IDatabaseConnection, DatabaseConnection>(p => new DatabaseConnection(
                 configuration.ConnectionString    
             ));
-            services.AddHostedService<Startup>();
+
             services.AddSingleton(configuration);
 
             return services;

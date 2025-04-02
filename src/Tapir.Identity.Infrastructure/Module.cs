@@ -22,6 +22,8 @@ namespace Tapir.Identity.Infrastructure
                 throw new InvalidOperationException("AppSettings not found.");
             }
 
+            services.AddHostedService<Startup>();
+
             services.AddDbContext<DatabaseContext>(options => 
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"))
             );
@@ -89,7 +91,6 @@ namespace Tapir.Identity.Infrastructure
             });
 
             services.AddSingleton(settings);
-            services.AddHostedService<Startup>();
 
             return services;
         }
