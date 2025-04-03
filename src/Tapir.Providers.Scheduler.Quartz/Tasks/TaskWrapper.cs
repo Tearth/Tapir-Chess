@@ -1,6 +1,7 @@
-﻿using Newtonsoft.Json;
-using Quartz;
+﻿using Quartz;
+using System.Text.Json;
 using Tapir.Core.Scheduler;
+using Tapir.Core.Text;
 
 namespace Tapir.Providers.Scheduler.Quartz.Tasks
 {
@@ -39,7 +40,7 @@ namespace Tapir.Providers.Scheduler.Quartz.Tasks
                 throw new InvalidOperationException("Job assembly type is not a valid task.");
             }
 
-            JsonConvert.PopulateObject(data, task);
+            JsonSerializerExt.PopulateObject(data, task);
 
             await task.Run();
         }

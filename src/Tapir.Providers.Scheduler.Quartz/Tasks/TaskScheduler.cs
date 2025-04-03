@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Quartz;
+using System.Text.Json;
 using Tapir.Core.Scheduler;
 
 namespace Tapir.Providers.Scheduler.Quartz.Tasks
@@ -24,7 +24,7 @@ namespace Tapir.Providers.Scheduler.Quartz.Tasks
             var job = JobBuilder.Create<TaskWrapper>()
                 .WithIdentity(key)
                 .UsingJobData("Type", task.GetType().AssemblyQualifiedName)
-                .UsingJobData("Data", JsonConvert.SerializeObject(task))
+                .UsingJobData("Data", JsonSerializer.Serialize(task))
                 .PersistJobDataAfterExecution()
                 .StoreDurably()
                 .RequestRecovery()
@@ -44,7 +44,7 @@ namespace Tapir.Providers.Scheduler.Quartz.Tasks
             var job = JobBuilder.Create<TaskWrapper>()
                 .WithIdentity(key)
                 .UsingJobData("Type", task.GetType().AssemblyQualifiedName)
-                .UsingJobData("Data", JsonConvert.SerializeObject(task))
+                .UsingJobData("Data", JsonSerializer.Serialize(task))
                 .DisallowConcurrentExecution()
                 .PersistJobDataAfterExecution()
                 .StoreDurably()
