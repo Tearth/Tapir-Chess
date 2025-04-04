@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using Tapir.Core.Commands;
 using Tapir.Core.Validation;
 using Tapir.Identity.Application.Services;
 using Tapir.Identity.Infrastructure.Commands;
@@ -10,7 +11,7 @@ using Tapir.Identity.Infrastructure.Persistence;
 
 namespace Tapir.Identity.Application.Auth.Commands
 {
-    public class RefreshTokenCommand : IRequest<RefreshTokenCommandResult>
+    public class RefreshTokenCommand
     {
         [Required(ErrorMessage = ValidationErrorCodes.EMPTY_FIELD)]
         public required string RefreshToken { get; set; }
@@ -22,7 +23,12 @@ namespace Tapir.Identity.Application.Auth.Commands
         public string? RefreshToken { get; set; }
     }
 
-    public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, RefreshTokenCommandResult>
+    public interface IRefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, RefreshTokenCommandResult>
+    {
+
+    }
+
+    public class RefreshTokenCommandHandler : IRefreshTokenCommandHandler
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly TokenGenerator _tokenGenerator;
@@ -35,7 +41,7 @@ namespace Tapir.Identity.Application.Auth.Commands
             _databaseContext = databaseContext;
         }
 
-        public async Task<RefreshTokenCommandResult> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
+        public async Task<RefreshTokenCommandResult> Process(RefreshTokenCommand request)
         {
             var userToken = await _databaseContext.RefreshTokens.FirstOrDefaultAsync(p => p.Value == request.RefreshToken);
 

@@ -1,6 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Tapir.Core.Commands;
 using Tapir.Core.Events;
+using Tapir.Core.Types;
+using Tapir.Services.News.Application.News.Commands;
 using Tapir.Services.News.Application.Tasks;
 using Tapir.Services.News.Domain;
 
@@ -16,6 +19,10 @@ namespace Tapir.Services.News.Application
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Module).Assembly));
             services.AddTransient<IDomainEventSynchronizer, DomainEventSynchronizer>();
             services.AddTransient<SynchronizeDomainEventsTask>();
+
+            services.AddTransient<ICreateNewsCommandHandler, CreateNewsCommandHandler>();
+            services.AddTransient<IDeleteNewsCommandHandler, DeleteNewsCommandHandler>();
+            services.AddTransient<IUpdateNewsCommandHandler, UpdateNewsCommandHandler>();
 
             return services;
         }

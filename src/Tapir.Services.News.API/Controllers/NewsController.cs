@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Tapir.Core.Commands;
 using Tapir.Core.Queries;
 using Tapir.Services.News.Application.News.Commands;
 using Tapir.Services.News.Application.News.Queries;
@@ -54,11 +55,12 @@ namespace Tapir.Services.News.API.Controllers
         }
 
         [HttpPost]
+        [Route("")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> Create([FromBody] CreateNewsCommand command)
+        public async Task<IActionResult> Create(CreateNewsCommand command, [FromServices] ICreateNewsCommandHandler handler)
         {
-            await _mediator.Send(command);
+            await handler.Process(command);
             return Ok();
         }
 
@@ -67,14 +69,14 @@ namespace Tapir.Services.News.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Update(Guid id, [FromBody] UpdateNewsCommand command)
+        public async Task<IActionResult> Update(Guid id, UpdateNewsCommand command, [FromServices] IUpdateNewsCommandHandler handler)
         {
             if (id != command.Id)
             {
                 return BadRequest();
             }
 
-            await _mediator.Send(command);
+            await handler.Process(command);
             return Ok();
         }
 
@@ -82,9 +84,9 @@ namespace Tapir.Services.News.API.Controllers
         [Route("{id}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id, [FromServices] IDeleteNewsCommandHandler handler)
         {
-            await _mediator.Send(new DeleteNewsCommand
+            await handler.Process(new DeleteNewsCommand
             {
                 Id = id
             });

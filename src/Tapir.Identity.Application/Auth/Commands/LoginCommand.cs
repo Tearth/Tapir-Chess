@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using Tapir.Core.Commands;
 using Tapir.Core.Validation;
 using Tapir.Identity.Application.Services;
 using Tapir.Identity.Infrastructure.Commands;
@@ -9,7 +10,7 @@ using Tapir.Identity.Infrastructure.Persistence;
 
 namespace Tapir.Identity.Application.Auth.Commands
 {
-    public class LogInCommand : IRequest<LogInCommandResult>
+    public class LogInCommand
     {
         [Required(ErrorMessage = ValidationErrorCodes.EMPTY_FIELD)]
         public required string Username { get; set; }
@@ -24,7 +25,12 @@ namespace Tapir.Identity.Application.Auth.Commands
         public string? RefreshToken { get; set; }
     }
 
-    public class LogInCommandHandler : IRequestHandler<LogInCommand, LogInCommandResult>
+    public interface ILogInCommandHandler : ICommandHandler<LogInCommand, LogInCommandResult>
+    {
+
+    }
+
+    public class LogInCommandHandler : ILogInCommandHandler
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly TokenGenerator _tokenGenerator;
@@ -37,7 +43,7 @@ namespace Tapir.Identity.Application.Auth.Commands
             _databaseContext = databaseContext;
         }
 
-        public async Task<LogInCommandResult> Handle(LogInCommand request, CancellationToken cancellationToken)
+        public async Task<LogInCommandResult> Process(LogInCommand request)
         {
             var user = await _userManager.FindByNameAsync(request.Username);
 

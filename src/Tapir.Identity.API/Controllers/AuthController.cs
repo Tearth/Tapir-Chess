@@ -1,6 +1,8 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Tapir.Core.Commands;
 using Tapir.Core.Queries;
+using Tapir.Identity.Application.Account.Commands;
 using Tapir.Identity.Application.Auth.Commands;
 
 namespace Tapir.Identity.API.Controllers
@@ -9,20 +11,13 @@ namespace Tapir.Identity.API.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly IMediator _mediator;
-
-        public AuthController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
         [HttpPost]
         [Route("login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Login(LogInCommand command)
+        public async Task<IActionResult> Login(LogInCommand command, [FromServices] ILogInCommandHandler handler)
         {
-            var result = await _mediator.Send(command);
+            var result = await handler.Process(command);
             
             if (!result.Success)
             {
@@ -39,9 +34,9 @@ namespace Tapir.Identity.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(typeof(PagedResult<RegisterCommandResult>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(PagedResult<ProblemDetails>), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Register(RegisterCommand command)
+        public async Task<IActionResult> Register(RegisterCommand command, [FromServices] IRegisterCommandHandler handler)
         {
-            var result = await _mediator.Send(command);
+            var result = await handler.Process(command);
             
             if (!result.Success)
             {
@@ -55,9 +50,9 @@ namespace Tapir.Identity.API.Controllers
         [Route("register/confirm")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> ConfirmEmail(ConfirmEmailCommand command)
+        public async Task<IActionResult> ConfirmEmail(ConfirmEmailCommand command, [FromServices] IConfirmEmailCommandHandler handler)
         {
-            var result = await _mediator.Send(command);
+            var result = await handler.Process(command);
 
             if (!result.Success)
             {
@@ -72,9 +67,9 @@ namespace Tapir.Identity.API.Controllers
         [Route("reset-password")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> ResetPassword(ResetPasswordCommand command)
+        public async Task<IActionResult> ResetPassword(ResetPasswordCommand command, [FromServices] IResetPasswordCommandHandler handler)
         {
-            var result = await _mediator.Send(command);
+            var result = await handler.Process(command);
 
             if (!result.Success)
             {
@@ -88,9 +83,9 @@ namespace Tapir.Identity.API.Controllers
         [Route("reset-password/confirm")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> ConfirmPassword(ConfirmPasswordCommand command)
+        public async Task<IActionResult> ConfirmPassword(ConfirmPasswordCommand command, [FromServices] IConfirmPasswordCommandHandler handler)
         {
-            var result = await _mediator.Send(command);
+            var result = await handler.Process(command);
 
             if (!result.Success)
             {
@@ -104,7 +99,7 @@ namespace Tapir.Identity.API.Controllers
         [Route("refresh-token")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> RefreshToken()
+        public async Task<IActionResult> RefreshToken([FromServices] IRefreshTokenCommandHandler handler)
         {
             var refreshToken = Request.Headers["X-Refresh-Token"].FirstOrDefault();
 
@@ -113,7 +108,7 @@ namespace Tapir.Identity.API.Controllers
                 return Problem("XRefreshTokenNotFound", null, StatusCodes.Status400BadRequest, "Failed to refresh token.");
             }
 
-            var result = await _mediator.Send(new RefreshTokenCommand
+            var result = await handler.Process(new RefreshTokenCommand
             {
                 RefreshToken = refreshToken
             });

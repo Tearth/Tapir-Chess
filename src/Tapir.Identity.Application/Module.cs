@@ -1,5 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Tapir.Core.Commands;
+using Tapir.Identity.Application.Account.Commands;
+using Tapir.Identity.Application.Auth.Commands;
 using Tapir.Identity.Application.Auth.Mails.EmailConfirmation;
 using Tapir.Identity.Application.Auth.Mails.PasswordReset;
 using Tapir.Identity.Application.Services;
@@ -15,6 +18,15 @@ namespace Tapir.Identity.Application
             services.AddTransient<EmailConfirmationMailTask>();
             services.AddTransient<PasswordResetMailTask>();
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Module).Assembly));
+
+            services.AddTransient<IChangePasswordCommandHandler, ChangePasswordCommandHandler>();
+            services.AddTransient<IConfirmEmailCommandHandler, ConfirmEmailCommandHandler>();
+            services.AddTransient<IConfirmPasswordCommandHandler, ConfirmPasswordCommandHandler>();
+            services.AddTransient<ILogInCommandHandler, LogInCommandHandler>();
+            services.AddTransient<IRefreshTokenCommandHandler, RefreshTokenCommandHandler>();
+            services.AddTransient<IRegisterCommandHandler, RegisterCommandHandler>();
+            services.AddTransient<IResetPasswordCommandHandler, ResetPasswordCommandHandler>();
+
             return services;
         }
     }

@@ -1,15 +1,17 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using Tapir.Core.Commands;
 using Tapir.Core.Identity;
+using Tapir.Core.Types;
 using Tapir.Core.Validation;
+using Tapir.Identity.Application.Auth.Commands;
 using Tapir.Identity.Infrastructure.Commands;
 using Tapir.Identity.Infrastructure.Models;
 
 namespace Tapir.Identity.Application.Account.Commands
 {
-    public class ChangePasswordCommand : IRequest<ChangePasswordCommandResult>
+    public class ChangePasswordCommand
     {
         [Required(ErrorMessage = ValidationErrorCodes.EMPTY_FIELD)]
         public required string OldPassword { get; set; }
@@ -23,7 +25,12 @@ namespace Tapir.Identity.Application.Account.Commands
 
     }
 
-    public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, ChangePasswordCommandResult>
+    public interface IChangePasswordCommandHandler : ICommandHandler<ChangePasswordCommand, ChangePasswordCommandResult>
+    {
+
+    }
+
+    public class ChangePasswordCommandHandler : IChangePasswordCommandHandler
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -34,7 +41,7 @@ namespace Tapir.Identity.Application.Account.Commands
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<ChangePasswordCommandResult> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
+        public async Task<ChangePasswordCommandResult> Process(ChangePasswordCommand request)
         {
             var userId = _httpContextAccessor.HttpContext?.User.GetId();
             if (userId == null)

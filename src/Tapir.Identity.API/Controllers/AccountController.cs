@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Tapir.Core.Commands;
 using Tapir.Core.Queries;
 using Tapir.Identity.Application.Account.Commands;
 using Tapir.Identity.Application.Auth.Commands;
@@ -10,21 +11,14 @@ namespace Tapir.Identity.API.Controllers
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
-        private readonly IMediator _mediator;
-
-        public AccountController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
         [HttpPost]
         [Route("change-password")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(PagedResult<RegisterCommandResult>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> ChangePassword(ChangePasswordCommand command)
+        public async Task<IActionResult> ChangePassword(ChangePasswordCommand command, [FromServices] IChangePasswordCommandHandler handler)
         {
-            var result = await _mediator.Send(command);
+            var result = await handler.Process(command);
 
             if (!result.Success)
             {

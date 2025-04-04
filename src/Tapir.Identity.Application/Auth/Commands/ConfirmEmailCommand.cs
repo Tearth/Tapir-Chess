@@ -2,13 +2,15 @@
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using Tapir.Core.Commands;
 using Tapir.Core.Validation;
+using Tapir.Identity.Application.Account.Commands;
 using Tapir.Identity.Infrastructure.Commands;
 using Tapir.Identity.Infrastructure.Models;
 
 namespace Tapir.Identity.Application.Auth.Commands
 {
-    public class ConfirmEmailCommand : IRequest<ConfirmEmailCommandResult>
+    public class ConfirmEmailCommand
     {
         [Required(ErrorMessage = ValidationErrorCodes.EMPTY_FIELD)]
         public required string UserId { get; set; }
@@ -22,7 +24,12 @@ namespace Tapir.Identity.Application.Auth.Commands
 
     }
 
-    public class ConfirmEmailCommandHandler : IRequestHandler<ConfirmEmailCommand, ConfirmEmailCommandResult>
+    public interface IConfirmEmailCommandHandler : ICommandHandler<ConfirmEmailCommand, ConfirmEmailCommandResult>
+    {
+
+    }
+
+    public class ConfirmEmailCommandHandler : IConfirmEmailCommandHandler
     {
         private readonly UserManager<ApplicationUser> _userManager;
 
@@ -31,7 +38,7 @@ namespace Tapir.Identity.Application.Auth.Commands
             _userManager = userManager;
         }
 
-        public async Task<ConfirmEmailCommandResult> Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)
+        public async Task<ConfirmEmailCommandResult> Process(ConfirmEmailCommand request)
         {
             var userId = Encoding.UTF8.GetString(Convert.FromBase64String(request.UserId));
             var token = Encoding.UTF8.GetString(Convert.FromBase64String(request.Token));

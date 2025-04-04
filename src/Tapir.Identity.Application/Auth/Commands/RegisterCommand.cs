@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using Tapir.Core.Commands;
 using Tapir.Core.Scheduler;
 using Tapir.Core.Validation;
 using Tapir.Identity.Application.Auth.Mails.EmailConfirmation;
@@ -9,7 +10,7 @@ using Tapir.Identity.Infrastructure.Models;
 
 namespace Tapir.Identity.Application.Auth.Commands
 {
-    public class RegisterCommand : IRequest<RegisterCommandResult>
+    public class RegisterCommand
     {
         [Required(ErrorMessage = ValidationErrorCodes.EMPTY_FIELD)]
         public required string Username { get; set; }
@@ -27,7 +28,12 @@ namespace Tapir.Identity.Application.Auth.Commands
 
     }
 
-    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterCommandResult>
+    public interface IRegisterCommandHandler : ICommandHandler<RegisterCommand, RegisterCommandResult>
+    {
+
+    }
+
+    public class RegisterCommandHandler : IRegisterCommandHandler
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ITaskScheduler _taskScheduler;
@@ -38,7 +44,7 @@ namespace Tapir.Identity.Application.Auth.Commands
             _taskScheduler = taskScheduler;
         }
 
-        public async Task<RegisterCommandResult> Handle(RegisterCommand request, CancellationToken cancellationToken)
+        public async Task<RegisterCommandResult> Process(RegisterCommand request)
         {
             var user = new ApplicationUser
             {

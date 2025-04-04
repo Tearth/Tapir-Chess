@@ -1,10 +1,11 @@
-﻿using MediatR;
+﻿using Tapir.Core.Commands;
 using Tapir.Core.Persistence;
+using Tapir.Core.Types;
 using Tapir.Services.News.Domain.News.Entities;
 
 namespace Tapir.Services.News.Application.News.Commands
 {
-    public class UpdateNewsCommand : IRequest<Unit>
+    public class UpdateNewsCommand
     {
         public required Guid Id { get; set; }
         public string? Title { get; set; }
@@ -12,7 +13,12 @@ namespace Tapir.Services.News.Application.News.Commands
         public string? Content { get; set; }
     }
 
-    public class UpdateNewsCommandHandler : IRequestHandler<UpdateNewsCommand, Unit>
+    public interface IUpdateNewsCommandHandler : ICommandHandler<UpdateNewsCommand, Unit>
+    {
+
+    }
+
+    public class UpdateNewsCommandHandler : IUpdateNewsCommandHandler
     {
         private readonly IAggregateRepository<NewsEntity> _newsRepository;
 
@@ -21,7 +27,7 @@ namespace Tapir.Services.News.Application.News.Commands
             _newsRepository = newsRepository;
         }
 
-        public async Task<Unit> Handle(UpdateNewsCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Process(UpdateNewsCommand request)
         {
             var aggregate = await _newsRepository.Load(request.Id);
 
@@ -41,7 +47,7 @@ namespace Tapir.Services.News.Application.News.Commands
             }
 
             await _newsRepository.Save(aggregate);
-            return Unit.Value;
+            return Unit.Default;
         }
     }
 }
