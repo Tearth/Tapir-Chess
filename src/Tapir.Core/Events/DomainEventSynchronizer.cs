@@ -1,18 +1,17 @@
-﻿using MediatR;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Tapir.Core.Persistence;
 
 namespace Tapir.Core.Events
 {
     public class DomainEventSynchronizer : IDomainEventSynchronizer
     {
-        private readonly IMediator _mediator;
+        private readonly IDomainEventBus _eventBus;
         private readonly IDomainEventStore _eventStore;
         private readonly ILogger<DomainEventSynchronizer> _logger;
 
-        public DomainEventSynchronizer(IMediator mediator, IDomainEventStore eventStore, ILogger<DomainEventSynchronizer> logger)
+        public DomainEventSynchronizer(IDomainEventBus eventBus, IDomainEventStore eventStore, ILogger<DomainEventSynchronizer> logger)
         {
-            _mediator = mediator;
+            _eventBus = eventBus;
             _eventStore = eventStore;
             _logger = logger;
         }
@@ -26,7 +25,7 @@ namespace Tapir.Core.Events
             {
                 try
                 {
-                    await _mediator.Publish(@event);
+                    await _eventBus.Send(@event);
                 }
                 catch (Exception ex)
                 {

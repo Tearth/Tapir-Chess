@@ -1,11 +1,12 @@
 ﻿using Dapper;
 using MediatR;
+using Tapir.Core.Events;
 using Tapir.Core.Persistence;
 using Tapir.Services.News.Domain.News.Events;
 
 namespace Tapir.Services.News.Application.News.Projectors
 {
-    public class NewsTitleUpdatedProjector : INotificationHandler<NewsTitleUpdatedEvent>
+    public class NewsTitleUpdatedProjector : IDomainEventHandler<NewsTitleUpdatedEvent>
     {
         private readonly IDatabaseConnection _database;
 
@@ -14,7 +15,7 @@ namespace Tapir.Services.News.Application.News.Projectors
             _database = database;
         }
 
-        public async Task Handle(NewsTitleUpdatedEvent notification, CancellationToken cancellationToken)
+        public async Task Process(NewsTitleUpdatedEvent notification)
         {
             using (var connection = _database.Open())
             {

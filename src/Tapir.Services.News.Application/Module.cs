@@ -4,8 +4,10 @@ using Tapir.Core.Commands;
 using Tapir.Core.Events;
 using Tapir.Core.Types;
 using Tapir.Services.News.Application.News.Commands;
+using Tapir.Services.News.Application.News.Projectors;
 using Tapir.Services.News.Application.Tasks;
 using Tapir.Services.News.Domain;
+using Tapir.Services.News.Domain.News.Events;
 
 namespace Tapir.Services.News.Application
 {
@@ -18,11 +20,18 @@ namespace Tapir.Services.News.Application
             services.AddDomain();
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Module).Assembly));
             services.AddTransient<IDomainEventSynchronizer, DomainEventSynchronizer>();
+            services.AddTransient<IDomainEventBus, DomainEventBus>();
             services.AddTransient<SynchronizeDomainEventsTask>();
 
             services.AddTransient<ICreateNewsCommandHandler, CreateNewsCommandHandler>();
             services.AddTransient<IDeleteNewsCommandHandler, DeleteNewsCommandHandler>();
             services.AddTransient<IUpdateNewsCommandHandler, UpdateNewsCommandHandler>();
+
+            services.AddTransient<IDomainEventHandler<NewsAliasUpdatedEvent>, NewsAliasUpdatedProjector>();
+            services.AddTransient<IDomainEventHandler<NewsContentUpdatedEvent>, NewsContentUpdatedProjector>();
+            services.AddTransient<IDomainEventHandler<NewsCreatedEvent>, NewsCreatedProjector>();
+            services.AddTransient<IDomainEventHandler<NewsDeletedEvent>, NewsDeletedProjector>();
+            services.AddTransient<IDomainEventHandler<NewsTitleUpdatedEvent>, NewsTitleUpdatedProjector>();
 
             return services;
         }
