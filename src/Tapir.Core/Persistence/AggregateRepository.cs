@@ -39,12 +39,27 @@ namespace Tapir.Core.Persistence
             var events = entity.GetUncommittedEvents();
             var expectedVersion = entity.Version - events.Count;
 
-            if (!await _eventStore.AddAsync(entity.Id, events, expectedVersion))
+            for (var i = 0; i < 10; i++)
             {
-                throw new AggregateConcurrentWriteException("Aggregate was modified by another process.");
+                if (!await _eventStore.AddAsync(entity.Id, events, expectedVersion))
+                {
+                    entity = await Load(entity.Id);
+
+                    foreach (var @event in events)
+                    {
+                        entity.ApplyEvent(@event);
+                    }
+
+                    expectedVersion = entity.Version - events.Count;
+                }
+                else
+                {
+                    entity.ClearUncommittedEvents();
+                    return;
+                }
             }
 
-            entity.ClearUncommittedEvents();
+            throw new AggregateConcurrentWriteException("Aggregate was modified by another process.");
         }
     }
 }
