@@ -11,7 +11,7 @@ namespace Tapir.Services.News.Application.News.Queries
     }
 
 
-    public interface IGetNewsQueryHandler : ICommandHandler<GetNewsQuery, NewsDto>
+    public interface IGetNewsQueryHandler : ICommandHandler<GetNewsQuery, NewsDto?>
     {
 
     }
