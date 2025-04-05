@@ -1,9 +1,8 @@
-﻿using MediatR;
-using Tapir.Core.Persistence.Exceptions;
+﻿using Tapir.Core.Persistence.Exceptions;
 
 namespace Tapir.Core.Pipeline
 {
-    public class RetryBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
+    /*public class RetryBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
     {
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
@@ -30,5 +29,5 @@ namespace Tapir.Core.Pipeline
 
             throw new InvalidOperationException("RetryBehavior reached an invalid state.");
         }
-    }
+    }*/
 }

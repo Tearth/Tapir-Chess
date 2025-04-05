@@ -1,4 +1,3 @@
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Tapir.Core.Commands;
 using Tapir.Core.Queries;
@@ -12,23 +11,16 @@ namespace Tapir.Services.News.API.Controllers
     [Route("api/[controller]")]
     public class NewsController : ControllerBase
     {
-        private readonly IMediator _mediator;
-
-        public NewsController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
         [HttpGet]
         [Route("")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(PagedResult<NewsDto>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Get(int pageNumber = 1, int pageSize = 10)
+        public async Task<IActionResult> Get(int? pageNumber, int? pageSize, [FromServices] IGetNewsListQueryHandler handler)
         {
-            var news = await _mediator.Send(new GetNewsListQuery
+            var news = await handler.Process(new GetNewsListQuery
             {
-                PageNumber = pageNumber,
-                PageSize = pageSize
+                PageNumber = pageNumber ?? 1,
+                PageSize = pageSize ?? 10
             });
 
             return Ok(news);
@@ -39,9 +31,9 @@ namespace Tapir.Services.News.API.Controllers
         [Produces("application/json")]
         [ProducesResponseType(typeof(NewsDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Get(Guid id)
+        public async Task<IActionResult> Get(Guid id, [FromServices] IGetNewsQueryHandler handler)
         {
-            var news = await _mediator.Send(new GetNewsQuery
+            var news = await handler.Process(new GetNewsQuery
             {
                 Id = id
             });

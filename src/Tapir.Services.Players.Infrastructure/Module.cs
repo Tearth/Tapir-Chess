@@ -5,8 +5,6 @@ using Tapir.Providers.Database.PostgreSQL;
 using System.Reflection;
 using Tapir.Providers.Scheduler.Quartz;
 using Serilog;
-using MediatR;
-using Tapir.Core.Pipeline;
 
 namespace Tapir.Services.Players.Infrastructure
 {
@@ -33,7 +31,7 @@ namespace Tapir.Services.Players.Infrastructure
                 cfg.MigrationsAssembly = Assembly.GetExecutingAssembly();
             });
 
-            services.AddMongoDbEventStore(cfg =>
+            services.AddMongoDBEventStore(cfg =>
             {
                 if (settings.MongoDb == null)
                 {
@@ -73,8 +71,6 @@ namespace Tapir.Services.Players.Infrastructure
             {
                 cfg.ReadFrom.Configuration(configuration);
             });
-
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RetryBehavior<,>));
 
             return services;
         }

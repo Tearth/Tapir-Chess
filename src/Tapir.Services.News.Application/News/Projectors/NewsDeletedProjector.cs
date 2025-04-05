@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using MediatR;
 using Tapir.Core.Events;
 using Tapir.Core.Persistence;
 using Tapir.Services.News.Domain.News.Events;

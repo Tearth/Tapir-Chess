@@ -5,8 +5,6 @@ using Tapir.Providers.Database.PostgreSQL;
 using System.Reflection;
 using Tapir.Providers.Scheduler.Quartz;
 using Serilog;
-using MediatR;
-using Tapir.Core.Pipeline;
 
 namespace Tapir.Services.News.Infrastructure
 {
@@ -73,8 +71,6 @@ namespace Tapir.Services.News.Infrastructure
             {
                 cfg.ReadFrom.Configuration(configuration);
             });
-
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RetryBehavior<,>));
 
             return services;
         }

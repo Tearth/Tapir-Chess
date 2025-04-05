@@ -17,7 +17,6 @@ namespace Tapir.Identity.Application
             services.AddTransient<TokenGenerator>();
             services.AddTransient<EmailConfirmationMailTask>();
             services.AddTransient<PasswordResetMailTask>();
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Module).Assembly));
 
             services.AddTransient<IChangePasswordCommandHandler, ChangePasswordCommandHandler>();
             services.AddTransient<IConfirmEmailCommandHandler, ConfirmEmailCommandHandler>();

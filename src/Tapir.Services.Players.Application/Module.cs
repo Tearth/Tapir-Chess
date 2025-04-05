@@ -13,7 +13,6 @@ namespace Tapir.Services.Players.Application
         {
             services.AddHostedService<Startup>();
             services.AddDomain();
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Module).Assembly));
             services.AddTransient<IDomainEventSynchronizer, DomainEventSynchronizer>();
             services.AddTransient<SynchronizeDomainEventsTask>();
 

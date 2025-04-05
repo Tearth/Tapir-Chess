@@ -18,7 +18,6 @@ namespace Tapir.Services.News.Application
         {
             services.AddHostedService<Startup>();
             services.AddDomain();
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Module).Assembly));
             services.AddTransient<IDomainEventSynchronizer, DomainEventSynchronizer>();
             services.AddTransient<IDomainEventBus, DomainEventBus>();
             services.AddTransient<SynchronizeDomainEventsTask>();

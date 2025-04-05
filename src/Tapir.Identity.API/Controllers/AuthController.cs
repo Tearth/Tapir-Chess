@@ -1,4 +1,3 @@
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Tapir.Core.Commands;
 using Tapir.Core.Queries;

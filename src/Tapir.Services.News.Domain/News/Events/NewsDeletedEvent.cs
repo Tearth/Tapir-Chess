@@ -1,9 +1,8 @@
-﻿using MediatR;
-using Tapir.Core.Domain;
+﻿using Tapir.Core.Domain;
 
 namespace Tapir.Services.News.Domain.News.Events
 {
-    public class NewsDeletedEvent : DomainEvent, INotification
+    public class NewsDeletedEvent : DomainEvent
     {
         public DateTime DeletedAt { get; set; }
 

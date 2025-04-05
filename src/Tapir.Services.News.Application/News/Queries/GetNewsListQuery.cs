@@ -1,18 +1,24 @@
 ﻿using Dapper;
-using MediatR;
+using Tapir.Core.Commands;
 using Tapir.Core.Persistence;
 using Tapir.Core.Queries;
 using Tapir.Services.News.Application.News.Queries.DTOs;
 
 namespace Tapir.Services.News.Application.News.Queries
 {
-    public class GetNewsListQuery : IRequest<PagedResult<NewsDto>>
+    public class GetNewsListQuery
     {
         public required int PageNumber { get; set; }
         public required int PageSize { get; set; }
     }
 
-    public class GetNewsListQueryHandler : IRequestHandler<GetNewsListQuery, PagedResult<NewsDto>>
+
+    public interface IGetNewsListQueryHandler : ICommandHandler<GetNewsListQuery, PagedResult<NewsDto>>
+    {
+
+    }
+
+    public class GetNewsListQueryHandler : IGetNewsListQueryHandler
     {
         private readonly IDatabaseConnection _database;
 
@@ -21,7 +27,7 @@ namespace Tapir.Services.News.Application.News.Queries
             _database = database;
         }
 
-        public async Task<PagedResult<NewsDto>> Handle(GetNewsListQuery request, CancellationToken cancellationToken)
+        public async Task<PagedResult<NewsDto>> Process(GetNewsListQuery request)
         {
             using (var connection = _database.Open())
             {

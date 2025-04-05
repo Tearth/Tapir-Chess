@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using Tapir.Core.Commands;

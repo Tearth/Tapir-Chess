@@ -22,6 +22,16 @@ Content-Type: application/json
 
 ###
 
+POST {{HostAddress}}/api/auth/register/confirm
+Accept: application/json
+Content-Type: application/json
+{
+    "UserId": "tapir2",
+    "Token": "aaaaaaaaaaaaaaaabbbbbbbbbbbbbcccccccccccccc"
+}
+
+###
+
 POST {{HostAddress}}/api/auth/refresh-token
 Accept: application/json
 Cookie: access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1MTVmNWFlMi0yOTExLTQwNWUtYWNiYi1hNjEyNTUwMjNhOTEiLCJuYW1lIjoidGVzdCIsImVtYWlsIjoidGVzdEB0ZXN0LnBsIiwianRpIjoiZDBlMGZjYWItYTFkYS00MWMzLWEzNGMtYzA0YzZiOTljNDQxIiwiZXhwIjoxNzQyNjQ2MDM2LCJpc3MiOiJUYXBpciBDaGVzcyIsImF1ZCI6Imh0dHBzOi8vdGFwaXJjaGVzcy5kZXYifQ.Dyk5xXOlabrbvrRN_oa3BpBuREek81KwZws8_I-uffI
