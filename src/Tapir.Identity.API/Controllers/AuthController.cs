@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Tapir.Core.Commands;
 using Tapir.Core.Queries;
-using Tapir.Identity.Application.Account.Commands;
 using Tapir.Identity.Application.Auth.Commands;
 
 namespace Tapir.Identity.API.Controllers

@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Tapir.Core.Commands;
 using Tapir.Identity.Application.Account.Commands;
 using Tapir.Identity.Application.Auth.Commands;
 using Tapir.Identity.Application.Auth.Mails.EmailConfirmation;

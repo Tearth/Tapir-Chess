@@ -3,9 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using Tapir.Core.Commands;
 using Tapir.Core.Identity;
-using Tapir.Core.Types;
 using Tapir.Core.Validation;
-using Tapir.Identity.Application.Auth.Commands;
 using Tapir.Identity.Infrastructure.Commands;
 using Tapir.Identity.Infrastructure.Models;
 

@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using Tapir.Core.Commands;
 using Tapir.Core.Validation;
-using Tapir.Identity.Application.Account.Commands;
 using Tapir.Identity.Infrastructure.Commands;
 using Tapir.Identity.Infrastructure.Models;
 

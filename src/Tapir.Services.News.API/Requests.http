@@ -1,6 +1,6 @@
 @HostAddress = http://localhost:9020
 
-GET {{HostAddress}}/api/news?pageSize=3&pageNumber=3
+GET {{HostAddress}}/api/news?pageSize=10&pageNumber=1
 Accept: application/json
 
 ###
@@ -20,10 +20,10 @@ Content-Type: application/json
 
 ###
 
-PATCH {{HostAddress}}/api/news/c0d407cd-196f-43a2-ba00-9d15f0a459ec
+PATCH {{HostAddress}}/api/news/130c641e-fa9c-4918-9a86-542117bd4f05
 Content-Type: application/json
 {
-    "id": "c0d407cd-196f-43a2-ba00-9d15f0a459ec",
+    "id": "130c641e-fa9c-4918-9a86-542117bd4f05",
     "title": "Title",
     "alias": "alias",
     "content": "Content"

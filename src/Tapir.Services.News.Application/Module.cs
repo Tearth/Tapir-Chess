@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Tapir.Core.Commands;
 using Tapir.Core.Events;
-using Tapir.Core.Types;
 using Tapir.Services.News.Application.News.Commands;
 using Tapir.Services.News.Application.News.Projectors;
 using Tapir.Services.News.Application.News.Queries;
