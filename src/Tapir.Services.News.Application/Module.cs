@@ -5,6 +5,7 @@ using Tapir.Core.Events;
 using Tapir.Core.Types;
 using Tapir.Services.News.Application.News.Commands;
 using Tapir.Services.News.Application.News.Projectors;
+using Tapir.Services.News.Application.News.Queries;
 using Tapir.Services.News.Application.Tasks;
 using Tapir.Services.News.Domain;
 using Tapir.Services.News.Domain.News.Events;
@@ -25,6 +26,9 @@ namespace Tapir.Services.News.Application
             services.AddTransient<ICreateNewsCommandHandler, CreateNewsCommandHandler>();
             services.AddTransient<IDeleteNewsCommandHandler, DeleteNewsCommandHandler>();
             services.AddTransient<IUpdateNewsCommandHandler, UpdateNewsCommandHandler>();
+
+            services.AddTransient<IGetNewsListQueryHandler, GetNewsListQueryHandler>();
+            services.AddTransient<IGetNewsQueryHandler, GetNewsQueryHandler>();
 
             services.AddTransient<IDomainEventHandler<NewsAliasUpdatedEvent>, NewsAliasUpdatedProjector>();
             services.AddTransient<IDomainEventHandler<NewsContentUpdatedEvent>, NewsContentUpdatedProjector>();

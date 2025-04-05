@@ -5,6 +5,7 @@ using Tapir.Providers.Database.PostgreSQL;
 using System.Reflection;
 using Tapir.Providers.Scheduler.Quartz;
 using Serilog;
+using Tapir.Core.Events;
 
 namespace Tapir.Services.Players.Infrastructure
 {
@@ -71,6 +72,8 @@ namespace Tapir.Services.Players.Infrastructure
             {
                 cfg.ReadFrom.Configuration(configuration);
             });
+
+            services.AddTransient<IDomainEventBus, DomainEventBus>();
 
             return services;
         }
