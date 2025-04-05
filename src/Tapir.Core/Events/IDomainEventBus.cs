@@ -2,6 +2,6 @@
 {
     public interface IDomainEventBus
     {
-        Task Send<TEvent>(TEvent @event);
+        Task Send<TEvent>(TEvent @event) where TEvent : notnull;
     }
 }

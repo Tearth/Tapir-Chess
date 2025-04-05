@@ -11,11 +11,17 @@ namespace Tapir.Core.Events
             _services = services;
         }
 
-        public async Task Send<TEvent>(TEvent @event)
+        public async Task Send<TEvent>(TEvent @event) where TEvent: notnull
         {
-            foreach (var service in _services.GetServices(typeof(IDomainEventHandler<TEvent>)))
+            var eventType = @event.GetType();
+            var handlerType = typeof(IDomainEventHandler<>).MakeGenericType(eventType);
+
+            foreach (var service in _services.GetServices(handlerType))
             {
-                await ((IDomainEventHandler<TEvent>)service).Process(@event);
+                var serviceType = service!.GetType();
+                var method = serviceType.GetMethod("Process");
+
+                await (Task)method!.Invoke(service, [@event])!;
             }
         }
     }
