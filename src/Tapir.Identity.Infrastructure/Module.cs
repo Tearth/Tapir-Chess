@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using System.Text;
 using Tapir.Identity.Infrastructure.Models;
 using Tapir.Identity.Infrastructure.Persistence;
@@ -88,6 +89,11 @@ namespace Tapir.Identity.Infrastructure
                 }
 
                 cfg.ConnectionString = connectionString;
+            });
+
+            services.AddSerilog((context, cfg) =>
+            {
+                cfg.ReadFrom.Configuration(configuration);
             });
 
             services.AddSingleton(settings);
