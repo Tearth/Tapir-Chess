@@ -9,6 +9,7 @@ using System.Text;
 using Tapir.Identity.Infrastructure.Models;
 using Tapir.Identity.Infrastructure.Persistence;
 using Tapir.Providers.Mailing.MailKit;
+using Tapir.Providers.MessageBus.RabbitMQ;
 using Tapir.Providers.Scheduler.Quartz;
 
 namespace Tapir.Identity.Infrastructure
@@ -89,6 +90,15 @@ namespace Tapir.Identity.Infrastructure
                 }
 
                 cfg.ConnectionString = connectionString;
+            });
+
+            services.AddRabbitMqMessageBus(cfg =>
+            {
+                cfg.Host = settings.MessageBus.Host;
+                cfg.Port = settings.MessageBus.Port;
+                cfg.Username = settings.MessageBus.Username;
+                cfg.Password = settings.MessageBus.Password;
+                cfg.QueueName = settings.MessageBus.QueueName;
             });
 
             services.AddSerilog((context, cfg) =>

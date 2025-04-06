@@ -4,6 +4,7 @@
     {
         public required JwtSettings Jwt { get; set; }
         public required MailingSettings Mailing { get; set; }
+        public required MessageBusSettings MessageBus { get; set; }
         public required EndpointsSettings Endpoints { get; set; }
     }
 
@@ -23,6 +24,15 @@
         public required string Username { get; set; }
         public required string Password { get; set; }
         public required string From { get; set; }
+    }
+
+    public class MessageBusSettings
+    {
+        public required string Host { get; set; }
+        public required int Port { get; set; }
+        public required string Username { get; set; }
+        public required string Password { get; set; }
+        public required string QueueName { get; set; }
     }
 
     public class EndpointsSettings

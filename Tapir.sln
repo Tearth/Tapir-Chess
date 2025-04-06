@@ -78,6 +78,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Services.Players.Doma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Services.Players.Infrastructure", "src\Tapir.Services.Players.Infrastructure\Tapir.Services.Players.Infrastructure.csproj", "{367ACFD2-5611-4E6F-A13E-DC27D37728A0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Providers.MessageBus.RabbitMQ", "src\Tapir.Providers.MessageBus.RabbitMQ\Tapir.Providers.MessageBus.RabbitMQ.csproj", "{B1F4754A-1A13-40C1-BD72-683A93190590}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -160,6 +162,10 @@ Global
 		{367ACFD2-5611-4E6F-A13E-DC27D37728A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{367ACFD2-5611-4E6F-A13E-DC27D37728A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{367ACFD2-5611-4E6F-A13E-DC27D37728A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1F4754A-1A13-40C1-BD72-683A93190590}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1F4754A-1A13-40C1-BD72-683A93190590}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1F4754A-1A13-40C1-BD72-683A93190590}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1F4754A-1A13-40C1-BD72-683A93190590}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -193,6 +199,7 @@ Global
 		{FADA5C11-D577-4BA0-A387-10C93B2BE2A1} = {9A947378-FBAA-431C-97C6-78BEDB903701}
 		{4498F5EC-B44B-4A10-A99D-2D1CC0570DED} = {9A947378-FBAA-431C-97C6-78BEDB903701}
 		{367ACFD2-5611-4E6F-A13E-DC27D37728A0} = {9A947378-FBAA-431C-97C6-78BEDB903701}
+		{B1F4754A-1A13-40C1-BD72-683A93190590} = {F8A81F53-D6BE-489C-BCDB-11D62A804A91}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0CBFA5DE-DAE7-416F-BF01-40C96FA4551D}

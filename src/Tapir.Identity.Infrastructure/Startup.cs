@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Tapir.Core.Messaging;
 using Tapir.Identity.Infrastructure.Persistence;
 
 namespace Tapir.Identity.Infrastructure
@@ -19,6 +20,7 @@ namespace Tapir.Identity.Infrastructure
             using (var scope = _serviceScopeFactory.CreateScope())
             {
                 await scope.ServiceProvider.GetRequiredService<DatabaseContext>().Database.MigrateAsync();
+                await scope.ServiceProvider.GetRequiredService<IMessageBus>().Listen();
             }
         }
 

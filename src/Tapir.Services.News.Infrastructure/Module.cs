@@ -31,7 +31,7 @@ namespace Tapir.Services.News.Infrastructure
                 cfg.MigrationsAssembly = Assembly.GetExecutingAssembly();
             });
 
-            services.AddMongoDBEventStore(cfg =>
+            services.AddMongoDbEventStore(cfg =>
             {
                 if (settings.Database == null)
                 {

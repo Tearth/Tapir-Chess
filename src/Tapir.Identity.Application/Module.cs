@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Tapir.Core.Events;
 using Tapir.Identity.Application.Account.Commands;
 using Tapir.Identity.Application.Auth.Commands;
 using Tapir.Identity.Application.Auth.Mails.EmailConfirmation;
@@ -17,6 +18,7 @@ namespace Tapir.Identity.Application
             services.AddTransient<EmailConfirmationMailTask>();
             services.AddTransient<PasswordResetMailTask>();
 
+            services.AddTransient<IDomainEventBus, DomainEventBus>();
             services.AddTransient<IChangePasswordCommandHandler, ChangePasswordCommandHandler>();
             services.AddTransient<IConfirmEmailCommandHandler, ConfirmEmailCommandHandler>();
             services.AddTransient<IConfirmPasswordCommandHandler, ConfirmPasswordCommandHandler>();

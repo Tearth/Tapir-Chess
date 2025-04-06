@@ -12,7 +12,7 @@ namespace Tapir.Providers.EventStore.MongoDB
 {
     public static class Module
     {
-        public static IServiceCollection AddMongoDBEventStore(this IServiceCollection services, Action<Configuration> userConfiguration)
+        public static IServiceCollection AddMongoDbEventStore(this IServiceCollection services, Action<Configuration> userConfiguration)
         {
             var configuration = new Configuration();
             userConfiguration(configuration);

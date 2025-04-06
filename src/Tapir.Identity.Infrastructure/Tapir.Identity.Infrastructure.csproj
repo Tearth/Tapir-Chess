@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Tapir.Providers.Mailing.MailKit\Tapir.Providers.Mailing.MailKit.csproj" />
+    <ProjectReference Include="..\Tapir.Providers.MessageBus.RabbitMQ\Tapir.Providers.MessageBus.RabbitMQ.csproj" />
     <ProjectReference Include="..\Tapir.Providers.Scheduler.Quartz\Tapir.Providers.Scheduler.Quartz.csproj" />
   </ItemGroup>
 
