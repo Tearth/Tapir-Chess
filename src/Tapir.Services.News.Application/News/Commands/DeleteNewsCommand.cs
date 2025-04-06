@@ -26,11 +26,11 @@ namespace Tapir.Services.News.Application.News.Commands
 
         public async Task<Unit> Process(DeleteNewsCommand request)
         {
-            var aggregate = await _newsRepository.Load(request.Id);
+            var news = await _newsRepository.Load(request.Id);
 
-            aggregate.Delete();
+            news.Delete();
 
-            await _newsRepository.Save(aggregate);
+            await _newsRepository.Save(news);
             return Unit.Default;
         }
     }

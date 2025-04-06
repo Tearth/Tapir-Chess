@@ -29,7 +29,7 @@ namespace Tapir.Services.News.API.Controllers
         [Route("{id}")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(NewsDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Get(Guid id, [FromServices] IGetNewsQueryHandler handler)
         {
             var news = await handler.Process(new GetNewsQuery
@@ -59,7 +59,8 @@ namespace Tapir.Services.News.API.Controllers
         [Route("{id}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Update(Guid id, UpdateNewsCommand command, [FromServices] IUpdateNewsCommandHandler handler)
         {
             if (id != command.Id)
@@ -75,6 +76,7 @@ namespace Tapir.Services.News.API.Controllers
         [Route("{id}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(Guid id, [FromServices] IDeleteNewsCommandHandler handler)
         {
             await handler.Process(new DeleteNewsCommand

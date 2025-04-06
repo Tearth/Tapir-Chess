@@ -32,7 +32,7 @@ namespace Tapir.Services.News.Application.News.Queries
             using (var connection = _database.Open())
             {
                 var totalCount = await connection.ExecuteScalarAsync<int>("SELECT COUNT(*) FROM News WHERE Deleted = false");
-                var items = await connection.QueryAsync<NewsDto>("SELECT * FROM News WHERE Deleted = false ORDER BY CreatedAt DESC LIMIT @Limit OFFSET @Offset", new
+                var news = await connection.QueryAsync<NewsDto>("SELECT * FROM News WHERE Deleted = false ORDER BY CreatedAt DESC LIMIT @Limit OFFSET @Offset", new
                 {
                     Limit = request.PageSize,
                     Offset = (request.PageNumber - 1) * request.PageSize,
@@ -40,7 +40,7 @@ namespace Tapir.Services.News.Application.News.Queries
 
                 return new PagedResult<NewsDto>
                 {
-                    Items = items.ToList(),
+                    Items = news.ToList(),
                     PageNumber = request.PageNumber,
                     PageSize = request.PageSize,
                     TotalCount = totalCount

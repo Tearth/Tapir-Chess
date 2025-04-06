@@ -1,4 +1,5 @@
 using Microsoft.OpenApi.Models;
+using Tapir.Services.News.API.Middleware;
 using Tapir.Services.News.Application;
 using Tapir.Services.News.Infrastructure;
 
@@ -17,12 +18,15 @@ namespace Tapir.Services.News.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
             });
+            builder.Services.AddExceptionHandler<ExceptionHandler>();
+            builder.Services.AddProblemDetails();
 
             var app = builder.Build();
             app.UseAuthorization();
             app.MapControllers();
             app.UseSwagger();
             app.UseSwaggerUI();
+            app.UseExceptionHandler();
             app.Run();
         }
     }

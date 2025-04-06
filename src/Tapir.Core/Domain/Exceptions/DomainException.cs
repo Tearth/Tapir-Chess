@@ -2,19 +2,21 @@
 {
     public class DomainException : Exception
     {
+        public string? ErrorCode { get; set; }
+
         public DomainException()
         {
 
         }
 
-        public DomainException(string? message) : base(message)
+        public DomainException(string? message, string? errorCode) : base(message)
         {
-
+            ErrorCode = errorCode;
         }
 
-        public DomainException(string? message, Exception? innerException) : base(message, innerException)
+        public DomainException(string? message, string? errorCode, Exception? innerException) : base(message, innerException)
         {
-
+            ErrorCode = errorCode;
         }
     }
 }

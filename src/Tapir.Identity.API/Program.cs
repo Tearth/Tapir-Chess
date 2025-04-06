@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
+using Tapir.Identity.API.Middleware;
 using Tapir.Identity.Application;
 using Tapir.Identity.Infrastructure;
 
@@ -17,6 +19,8 @@ namespace Tapir.Identity.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
             });
+            builder.Services.AddExceptionHandler<ExceptionHandler>();
+            builder.Services.AddProblemDetails();
 
             var app = builder.Build();
             app.UseAuthentication();
@@ -24,6 +28,7 @@ namespace Tapir.Identity.API
             app.MapControllers();
             app.UseSwagger();
             app.UseSwaggerUI();
+            app.UseExceptionHandler();
             app.Run();
         }
     }

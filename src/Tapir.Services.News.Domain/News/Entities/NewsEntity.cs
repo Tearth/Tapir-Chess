@@ -30,7 +30,7 @@ namespace Tapir.Services.News.Domain.News.Entities
         {
             if (string.IsNullOrEmpty(title))
             {
-                throw new DomainException("Title is required.");
+                throw new DomainException("Title is required.", "InvalidTitle");
             }
 
             var @event = new NewsTitleUpdatedEvent(Id, title);
@@ -43,12 +43,12 @@ namespace Tapir.Services.News.Domain.News.Entities
         {
             if (string.IsNullOrEmpty(alias))
             {
-                throw new DomainException("Alias is required.");
+                throw new DomainException("Alias is required.", "InvalidAlias");
             }
 
             if (!Regex.IsMatch(alias, "^[a-z0-9-]+$"))
             {
-                throw new DomainException("Alias can contain only lowercase letters, numbers and hyphens.");
+                throw new DomainException("Alias can contain only lowercase letters, numbers and hyphens.", "InvalidAlias");
             }
 
             var @event = new NewsAliasUpdatedEvent(Id, alias);
@@ -61,7 +61,7 @@ namespace Tapir.Services.News.Domain.News.Entities
         {
             if (string.IsNullOrEmpty(content))
             {
-                throw new DomainException("Content is required.");
+                throw new DomainException("Content is required.", "InvalidContent");
             }
 
             var @event = new NewsContentUpdatedEvent(Id, content);
@@ -74,7 +74,7 @@ namespace Tapir.Services.News.Domain.News.Entities
         {
             if (Deleted)
             {
-                throw new DomainException("News is already deleted.");
+                throw new DomainException("News is already deleted.", "ResourceAlreadyDeleted");
             }
 
             var @event = new NewsDeletedEvent(Id, DateTime.UtcNow);
