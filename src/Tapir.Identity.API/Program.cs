@@ -21,6 +21,10 @@ namespace Tapir.Identity.API
             });
             builder.Services.AddExceptionHandler<ExceptionHandler>();
             builder.Services.AddProblemDetails();
+            builder.Services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = (actionContext) => ValidationHandler.InvalidModelStateResponseFactory(options, actionContext);
+            });
 
             var app = builder.Build();
             app.UseAuthentication();

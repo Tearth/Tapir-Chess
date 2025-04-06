@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using Tapir.Services.Players.API.Middleware;
 using Tapir.Services.Players.Application;
@@ -20,6 +21,10 @@ namespace Tapir.Services.Players.API
             });
             builder.Services.AddExceptionHandler<ExceptionHandler>();
             builder.Services.AddProblemDetails();
+            builder.Services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = (actionContext) => ValidationHandler.InvalidModelStateResponseFactory(options, actionContext);
+            });
 
             var app = builder.Build();
             app.UseAuthorization();

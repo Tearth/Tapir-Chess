@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using Tapir.Services.News.API.Middleware;
 using Tapir.Services.News.Application;
@@ -20,6 +21,10 @@ namespace Tapir.Services.News.API
             });
             builder.Services.AddExceptionHandler<ExceptionHandler>();
             builder.Services.AddProblemDetails();
+            builder.Services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = (actionContext) => ValidationHandler.InvalidModelStateResponseFactory(options, actionContext);
+            });
 
             var app = builder.Build();
             app.UseAuthorization();
