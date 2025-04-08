@@ -2,7 +2,7 @@
 using RabbitMQ.Client.Events;
 using System.Text;
 using System.Text.Json;
-using Tapir.Core.Events;
+using Tapir.Core.Bus;
 using Tapir.Core.Messaging;
 
 namespace Tapir.Providers.MessageBus.RabbitMQ.Messaging
@@ -10,10 +10,10 @@ namespace Tapir.Providers.MessageBus.RabbitMQ.Messaging
     public class RabbitMessageBus : IMessageBus
     {
         private IConnection? _connection;
-        private readonly IDomainEventBus _eventBus;
+        private readonly IEventBus _eventBus;
         private readonly Configuration _configuration;
 
-        public RabbitMessageBus(IDomainEventBus eventBus, Configuration configuration)
+        public RabbitMessageBus(IEventBus eventBus, Configuration configuration)
         {
             _eventBus = eventBus;
             _configuration = configuration;

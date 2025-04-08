@@ -1,15 +1,16 @@
 ﻿using Microsoft.Extensions.Logging;
+using Tapir.Core.Bus;
 using Tapir.Core.Persistence;
 
 namespace Tapir.Core.Events
 {
     public class DomainEventSynchronizer : IDomainEventSynchronizer
     {
-        private readonly IDomainEventBus _eventBus;
+        private readonly IEventBus _eventBus;
         private readonly IDomainEventStore _eventStore;
         private readonly ILogger<DomainEventSynchronizer> _logger;
 
-        public DomainEventSynchronizer(IDomainEventBus eventBus, IDomainEventStore eventStore, ILogger<DomainEventSynchronizer> logger)
+        public DomainEventSynchronizer(IEventBus eventBus, IDomainEventStore eventStore, ILogger<DomainEventSynchronizer> logger)
         {
             _eventBus = eventBus;
             _eventStore = eventStore;

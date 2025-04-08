@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Tapir.Core.Events
+namespace Tapir.Core.Bus
 {
-    public class DomainEventBus : IDomainEventBus
+    public class EventBus : IEventBus
     {
         private readonly IServiceProvider _services;
 
-        public DomainEventBus(IServiceProvider services)
+        public EventBus(IServiceProvider services)
         {
             _services = services;
         }
@@ -14,7 +14,7 @@ namespace Tapir.Core.Events
         public async Task Send<TEvent>(TEvent @event) where TEvent: notnull
         {
             var eventType = @event.GetType();
-            var handlerType = typeof(IDomainEventHandler<>).MakeGenericType(eventType);
+            var handlerType = typeof(IEventHandler<>).MakeGenericType(eventType);
 
             foreach (var service in _services.GetServices(handlerType))
             {

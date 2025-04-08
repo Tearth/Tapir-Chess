@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Tapir.Core.Bus;
 using Tapir.Core.Events;
 using Tapir.Services.News.Application.News.Commands;
 using Tapir.Services.News.Application.News.Projectors;
@@ -18,7 +19,7 @@ namespace Tapir.Services.News.Application
             services.AddHostedService<Startup>();
             services.AddDomain();
             services.AddTransient<IDomainEventSynchronizer, DomainEventSynchronizer>();
-            services.AddTransient<IDomainEventBus, DomainEventBus>();
+            services.AddTransient<IEventBus, EventBus>();
             services.AddTransient<SynchronizeDomainEventsTask>();
 
             services.AddTransient<ICreateNewsCommandHandler, CreateNewsCommandHandler>();
@@ -28,11 +29,11 @@ namespace Tapir.Services.News.Application
             services.AddTransient<IGetNewsListQueryHandler, GetNewsListQueryHandler>();
             services.AddTransient<IGetNewsQueryHandler, GetNewsQueryHandler>();
 
-            services.AddTransient<IDomainEventHandler<NewsAliasUpdatedEvent>, NewsAliasUpdatedProjector>();
-            services.AddTransient<IDomainEventHandler<NewsContentUpdatedEvent>, NewsContentUpdatedProjector>();
-            services.AddTransient<IDomainEventHandler<NewsCreatedEvent>, NewsCreatedProjector>();
-            services.AddTransient<IDomainEventHandler<NewsDeletedEvent>, NewsDeletedProjector>();
-            services.AddTransient<IDomainEventHandler<NewsTitleUpdatedEvent>, NewsTitleUpdatedProjector>();
+            services.AddTransient<IEventHandler<NewsAliasUpdatedEvent>, NewsAliasUpdatedProjector>();
+            services.AddTransient<IEventHandler<NewsContentUpdatedEvent>, NewsContentUpdatedProjector>();
+            services.AddTransient<IEventHandler<NewsCreatedEvent>, NewsCreatedProjector>();
+            services.AddTransient<IEventHandler<NewsDeletedEvent>, NewsDeletedProjector>();
+            services.AddTransient<IEventHandler<NewsTitleUpdatedEvent>, NewsTitleUpdatedProjector>();
 
             return services;
         }

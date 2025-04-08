@@ -1,11 +1,11 @@
 ﻿using Dapper;
-using Tapir.Core.Events;
+using Tapir.Core.Bus;
 using Tapir.Core.Persistence;
 using Tapir.Services.News.Domain.News.Events;
 
 namespace Tapir.Services.News.Application.News.Projectors
 {
-    public class NewsContentUpdatedProjector : IDomainEventHandler<NewsContentUpdatedEvent>
+    public class NewsContentUpdatedProjector : IEventHandler<NewsContentUpdatedEvent>
     {
         private readonly IDatabaseConnection _database;
 
