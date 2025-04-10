@@ -6,6 +6,7 @@ using System.Reflection;
 using Tapir.Providers.Scheduler.Quartz;
 using Serilog;
 using Tapir.Core.Bus;
+using Tapir.Providers.MessageBus.RabbitMQ;
 
 namespace Tapir.Services.Players.Infrastructure
 {
@@ -13,12 +14,16 @@ namespace Tapir.Services.Players.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            var settings = configuration.Get<AppSettings>();
-            if (settings == null)
-            {
-                throw new InvalidOperationException("AppSettings not found.");
-            }
+            var settings = configuration.Get<AppSettings>() ?? throw new InvalidOperationException("AppSettings not found.");
 
+            // Initialization
+            services.AddHostedService<Startup>();
+            services.AddSingleton(settings);
+
+            // Services
+            services.AddSingleton<IEventBus, EventBus>();
+
+            // Database
             services.AddPostgreSqlDatabase(cfg =>
             {
                 var connectionString = configuration.GetConnectionString("DefaultConnection");
@@ -32,6 +37,7 @@ namespace Tapir.Services.Players.Infrastructure
                 cfg.MigrationsAssembly = Assembly.GetExecutingAssembly();
             });
 
+            // Event store
             services.AddMongoDbEventStore(cfg =>
             {
                 if (settings.MongoDb == null)
@@ -56,6 +62,7 @@ namespace Tapir.Services.Players.Infrastructure
                 cfg.Password = settings.MongoDb.Password;
             });
 
+            // Task scheduler
             services.AddQuartzScheduler(cfg =>
             {
                 var connectionString = configuration.GetConnectionString("DefaultConnection");
@@ -68,12 +75,21 @@ namespace Tapir.Services.Players.Infrastructure
                 cfg.ConnectionString = connectionString;
             });
 
+            // Message bus
+            services.AddRabbitMqMessageBus(cfg =>
+            {
+                cfg.Host = settings.MessageBus.Host;
+                cfg.Port = settings.MessageBus.Port;
+                cfg.Username = settings.MessageBus.Username;
+                cfg.Password = settings.MessageBus.Password;
+                cfg.QueueName = settings.MessageBus.QueueName;
+            });
+
+            // Logger
             services.AddSerilog((context, cfg) =>
             {
                 cfg.ReadFrom.Configuration(configuration);
             });
-
-            services.AddTransient<IEventBus, EventBus>();
 
             return services;
         }

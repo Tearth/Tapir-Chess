@@ -10,9 +10,12 @@ namespace Tapir.Services.Players.Domain
         public static IServiceCollection AddDomain(this IServiceCollection services)
         {
             var eventRegistry = new DomainEventRegistry();
-
+            
+            // Services
             services.AddSingleton<IDomainEventRegistry>(eventRegistry);
-            services.AddTransient<IAggregateRepository<PlayerEntity>, AggregateRepository<PlayerEntity>>();
+
+            // Repositories
+            services.AddScoped<IAggregateRepository<PlayerEntity>, AggregateRepository<PlayerEntity>>();
 
             return services;
         }

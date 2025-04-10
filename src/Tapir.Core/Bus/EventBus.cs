@@ -4,11 +4,11 @@ namespace Tapir.Core.Bus
 {
     public class EventBus : IEventBus
     {
-        private readonly IServiceProvider _services;
+        private readonly IServiceScopeFactory _serviceScopeFactory;
 
-        public EventBus(IServiceProvider services)
+        public EventBus(IServiceScopeFactory serviceScopeFactory)
         {
-            _services = services;
+            _serviceScopeFactory = serviceScopeFactory;
         }
 
         public async Task Send<TEvent>(TEvent @event) where TEvent: notnull
@@ -16,12 +16,15 @@ namespace Tapir.Core.Bus
             var eventType = @event.GetType();
             var handlerType = typeof(IEventHandler<>).MakeGenericType(eventType);
 
-            foreach (var service in _services.GetServices(handlerType))
+            using (var scope = _serviceScopeFactory.CreateScope())
             {
-                var serviceType = service!.GetType();
-                var method = serviceType.GetMethod("Process");
+                foreach (var service in scope.ServiceProvider.GetServices(handlerType))
+                {
+                    var serviceType = service!.GetType();
+                    var method = serviceType.GetMethod("Process");
 
-                await (Task)method!.Invoke(service, [@event])!;
+                    await (Task)method!.Invoke(service, [@event])!;
+                }
             }
         }
     }

@@ -13,19 +13,25 @@ namespace Tapir.Identity.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
+            // Initialization
             services.AddHostedService<Startup>();
-            services.AddTransient<TokenGenerator>();
-            services.AddTransient<EmailConfirmationMailTask>();
-            services.AddTransient<PasswordResetMailTask>();
 
-            services.AddTransient<IEventBus, EventBus>();
-            services.AddTransient<IChangePasswordCommandHandler, ChangePasswordCommandHandler>();
-            services.AddTransient<IConfirmEmailCommandHandler, ConfirmEmailCommandHandler>();
-            services.AddTransient<IConfirmPasswordCommandHandler, ConfirmPasswordCommandHandler>();
-            services.AddTransient<ILogInCommandHandler, LogInCommandHandler>();
-            services.AddTransient<IRefreshTokenCommandHandler, RefreshTokenCommandHandler>();
-            services.AddTransient<IRegisterCommandHandler, RegisterCommandHandler>();
-            services.AddTransient<IResetPasswordCommandHandler, ResetPasswordCommandHandler>();
+            // Services
+            services.AddSingleton<IEventBus, EventBus>();
+            services.AddScoped<TokenGenerator>();
+
+            // Tasks
+            services.AddScoped<EmailConfirmationMailTask>();
+            services.AddScoped<PasswordResetMailTask>();
+
+            // Command handlers
+            services.AddScoped<IChangePasswordCommandHandler, ChangePasswordCommandHandler>();
+            services.AddScoped<IConfirmEmailCommandHandler, ConfirmEmailCommandHandler>();
+            services.AddScoped<IConfirmPasswordCommandHandler, ConfirmPasswordCommandHandler>();
+            services.AddScoped<ILogInCommandHandler, LogInCommandHandler>();
+            services.AddScoped<IRefreshTokenCommandHandler, RefreshTokenCommandHandler>();
+            services.AddScoped<IRegisterCommandHandler, RegisterCommandHandler>();
+            services.AddScoped<IResetPasswordCommandHandler, ResetPasswordCommandHandler>();
 
             return services;
         }

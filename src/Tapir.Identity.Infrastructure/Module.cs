@@ -18,24 +18,25 @@ namespace Tapir.Identity.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            var settings = configuration.Get<AppSettings>();
-            if (settings == null)
-            {
-                throw new InvalidOperationException("AppSettings not found.");
-            }
+            var settings = configuration.Get<AppSettings>() ?? throw new InvalidOperationException("AppSettings not found.");
 
+            // Initialization
             services.AddHostedService<Startup>();
+            services.AddSingleton(settings);
 
+            // Database
             services.AddDbContext<DatabaseContext>(options => 
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"))
             );
 
+            // Identity providers
             services
                 .AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddTokenProvider<DataProtectorTokenProvider<ApplicationUser>>(TokenOptions.DefaultProvider)
                 .AddRoles<ApplicationRole>()
                 .AddEntityFrameworkStores<DatabaseContext>();
 
+            // Identity options
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequireDigit = true;
@@ -50,6 +51,7 @@ namespace Tapir.Identity.Infrastructure
                 options.User.RequireUniqueEmail = true;
             });
 
+            // Authentication
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -70,6 +72,7 @@ namespace Tapir.Identity.Infrastructure
                     };
                 });
 
+            // Mailing
             services.AddMailKitMailing(options =>
             {
                 options.Host = settings.Mailing.Host;
@@ -80,6 +83,7 @@ namespace Tapir.Identity.Infrastructure
                 options.From = settings.Mailing.From;
             });
 
+            // Task scheduler
             services.AddQuartzScheduler(cfg =>
             {
                 var connectionString = configuration.GetConnectionString("DefaultConnection");
@@ -92,6 +96,7 @@ namespace Tapir.Identity.Infrastructure
                 cfg.ConnectionString = connectionString;
             });
 
+            // Message bus
             services.AddRabbitMqMessageBus(cfg =>
             {
                 cfg.Host = settings.MessageBus.Host;
@@ -101,12 +106,11 @@ namespace Tapir.Identity.Infrastructure
                 cfg.QueueName = settings.MessageBus.QueueName;
             });
 
+            // Logger
             services.AddSerilog((context, cfg) =>
             {
                 cfg.ReadFrom.Configuration(configuration);
             });
-
-            services.AddSingleton(settings);
 
             return services;
         }

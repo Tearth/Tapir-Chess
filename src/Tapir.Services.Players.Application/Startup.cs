@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Tapir.Core.Scheduler;
 using Tapir.Services.Players.Application.Tasks;
 
@@ -6,16 +7,22 @@ namespace Tapir.Services.Players.Application
 {
     public class Startup : IHostedService
     {
-        private readonly ITaskScheduler _taskScheduler;
+        private readonly IServiceScopeFactory _serviceScopeFactory;
 
-        public Startup(ITaskScheduler taskScheduler)
+        public Startup(IServiceScopeFactory serviceScopeFactory)
         {
-            _taskScheduler = taskScheduler;
+            _serviceScopeFactory = serviceScopeFactory;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            await _taskScheduler.Register(new SynchronizeDomainEventsTask(), "0/1 * * * * ?");
+            using (var scope = _serviceScopeFactory.CreateScope())
+            {
+                var taskScheduler = scope.ServiceProvider.GetRequiredService<ITaskScheduler>();
+
+                // Tasks
+                await taskScheduler.Register(new SynchronizeDomainEventsTask(), "0/1 * * * * ?");
+            }
         }
 
         public Task StopAsync(CancellationToken cancellationToken)

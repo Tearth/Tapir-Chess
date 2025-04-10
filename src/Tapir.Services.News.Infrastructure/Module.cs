@@ -12,12 +12,12 @@ namespace Tapir.Services.News.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            var settings = configuration.Get<AppSettings>();
-            if (settings == null)
-            {
-                throw new InvalidOperationException("AppSettings not found.");
-            }
+            var settings = configuration.Get<AppSettings>() ?? throw new InvalidOperationException("AppSettings not found.");
 
+            // Initialization
+            services.AddSingleton(settings);
+
+            // Database
             services.AddPostgreSqlDatabase(cfg =>
             {
                 var connectionString = configuration.GetConnectionString("DefaultConnection");

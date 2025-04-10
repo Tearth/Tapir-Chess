@@ -12,9 +12,12 @@ namespace Tapir.Providers.Mailing.MailKit
             var configuration = new Configuration();
             userConfiguration(configuration);
 
-            services.AddTransient<IMailClient, MailClient>();
-            services.AddTransient<ISmtpClient, SmtpClient>();
+            // Initialization
             services.AddSingleton(configuration);
+
+            // Mailing
+            services.AddScoped<IMailClient, MailClient>();
+            services.AddScoped<ISmtpClient, SmtpClient>();
 
             return services;
         }

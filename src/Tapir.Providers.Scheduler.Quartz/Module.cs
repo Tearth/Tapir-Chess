@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Quartz;
 using Quartz.AspNetCore;
+using System;
 using Tapir.Core.Scheduler;
+using Tapir.Providers.Scheduler.Quartz.Tasks;
 
 namespace Tapir.Providers.Scheduler.Quartz
 {
@@ -12,6 +14,10 @@ namespace Tapir.Providers.Scheduler.Quartz
             var configuration = new Configuration();
             userConfiguration(configuration);
 
+            // Services
+            services.AddScoped<ITaskScheduler, TaskScheduler>();
+
+            // Task scheduler
             services.AddQuartz(configurator =>
             {
                 if (string.IsNullOrEmpty(configuration.ConnectionString))
@@ -29,7 +35,6 @@ namespace Tapir.Providers.Scheduler.Quartz
                 configurator.SchedulerId = "AUTO";
             });
             services.AddQuartzServer();
-            services.AddTransient<ITaskScheduler, Tasks.TaskScheduler>();
 
             return services;
         }

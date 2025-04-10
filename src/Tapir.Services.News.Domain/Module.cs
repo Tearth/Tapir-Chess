@@ -12,14 +12,18 @@ namespace Tapir.Services.News.Domain
         {
             var eventRegistry = new DomainEventRegistry();
 
+            // Services
+            services.AddSingleton<IDomainEventRegistry>(eventRegistry);
+
+            // Repositories
+            services.AddScoped<IAggregateRepository<NewsEntity>, AggregateRepository<NewsEntity>>();
+
+            // Event handlers
             eventRegistry.Add<NewsAliasUpdatedEvent>();
             eventRegistry.Add<NewsContentUpdatedEvent>();
             eventRegistry.Add<NewsCreatedEvent>();
             eventRegistry.Add<NewsTitleUpdatedEvent>();
             eventRegistry.Add<NewsDeletedEvent>();
-
-            services.AddSingleton<IDomainEventRegistry>(eventRegistry);
-            services.AddTransient<IAggregateRepository<NewsEntity>, AggregateRepository<NewsEntity>>();
 
             return services;
         }

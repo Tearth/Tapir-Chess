@@ -1,10 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Tapir.Core.Messaging;
-using Tapir.Core.Scheduler;
-using Tapir.Services.News.Application.Tasks;
 
-namespace Tapir.Services.News.Application
+namespace Tapir.Services.Players.Infrastructure
 {
     public class Startup : IHostedService
     {
@@ -19,10 +17,7 @@ namespace Tapir.Services.News.Application
         {
             using (var scope = _serviceScopeFactory.CreateScope())
             {
-                var taskScheduler = scope.ServiceProvider.GetRequiredService<ITaskScheduler>();
-                
-                // Tasks
-                await taskScheduler.Register(new SynchronizeDomainEventsTask(), "0/1 * * * * ?");
+                await scope.ServiceProvider.GetRequiredService<IMessageBus>().Listen();
             }
         }
 

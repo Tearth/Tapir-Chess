@@ -22,7 +22,14 @@ namespace Tapir.Providers.EventStore.MongoDB
                 throw new InvalidOperationException("No servers configured.");
             }
 
-            services.AddTransient<IMongoClient, MongoClient>(p => new MongoClient(new MongoClientSettings
+            // Initialization
+            services.AddSingleton(configuration);
+
+            // Services
+            services.AddScoped<IDomainEventStore, DomainEventStore>();
+
+            // Event store
+            services.AddScoped<IMongoClient, MongoClient>(p => new MongoClient(new MongoClientSettings
             {
                 Servers = configuration.Servers.Select(s => new MongoServerAddress(s.Host, s.Port ?? 0)),
                 Credential = new MongoCredential(
@@ -30,9 +37,8 @@ namespace Tapir.Providers.EventStore.MongoDB
                     new MongoInternalIdentity(configuration.DatabaseName, configuration.Username),
                     new PasswordEvidence(configuration.Password)),
             }));
-            services.AddTransient<IDomainEventStore, DomainEventStore>();
-            services.AddSingleton(configuration);
 
+            // Mapping
             BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
             BsonClassMap.RegisterClassMap<DomainEvent>(cm =>
             {

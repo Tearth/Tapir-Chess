@@ -11,8 +11,11 @@ namespace Tapir.Providers.MessageBus.RabbitMQ
             var configuration = new Configuration();
             userConfiguration(configuration);
 
-            services.AddSingleton<IMessageBus, RabbitMessageBus>();
+            // Initialization
             services.AddSingleton(configuration);
+
+            // Mailing
+            services.AddSingleton<IMessageBus, RabbitMessageBus>();
 
             return services;
         }

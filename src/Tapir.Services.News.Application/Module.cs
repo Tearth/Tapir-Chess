@@ -16,24 +16,32 @@ namespace Tapir.Services.News.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
+            // Initialization
             services.AddHostedService<Startup>();
             services.AddDomain();
-            services.AddTransient<IDomainEventSynchronizer, DomainEventSynchronizer>();
-            services.AddTransient<IEventBus, EventBus>();
-            services.AddTransient<SynchronizeDomainEventsTask>();
 
-            services.AddTransient<ICreateNewsCommandHandler, CreateNewsCommandHandler>();
-            services.AddTransient<IDeleteNewsCommandHandler, DeleteNewsCommandHandler>();
-            services.AddTransient<IUpdateNewsCommandHandler, UpdateNewsCommandHandler>();
+            // Services
+            services.AddScoped<IDomainEventSynchronizer, DomainEventSynchronizer>();
+            services.AddSingleton<IEventBus, EventBus>();
 
-            services.AddTransient<IGetNewsListQueryHandler, GetNewsListQueryHandler>();
-            services.AddTransient<IGetNewsQueryHandler, GetNewsQueryHandler>();
+            // Tasks
+            services.AddScoped<SynchronizeDomainEventsTask>();
 
-            services.AddTransient<IEventHandler<NewsAliasUpdatedEvent>, NewsAliasUpdatedProjector>();
-            services.AddTransient<IEventHandler<NewsContentUpdatedEvent>, NewsContentUpdatedProjector>();
-            services.AddTransient<IEventHandler<NewsCreatedEvent>, NewsCreatedProjector>();
-            services.AddTransient<IEventHandler<NewsDeletedEvent>, NewsDeletedProjector>();
-            services.AddTransient<IEventHandler<NewsTitleUpdatedEvent>, NewsTitleUpdatedProjector>();
+            // Command handlers
+            services.AddScoped<ICreateNewsCommandHandler, CreateNewsCommandHandler>();
+            services.AddScoped<IDeleteNewsCommandHandler, DeleteNewsCommandHandler>();
+            services.AddScoped<IUpdateNewsCommandHandler, UpdateNewsCommandHandler>();
+
+            // Query handlers
+            services.AddScoped<IGetNewsListQueryHandler, GetNewsListQueryHandler>();
+            services.AddScoped<IGetNewsQueryHandler, GetNewsQueryHandler>();
+
+            // Event handlers
+            services.AddScoped<IEventHandler<NewsAliasUpdatedEvent>, NewsAliasUpdatedProjector>();
+            services.AddScoped<IEventHandler<NewsContentUpdatedEvent>, NewsContentUpdatedProjector>();
+            services.AddScoped<IEventHandler<NewsCreatedEvent>, NewsCreatedProjector>();
+            services.AddScoped<IEventHandler<NewsDeletedEvent>, NewsDeletedProjector>();
+            services.AddScoped<IEventHandler<NewsTitleUpdatedEvent>, NewsTitleUpdatedProjector>();
 
             return services;
         }
