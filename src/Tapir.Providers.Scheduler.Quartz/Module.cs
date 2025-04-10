@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Quartz;
 using Quartz.AspNetCore;
-using System;
 using Tapir.Core.Scheduler;
 using Tapir.Providers.Scheduler.Quartz.Tasks;
 

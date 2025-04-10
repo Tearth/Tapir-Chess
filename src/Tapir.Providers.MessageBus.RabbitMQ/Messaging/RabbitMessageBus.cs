@@ -66,6 +66,11 @@ namespace Tapir.Providers.MessageBus.RabbitMQ.Messaging
                 await channel.BasicAckAsync(args.DeliveryTag, false);
             };
 
+            if (string.IsNullOrEmpty(_configuration.QueueName))
+            {
+                throw new InvalidOperationException("Empty queue name.");
+            }
+
             await channel.BasicConsumeAsync(_configuration.QueueName, false, consumer);
         }
 
@@ -75,16 +80,21 @@ namespace Tapir.Providers.MessageBus.RabbitMQ.Messaging
             {
                 var factory = new ConnectionFactory
                 {
-                    HostName = _configuration.Host,
+                    HostName = _configuration.Host ?? "",
                     Port = _configuration.Port,
-                    UserName = _configuration.Username,
-                    Password = _configuration.Password
+                    UserName = _configuration.Username ?? "",
+                    Password = _configuration.Password ?? ""
                 };
 
                 _connection = await factory.CreateConnectionAsync();
 
                 using (var channel = await _connection.CreateChannelAsync())
                 {
+                    if (string.IsNullOrEmpty(_configuration.QueueName))
+                    {
+                        throw new InvalidOperationException("Empty queue name.");
+                    }
+
                     await channel.QueueDeclareAsync(_configuration.QueueName, true, false, false);
                     await channel.QueueBindAsync(_configuration.QueueName, "amq.fanout", string.Empty);
                 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Quartz;
 using System.Text.Json;
+using System.Threading.Tasks;
 using Tapir.Core.Scheduler;
 
 namespace Tapir.Providers.Scheduler.Quartz.Tasks
