@@ -21,7 +21,7 @@ namespace Tapir.Core.Persistence
                 throw new AggregateNotFoundException($"Aggregate {id} not found.");
             }
 
-            if (Activator.CreateInstance(typeof(TRoot), id) is not TRoot entity)
+            if (Activator.CreateInstance(typeof(TRoot)) is not TRoot entity)
             {
                 throw new InvalidOperationException($"Aggregate root {typeof(TRoot).Name} could not be instantiated.");
             }

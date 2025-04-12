@@ -15,22 +15,21 @@ namespace Tapir.Services.News.Domain.News.Entities
 
         public NewsEntity()
         {
-            var @event = new NewsCreatedEvent(Id, DateTime.UtcNow);
+        }
+
+        public NewsEntity(Guid id)
+        {
+            var @event = new NewsCreatedEvent(id, DateTime.UtcNow);
 
             ApplyEvent(@event);
             ApplyUncommittedEvent(@event);
-        }
-
-        public NewsEntity(Guid id) : base(id)
-        {
-
         }
 
         public void SetTitle(string title)
         {
             if (string.IsNullOrEmpty(title))
             {
-                throw new DomainException("Title is required.", "InvalidTitle");
+                throw new DomainException("Title is required.", "EmptyTitle");
             }
 
             var @event = new NewsTitleUpdatedEvent(Id, title);
@@ -43,7 +42,7 @@ namespace Tapir.Services.News.Domain.News.Entities
         {
             if (string.IsNullOrEmpty(alias))
             {
-                throw new DomainException("Alias is required.", "InvalidAlias");
+                throw new DomainException("Alias is required.", "EmptyAlias");
             }
 
             if (!Regex.IsMatch(alias, "^[a-z0-9-]+$"))
@@ -61,7 +60,7 @@ namespace Tapir.Services.News.Domain.News.Entities
         {
             if (string.IsNullOrEmpty(content))
             {
-                throw new DomainException("Content is required.", "InvalidContent");
+                throw new DomainException("Content is required.", "EmptyContent");
             }
 
             var @event = new NewsContentUpdatedEvent(Id, content);
@@ -90,8 +89,8 @@ namespace Tapir.Services.News.Domain.News.Entities
                 case NewsCreatedEvent newsCreatedEvent: ExecuteEvent(newsCreatedEvent); break;
                 case NewsDeletedEvent newsDeletedEvent: ExecuteEvent(newsDeletedEvent); break;
                 case NewsTitleUpdatedEvent titleUpdatedEvent: ExecuteEvent(titleUpdatedEvent); break;
-                case NewsAliasUpdatedEvent titleAliasEvent: ExecuteEvent(titleAliasEvent); break;
-                case NewsContentUpdatedEvent titleContentEvent: ExecuteEvent(titleContentEvent); break;
+                case NewsAliasUpdatedEvent aliasUpdatedEvent: ExecuteEvent(aliasUpdatedEvent); break;
+                case NewsContentUpdatedEvent contentUpdatedEvent: ExecuteEvent(contentUpdatedEvent); break;
             }
 
             base.ApplyEvent(@event);
@@ -99,6 +98,7 @@ namespace Tapir.Services.News.Domain.News.Entities
 
         private void ExecuteEvent(NewsCreatedEvent @event)
         {
+            Id = @event.AggregateId;
             CreatedAt = @event.CreatedAt;
         }
 

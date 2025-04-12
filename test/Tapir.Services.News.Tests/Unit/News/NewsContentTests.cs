@@ -10,7 +10,7 @@ namespace Tapir.Services.News.Tests.Unit.News
         public void SetContent_ValidContent_EventEmitted()
         {
             // Arrange
-            var newsEntity = new NewsEntity(Guid.NewGuid());
+            var newsEntity = new NewsEntity();
             var content = "Content";
 
             // Act
@@ -29,7 +29,7 @@ namespace Tapir.Services.News.Tests.Unit.News
         public void SetContent_EmptyContent_ThrowsDomainException()
         {
             // Arrange
-            var newsEntity = new NewsEntity(Guid.NewGuid());
+            var newsEntity = new NewsEntity();
 
             // Act
             var act = () => newsEntity.SetContent("");

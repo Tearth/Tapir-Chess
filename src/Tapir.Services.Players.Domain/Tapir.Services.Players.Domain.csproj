@@ -10,8 +10,4 @@
     <ProjectReference Include="..\Tapir.Core\Tapir.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Players\Events\" />
-  </ItemGroup>
-
 </Project>

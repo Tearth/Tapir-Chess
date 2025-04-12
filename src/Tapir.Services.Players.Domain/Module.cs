@@ -2,6 +2,7 @@
 using Tapir.Core.Events;
 using Tapir.Core.Persistence;
 using Tapir.Services.Players.Domain.Players.Entities;
+using Tapir.Services.Players.Domain.Players.Events;
 
 namespace Tapir.Services.Players.Domain
 {
@@ -16,6 +17,13 @@ namespace Tapir.Services.Players.Domain
 
             // Repositories
             services.AddScoped<IAggregateRepository<PlayerEntity>, AggregateRepository<PlayerEntity>>();
+
+            // Event handlers
+            eventRegistry.Add<PlayerAboutMeUpdatedEvent>();
+            eventRegistry.Add<PlayerCountryUpdatedEvent>();
+            eventRegistry.Add<PlayerCreatedEvent>();
+            eventRegistry.Add<PlayerEmailUpdatedEvent>();
+            eventRegistry.Add<PlayerUsernameUpdatedEvent>();
 
             return services;
         }

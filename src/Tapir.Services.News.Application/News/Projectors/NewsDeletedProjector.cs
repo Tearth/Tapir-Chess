@@ -14,14 +14,14 @@ namespace Tapir.Services.News.Application.News.Projectors
             _database = database;
         }
 
-        public async Task Process(NewsDeletedEvent notification)
+        public async Task Process(NewsDeletedEvent @event)
         {
             using (var connection = _database.Open())
             {
                 await connection.ExecuteAsync("UPDATE News SET Deleted = true, DeletedAt = @DeletedAt WHERE Id = @AggregateId", new
                 {
-                    notification.DeletedAt,
-                    notification.AggregateId,
+                    @event.DeletedAt,
+                    @event.AggregateId,
                 });
             }
         }

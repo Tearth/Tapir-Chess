@@ -7,10 +7,10 @@ namespace Tapir.Services.News.Tests.Unit.News
     public class NewsDeletionTests
     {
         [Test]
-        public void Delete_ValidNews_EventEmitted()
+        public void DeleteNews_ValidNews_EventEmitted()
         {
             // Arrange
-            var newsEntity = new NewsEntity(Guid.NewGuid());
+            var newsEntity = new NewsEntity();
 
             // Act
             newsEntity.Delete();
@@ -25,10 +25,10 @@ namespace Tapir.Services.News.Tests.Unit.News
         }
 
         [Test]
-        public void Delete_AlreadyDeletedNews_ThrowsDomainException()
+        public void DeleteNews_AlreadyDeletedNews_ThrowsDomainException()
         {
             // Arrange
-            var newsEntity = new NewsEntity(Guid.NewGuid());
+            var newsEntity = new NewsEntity();
             newsEntity.Delete();
 
             // Act

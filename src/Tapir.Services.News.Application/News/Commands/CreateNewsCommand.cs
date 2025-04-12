@@ -28,13 +28,13 @@ namespace Tapir.Services.News.Application.News.Commands
 
         public async Task<Unit> Process(CreateNewsCommand command)
         {
-            var news = new NewsEntity();
+            var entity = new NewsEntity(Guid.NewGuid());
 
-            news.SetTitle(command.Title);
-            news.SetAlias(command.Alias);
-            news.SetContent(command.Content);
+            entity.SetTitle(command.Title);
+            entity.SetAlias(command.Alias);
+            entity.SetContent(command.Content);
 
-            await _newsRepository.Save(news);
+            await _newsRepository.Save(entity);
             return Unit.Default;
         }
     }

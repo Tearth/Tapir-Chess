@@ -29,24 +29,24 @@ namespace Tapir.Services.News.Application.News.Commands
 
         public async Task<Unit> Process(UpdateNewsCommand request)
         {
-            var news = await _newsRepository.Load(request.Id);
+            var entity = await _newsRepository.Load(request.Id);
 
             if (request.Title != null)
             {
-                news.SetTitle(request.Title);
+                entity.SetTitle(request.Title);
             }
 
             if (request.Alias != null)
             {
-                news.SetAlias(request.Alias);
+                entity.SetAlias(request.Alias);
             }
 
             if (request.Content != null)
             {
-                news.SetContent(request.Content);
+                entity.SetContent(request.Content);
             }
 
-            await _newsRepository.Save(news);
+            await _newsRepository.Save(entity);
             return Unit.Default;
         }
     }

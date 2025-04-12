@@ -1,27 +1,28 @@
 ﻿using Dapper;
 using Tapir.Core.Bus;
 using Tapir.Core.Persistence;
-using Tapir.Services.News.Domain.News.Events;
+using Tapir.Services.Players.Domain.Players.Events;
 
 namespace Tapir.Services.News.Application.News.Projectors
 {
-    public class NewsCreatedProjector : IEventHandler<NewsCreatedEvent>
+    public class PlayerCreatedProjector : IEventHandler<PlayerCreatedEvent>
     {
         private readonly IDatabaseConnection _database;
 
-        public NewsCreatedProjector(IDatabaseConnection database)
+        public PlayerCreatedProjector(IDatabaseConnection database)
         {
             _database = database;
         }
 
-        public async Task Process(NewsCreatedEvent @event)
+        public async Task Process(PlayerCreatedEvent @event)
         {
             using (var connection = _database.Open())
             {
-                await connection.ExecuteAsync("INSERT INTO News (Id, CreatedAt) VALUES (@AggregateId, @CreatedAt)", new
+                await connection.ExecuteAsync("INSERT INTO Players (Id, CreatedAt, UserId) VALUES (@AggregateId, @CreatedAt, @UserId)", new
                 {
                     @event.AggregateId,
                     @event.CreatedAt,
+                    @event.UserId
                 });
             }
         }

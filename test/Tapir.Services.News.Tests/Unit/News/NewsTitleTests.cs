@@ -10,7 +10,7 @@ namespace Tapir.Services.News.Tests.Unit.News
         public void SetTitle_ValidTitle_EventEmitted()
         {
             // Arrange
-            var newsEntity = new NewsEntity(Guid.NewGuid());
+            var newsEntity = new NewsEntity();
             var title = "Title";
 
             // Act
@@ -29,7 +29,7 @@ namespace Tapir.Services.News.Tests.Unit.News
         public void SetTitle_EmptyTitle_ThrowsDomainException()
         {
             // Arrange
-            var newsEntity = new NewsEntity(Guid.NewGuid());
+            var newsEntity = new NewsEntity();
 
             // Act
             var act = () => newsEntity.SetTitle("");

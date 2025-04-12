@@ -3,9 +3,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Tapir.Core.Bus;
 using Tapir.Core.Events;
 using Tapir.Core.Messaging.Identity;
+using Tapir.Services.News.Application.News.Commands;
+using Tapir.Services.News.Application.News.Projectors;
 using Tapir.Services.Players.Application.Messages;
 using Tapir.Services.Players.Application.Tasks;
 using Tapir.Services.Players.Domain;
+using Tapir.Services.Players.Domain.Players.Events;
 
 namespace Tapir.Services.Players.Application
 {
@@ -23,9 +26,19 @@ namespace Tapir.Services.Players.Application
 
             // Tasks
             services.AddScoped<SynchronizeDomainEventsTask>();
-            
+
+            // Command handlers
+            services.AddScoped<ICreatePlayerCommandHandler, CreatePlayerCommandHandler>();
+
             // Message handlers
             services.AddScoped<IEventHandler<UserCreatedMessage>, UserCreatedMessageHandler>();
+
+            // Event handlers
+            services.AddScoped<IEventHandler<PlayerAboutMeUpdatedEvent>, PlayerAboutMeUpdatedProjector>();
+            services.AddScoped<IEventHandler<PlayerCountryUpdatedEvent>, PlayerCountryUpdatedProjector>();
+            services.AddScoped<IEventHandler<PlayerCreatedEvent>, PlayerCreatedProjector>();
+            services.AddScoped<IEventHandler<PlayerEmailUpdatedEvent>, PlayerEmailUpdatedProjector>();
+            services.AddScoped<IEventHandler<PlayerUsernameUpdatedEvent>, PlayerUsernameUpdatedProjector>();
 
             return services;
         }

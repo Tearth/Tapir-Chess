@@ -10,7 +10,7 @@ namespace Tapir.Services.News.Tests.Unit.News
         public void SetAlias_ValidAlias_EventEmitted()
         {
             // Arrange
-            var newsEntity = new NewsEntity(Guid.NewGuid());
+            var newsEntity = new NewsEntity();
             var alias = "correct-alias";
 
             // Act
@@ -29,7 +29,7 @@ namespace Tapir.Services.News.Tests.Unit.News
         public void SetAlias_EmptyAlias_ThrowsDomainException()
         {
             // Arrange
-            var newsEntity = new NewsEntity(Guid.NewGuid());
+            var newsEntity = new NewsEntity();
 
             // Act
             var act = () => newsEntity.SetAlias("");
@@ -42,7 +42,7 @@ namespace Tapir.Services.News.Tests.Unit.News
         public void SetAlias_AliasWithWhitespace_ThrowsDomainException()
         {
             // Arrange
-            var newsEntity = new NewsEntity(Guid.NewGuid());
+            var newsEntity = new NewsEntity();
 
             // Act
             var act = () => newsEntity.SetAlias("alias with whitespaces");

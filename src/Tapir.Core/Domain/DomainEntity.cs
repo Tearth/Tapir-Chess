@@ -6,16 +6,6 @@
 
         private readonly List<DomainEvent> _uncommittedEvents = [];
 
-        protected DomainEntity()
-        {
-            Id = Guid.NewGuid();
-        }
-
-        protected DomainEntity(Guid id)
-        {
-            Id = id;
-        }
-
         public IReadOnlyList<DomainEvent> GetUncommittedEvents()
         {
             return _uncommittedEvents;

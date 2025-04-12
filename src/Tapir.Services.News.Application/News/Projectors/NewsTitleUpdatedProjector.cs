@@ -14,14 +14,14 @@ namespace Tapir.Services.News.Application.News.Projectors
             _database = database;
         }
 
-        public async Task Process(NewsTitleUpdatedEvent notification)
+        public async Task Process(NewsTitleUpdatedEvent @event)
         {
             using (var connection = _database.Open())
             {
                 await connection.ExecuteAsync("UPDATE News SET Title = @Title, UpdatedAt = NOW() WHERE Id = @AggregateId", new
                 {
-                    notification.Title,
-                    notification.AggregateId,
+                    @event.Title,
+                    @event.AggregateId,
                 });
             }
         }

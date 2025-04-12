@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Tapir.Services.News.Domain\Tapir.Services.News.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Tapir.Services.Players.Domain\Tapir.Services.Players.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
