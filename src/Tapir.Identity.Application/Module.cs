@@ -20,10 +20,6 @@ namespace Tapir.Identity.Application
             services.AddSingleton<IEventBus, EventBus>();
             services.AddScoped<TokenGenerator>();
 
-            // Tasks
-            services.AddScoped<EmailConfirmationMailTask>();
-            services.AddScoped<PasswordResetMailTask>();
-
             // Command handlers
             services.AddScoped<IChangePasswordCommandHandler, ChangePasswordCommandHandler>();
             services.AddScoped<IConfirmEmailCommandHandler, ConfirmEmailCommandHandler>();
@@ -32,6 +28,10 @@ namespace Tapir.Identity.Application
             services.AddScoped<IRefreshTokenCommandHandler, RefreshTokenCommandHandler>();
             services.AddScoped<IRegisterCommandHandler, RegisterCommandHandler>();
             services.AddScoped<IResetPasswordCommandHandler, ResetPasswordCommandHandler>();
+
+            // Tasks
+            services.AddScoped<EmailConfirmationMailTask>();
+            services.AddScoped<PasswordResetMailTask>();
 
             return services;
         }

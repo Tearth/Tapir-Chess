@@ -24,9 +24,6 @@ namespace Tapir.Services.News.Application
             services.AddScoped<IDomainEventSynchronizer, DomainEventSynchronizer>();
             services.AddSingleton<IEventBus, EventBus>();
 
-            // Tasks
-            services.AddScoped<SynchronizeDomainEventsTask>();
-
             // Command handlers
             services.AddScoped<ICreateNewsCommandHandler, CreateNewsCommandHandler>();
             services.AddScoped<IDeleteNewsCommandHandler, DeleteNewsCommandHandler>();
@@ -42,6 +39,9 @@ namespace Tapir.Services.News.Application
             services.AddScoped<IEventHandler<NewsCreatedEvent>, NewsCreatedProjector>();
             services.AddScoped<IEventHandler<NewsDeletedEvent>, NewsDeletedProjector>();
             services.AddScoped<IEventHandler<NewsTitleUpdatedEvent>, NewsTitleUpdatedProjector>();
+
+            // Tasks
+            services.AddScoped<SynchronizeDomainEventsTask>();
 
             return services;
         }

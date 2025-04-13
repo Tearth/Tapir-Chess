@@ -3,7 +3,7 @@ using Tapir.Core.Bus;
 using Tapir.Core.Persistence;
 using Tapir.Services.Players.Domain.Players.Events;
 
-namespace Tapir.Services.News.Application.News.Projectors
+namespace Tapir.Services.Players.Application.Players.Projectors
 {
     public class PlayerAboutMeUpdatedProjector : IEventHandler<PlayerAboutMeUpdatedEvent>
     {

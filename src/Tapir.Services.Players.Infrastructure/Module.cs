@@ -7,6 +7,9 @@ using Tapir.Providers.Scheduler.Quartz;
 using Serilog;
 using Tapir.Core.Bus;
 using Tapir.Providers.MessageBus.RabbitMQ;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Tapir.Services.Players.Infrastructure
 {
@@ -22,6 +25,27 @@ namespace Tapir.Services.Players.Infrastructure
 
             // Services
             services.AddSingleton<IEventBus, EventBus>();
+
+            // Authentication
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    if (settings.Jwt == null)
+                    {
+                        throw new InvalidOperationException("JWT settings not found.");
+                    }
+
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = settings.Jwt.Issuer,
+                        ValidAudience = settings.Jwt.Audience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(settings.Jwt.Secret))
+                    };
+                });
 
             // Database
             services.AddPostgreSqlDatabase(cfg =>

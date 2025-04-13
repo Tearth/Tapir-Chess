@@ -24,11 +24,6 @@ namespace Tapir.Identity.Infrastructure
             services.AddHostedService<Startup>();
             services.AddSingleton(settings);
 
-            // Database
-            services.AddDbContext<DatabaseContext>(options => 
-                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"))
-            );
-
             // Identity providers
             services
                 .AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -71,6 +66,11 @@ namespace Tapir.Identity.Infrastructure
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(settings.Jwt.Secret))
                     };
                 });
+
+            // Database
+            services.AddDbContext<DatabaseContext>(options =>
+                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"))
+            );
 
             // Mailing
             services.AddMailKitMailing(options =>

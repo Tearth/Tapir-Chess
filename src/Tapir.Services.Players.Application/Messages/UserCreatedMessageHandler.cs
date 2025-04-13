@@ -1,6 +1,6 @@
 ﻿using Tapir.Core.Bus;
 using Tapir.Core.Messaging.Identity;
-using Tapir.Services.News.Application.News.Commands;
+using Tapir.Services.Players.Application.Players.Commands;
 
 namespace Tapir.Services.Players.Application.Messages
 {

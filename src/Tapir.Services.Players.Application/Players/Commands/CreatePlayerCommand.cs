@@ -3,7 +3,7 @@ using Tapir.Core.Persistence;
 using Tapir.Core.Types;
 using Tapir.Services.Players.Domain.Players.Entities;
 
-namespace Tapir.Services.News.Application.News.Commands
+namespace Tapir.Services.Players.Application.Players.Commands
 {
     public class CreatePlayerCommand
     {
@@ -19,11 +19,11 @@ namespace Tapir.Services.News.Application.News.Commands
 
     public class CreatePlayerCommandHandler : ICreatePlayerCommandHandler
     {
-        private readonly IAggregateRepository<PlayerEntity> _playersRepository;
+        private readonly IAggregateRepository<PlayerEntity> _playerRepository;
 
         public CreatePlayerCommandHandler(IAggregateRepository<PlayerEntity> playersRepository)
         {
-            _playersRepository = playersRepository;
+            _playerRepository = playersRepository;
         }
 
         public async Task<Unit> Process(CreatePlayerCommand command)
@@ -33,7 +33,7 @@ namespace Tapir.Services.News.Application.News.Commands
             entity.SetUsername(command.Username);
             entity.SetEmail(command.Email);
 
-            await _playersRepository.Save(entity);
+            await _playerRepository.Save(entity);
             return Unit.Default;
         }
     }

@@ -49,6 +49,7 @@ namespace Tapir.Services.News.API.Controllers
         [Route("")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Create(CreateNewsCommand command, [FromServices] ICreateNewsCommandHandler handler)
         {
             await handler.Process(command);
@@ -59,6 +60,7 @@ namespace Tapir.Services.News.API.Controllers
         [Route("{id}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Update(Guid id, UpdateNewsCommand command, [FromServices] IUpdateNewsCommandHandler handler)
@@ -76,6 +78,7 @@ namespace Tapir.Services.News.API.Controllers
         [Route("{id}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(Guid id, [FromServices] IDeleteNewsCommandHandler handler)
         {

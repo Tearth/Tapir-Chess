@@ -20,6 +20,11 @@ namespace Tapir.Services.Players.API.Middleware
 
             switch (exception)
             {
+                case UnauthorizedAccessException unauthorizedAccessException:
+                {
+                    httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    return true;
+                }
                 case AggregateNotFoundException aggregateNotFoundException:
                 {
                     problemDetails = new ProblemDetails

@@ -1,6 +1,19 @@
-@Tapir.Services.Players.API_HostAddress = http://localhost:5141
+@HostAddress = http://localhost:9030
 
-GET {{Tapir.Services.Players.API_HostAddress}}/weatherforecast/
+GET {{HostAddress}}/api/players?pageSize=10&pageNumber=1
 Accept: application/json
 
 ###
+
+GET {{HostAddress}}/api/players/c0e78186-fabc-4deb-b985-0e09cca7d87e
+Accept: application/json
+
+###
+
+PATCH {{HostAddress}}/api/players/c0e78186-fabc-4deb-b985-0e09cca7d87e
+Cookie: access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5MTFjOTcyYS01YzNkLTRhZGUtYWZiMi03MDA0MjExMzFhYWIiLCJuYW1lIjoiYWRtaW4iLCJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsImp0aSI6ImU1NDUzOWUxLWYyNmUtNDNlMy1hZWYzLWM0N2NmYmUyMzZiNSIsInJvbGUiOlsiYWRtaW4iLCJ1c2VyIl0sImV4cCI6MTc0NDQ4MzcxMSwiaXNzIjoiVGFwaXIgQ2hlc3MiLCJhdWQiOiJodHRwczovL3RhcGlyY2hlc3MuZGV2In0.YaNE-sg1FPMdrulYZaLQLwroNspGCtcfHB8_0QzPFA0; path=/; secure; samesite=strict; httponly, refresh_token=U%2F0Kl3uFPKx7VpXDCZ9ZZcKZ6JkRcM2bvus14ydTR4G0WWt69BvP7Zd89xwYJFF0xM89MH1oDAdX%2BnTtlsxBGlbyLJMcXp1me4TCc3n2uIiLon7fRp9XjRYWppX5Ox%2FlRCRYYSNUYxMo6tqohLocrzlIdp3ZAW02i0VB5e5txkM%3D; path=/api/auth/refresh-token; secure; samesite=strict; httponly
+Content-Type: application/json
+{
+    "id": "c0e78186-fabc-4deb-b985-0e09cca7d87e",
+    "country": "Poland"
+}

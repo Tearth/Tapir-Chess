@@ -5,6 +5,9 @@ using Tapir.Providers.Database.PostgreSQL;
 using System.Reflection;
 using Tapir.Providers.Scheduler.Quartz;
 using Serilog;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Tapir.Services.News.Infrastructure
 {
@@ -16,6 +19,27 @@ namespace Tapir.Services.News.Infrastructure
 
             // Initialization
             services.AddSingleton(settings);
+
+            // Authentication
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    if (settings.Jwt == null)
+                    {
+                        throw new InvalidOperationException("JWT settings not found.");
+                    }
+
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = settings.Jwt.Issuer,
+                        ValidAudience = settings.Jwt.Audience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(settings.Jwt.Secret))
+                    };
+                });
 
             // Database
             services.AddPostgreSqlDatabase(cfg =>
@@ -31,6 +55,7 @@ namespace Tapir.Services.News.Infrastructure
                 cfg.MigrationsAssembly = Assembly.GetExecutingAssembly();
             });
 
+            // Event store
             services.AddMongoDbEventStore(cfg =>
             {
                 if (settings.Database == null)
@@ -55,6 +80,7 @@ namespace Tapir.Services.News.Infrastructure
                 cfg.Password = settings.Database.Password;
             });
 
+            // Task scheduler
             services.AddQuartzScheduler(cfg =>
             {
                 var connectionString = configuration.GetConnectionString("DefaultConnection");
@@ -67,6 +93,7 @@ namespace Tapir.Services.News.Infrastructure
                 cfg.ConnectionString = connectionString;
             });
 
+            // Logger
             services.AddSerilog((context, cfg) =>
             {
                 cfg.ReadFrom.Configuration(configuration);

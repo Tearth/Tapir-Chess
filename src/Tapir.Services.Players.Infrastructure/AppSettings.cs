@@ -2,8 +2,16 @@
 {
     public class AppSettings
     {
+        public JwtSettings? Jwt { get; set; }
         public MongoDbSettings? MongoDb { get; set; }
         public required MessageBusSettings MessageBus { get; set; }
+    }
+
+    public class JwtSettings
+    {
+        public required string Issuer { get; set; }
+        public required string Audience { get; set; }
+        public required string Secret { get; set; }
     }
 
     public class MongoDbSettings
