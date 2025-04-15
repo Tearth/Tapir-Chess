@@ -87,6 +87,11 @@ namespace Tapir.Gateway
             });
 
             var app = builder.Build();
+            app.UseCors(x => x
+                .WithOrigins(settings.AllowedOrigins)
+                .AllowAnyMethod()
+                .AllowCredentials()
+                .AllowAnyHeader());
             app.UseHttpsRedirection();
             app.UseAuthorization();
             app.MapControllers();

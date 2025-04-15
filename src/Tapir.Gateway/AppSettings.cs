@@ -2,6 +2,7 @@
 {
     public class AppSettings
     {
+        public required string AllowedOrigins { get; set; }
         public required JwtSettings Jwt { get; set; }
     }
 
