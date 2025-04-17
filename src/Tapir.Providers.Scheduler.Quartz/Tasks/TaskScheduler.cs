@@ -50,7 +50,12 @@ namespace Tapir.Providers.Scheduler.Quartz.Tasks
                 .PersistJobDataAfterExecution()
                 .StoreDurably()
                 .Build();
-            var trigger = TriggerBuilder.Create().WithCronSchedule(cron).StartNow().Build();
+
+            var trigger = TriggerBuilder.Create()
+                .WithIdentity(task.GetType().Name)
+                .WithCronSchedule(cron)
+                .StartNow()
+                .Build();
 
             await scheduler.ScheduleJob(job, [trigger], true);
         }
