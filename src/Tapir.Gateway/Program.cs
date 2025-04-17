@@ -28,6 +28,7 @@ namespace Tapir.Gateway
                     {
                         var accessToken = transformContext.HttpContext.Request.Cookies["access_token"];
                         var refreshToken = transformContext.HttpContext.Request.Cookies["refresh_token"];
+                        var rememberMe = transformContext.HttpContext.Request.Cookies["remember_me"];
 
                         if (!string.IsNullOrEmpty(accessToken))
                         {
@@ -36,7 +37,8 @@ namespace Tapir.Gateway
 
                         if (!string.IsNullOrEmpty(refreshToken))
                         {
-                            transformContext.ProxyRequest.Headers.Add("X-Refresh-Token", "Basic " + refreshToken);
+                            transformContext.ProxyRequest.Headers.Add("X-Refresh-Token", refreshToken);
+                            transformContext.ProxyRequest.Headers.Add("X-Remember-Me", rememberMe ?? "false");
                         }
 
                         return ValueTask.CompletedTask;

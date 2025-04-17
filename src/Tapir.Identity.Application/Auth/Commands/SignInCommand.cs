@@ -9,46 +9,49 @@ using Tapir.Identity.Infrastructure.Persistence;
 
 namespace Tapir.Identity.Application.Auth.Commands
 {
-    public class LogInCommand
+    public class SignInCommand
     {
         [Required(ErrorMessage = ValidationErrorCodes.EMPTY_FIELD)]
         public required string Username { get; set; }
 
         [Required(ErrorMessage = ValidationErrorCodes.EMPTY_FIELD)]
         public required string Password { get; set; }
+
+        [Required(ErrorMessage = ValidationErrorCodes.EMPTY_FIELD)]
+        public required bool RememberMe { get; set; }
     }
 
-    public class LogInCommandResult : CommandResultBase<LogInCommandResult>
+    public class SignInCommandResult : CommandResultBase<SignInCommandResult>
     {
         public string? AccessToken { get; set; }
         public string? RefreshToken { get; set; }
     }
 
-    public interface ILogInCommandHandler : ICommandHandler<LogInCommand, LogInCommandResult>
+    public interface ISignInCommandHandler : ICommandHandler<SignInCommand, SignInCommandResult>
     {
 
     }
 
-    public class LogInCommandHandler : ILogInCommandHandler
+    public class SignInCommandHandler : ISignInCommandHandler
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly TokenGenerator _tokenGenerator;
         private readonly DatabaseContext _databaseContext;
 
-        public LogInCommandHandler(UserManager<ApplicationUser> userManager, TokenGenerator tokenGenerator, DatabaseContext databaseContext)
+        public SignInCommandHandler(UserManager<ApplicationUser> userManager, TokenGenerator tokenGenerator, DatabaseContext databaseContext)
         {
             _userManager = userManager;
             _tokenGenerator = tokenGenerator;
             _databaseContext = databaseContext;
         }
 
-        public async Task<LogInCommandResult> Process(LogInCommand request)
+        public async Task<SignInCommandResult> Process(SignInCommand request)
         {
             var user = await _userManager.FindByNameAsync(request.Username);
 
             if (user == null)
             {
-                return LogInCommandResult.Error("UserNotFound");
+                return SignInCommandResult.Error("InvalidUsernameOrPassword");
             }
 
             if (await _userManager.CheckPasswordAsync(user, request.Password))
@@ -65,7 +68,7 @@ namespace Tapir.Identity.Application.Auth.Commands
                 });
                 await _databaseContext.SaveChangesAsync();
 
-                return new LogInCommandResult
+                return new SignInCommandResult
                 {
                     Success = true,
                     AccessToken = accessToken,
@@ -74,7 +77,7 @@ namespace Tapir.Identity.Application.Auth.Commands
             }
             else
             {
-                return LogInCommandResult.Error("InvalidPassword");
+                return SignInCommandResult.Error("InvalidUsernameOrPassword");
             }
         }
     }

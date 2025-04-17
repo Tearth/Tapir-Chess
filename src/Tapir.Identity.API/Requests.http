@@ -1,11 +1,12 @@
-@HostAddress = http://localhost:9000
+@HostAddress = https://localhost:9000
 
 POST {{HostAddress}}/api/auth/login
 Accept: application/json
 Content-Type: application/json
 {
-    "Username": "tapir2",
-    "Password": "Tapir123!@#"
+    "Username": "admin",
+    "Password": "Admin123!",
+    "RememberMe": true
 }
 
 ###
@@ -34,11 +35,7 @@ Content-Type: application/json
 
 POST {{HostAddress}}/api/auth/refresh-token
 Accept: application/json
-Cookie: access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1MTVmNWFlMi0yOTExLTQwNWUtYWNiYi1hNjEyNTUwMjNhOTEiLCJuYW1lIjoidGVzdCIsImVtYWlsIjoidGVzdEB0ZXN0LnBsIiwianRpIjoiZDBlMGZjYWItYTFkYS00MWMzLWEzNGMtYzA0YzZiOTljNDQxIiwiZXhwIjoxNzQyNjQ2MDM2LCJpc3MiOiJUYXBpciBDaGVzcyIsImF1ZCI6Imh0dHBzOi8vdGFwaXJjaGVzcy5kZXYifQ.Dyk5xXOlabrbvrRN_oa3BpBuREek81KwZws8_I-uffI
-Content-Type: application/json
-{
-    "RefreshToken": "k+CYh2ag2EBlU3cOzqCy34G3u9a67DD7JzOPnZ+VeqGCzeOBi7+4K7oIWgwHcOJQr57L97TVHBnLQCdYP6i3J5ySAhM2OeQ0Qe0kANm68kUkPx3qVjnDOaRFY/jawQz4h8OPGSCQRbOS/cZ1agXrnJ2C2yqUjLLhi5hHaaR8RFM="
-}
+Cookie: access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzOWVkNWE3Ny00ZmVhLTRlM2QtODI2NS0yZDY5YWI3Y2IyOTYiLCJuYW1lIjoiYWRtaW4iLCJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsImp0aSI6IjE5ZmQ3OGNlLTJjNmMtNDY4YS05ZjNhLTIyMmY5MjVjOTAyMSIsInJvbGUiOlsiYWRtaW4iLCJ1c2VyIl0sImV4cCI6MTc0NDc1NTcxMSwiaXNzIjoiVGFwaXIgQ2hlc3MiLCJhdWQiOiJodHRwczovL3RhcGlyY2hlc3MuZGV2In0.lBHz4h4AkWw2GONCYw82rR4ruQj3uMpjZbhXQP7pKSw; max-age=900; path=/; secure; samesite=strict; httponly, refresh_token=KTAOY%2FJ%2F1XG40h0aTgrvYcOyeFujvzajWV4sqB8zKDu9%2B8KiIC1vLREI%2BATms9VUWkpIxIJx7zQOCtEu%2BGd37GlwJVEIW1CFcM%2BCC3Qe3rsJiBnPpQ%2FyO%2FAdpAunS%2FFXIjUulKbDWGYHiRIrkeLt1xKDJcU3L%2FfL19zYhhAmZE0%3D; max-age=15552000; path=/api/auth/refresh-token; secure; samesite=strict; httponly, remember_me=true; max-age=15552000; path=/; secure; samesite=strict; httponly
 
 ###
 

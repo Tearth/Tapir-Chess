@@ -39,7 +39,7 @@ namespace Tapir.Identity.Application.Services
                 _settings.Jwt.Issuer,
                 _settings.Jwt.Audience,
                 claims,
-                expires: DateTime.Now.AddMinutes(_settings.Jwt.ExpirationTime),
+                expires: DateTime.Now.AddMinutes(_settings.Jwt.AccessTokenExpirationTime),
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);

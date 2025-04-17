@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Tapir.Core.Queries;
 using Tapir.Identity.Application.Auth.Commands;
+using Tapir.Identity.Infrastructure;
 
 namespace Tapir.Identity.API.Controllers
 {
@@ -8,11 +9,18 @@ namespace Tapir.Identity.API.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
+        private readonly AppSettings _settings;
+
+        public AuthController(AppSettings settings)
+        {
+            _settings = settings;
+        }
+
         [HttpPost]
-        [Route("login")]
+        [Route("signin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Login(LogInCommand command, [FromServices] ILogInCommandHandler handler)
+        public async Task<IActionResult> SignIn(SignInCommand command, [FromServices] ISignInCommandHandler handler)
         {
             var result = await handler.Process(command);
             
@@ -21,7 +29,7 @@ namespace Tapir.Identity.API.Controllers
                 return Problem(result.ErrorCode, null, StatusCodes.Status400BadRequest, "Failed to authorize.");
             }
 
-            SetCookies(result.AccessToken!, result.RefreshToken!);
+            SetCookies(result.AccessToken!, result.RefreshToken!, command.RememberMe);
 
             return Ok();
         }
@@ -99,6 +107,7 @@ namespace Tapir.Identity.API.Controllers
         public async Task<IActionResult> RefreshToken([FromServices] IRefreshTokenCommandHandler handler)
         {
             var refreshToken = Request.Headers["X-Refresh-Token"].FirstOrDefault();
+            var rememberMe = Request.Headers["X-Remember-Me"].FirstOrDefault();
 
             if (string.IsNullOrEmpty(refreshToken))
             {
@@ -115,18 +124,19 @@ namespace Tapir.Identity.API.Controllers
                 return Problem(result.ErrorCode, null, StatusCodes.Status400BadRequest, "Failed to refresh token.");
             }
 
-            SetCookies(result.AccessToken!, result.RefreshToken!);
+            SetCookies(result.AccessToken!, result.RefreshToken!, rememberMe == "true");
 
             return Ok();
         }
 
-        private void SetCookies(string accessToken, string refreshToken)
+        private void SetCookies(string accessToken, string refreshToken, bool rememberMe)
         {
             Response.Cookies.Append("access_token", accessToken, new CookieOptions
             {
                 SameSite = SameSiteMode.Strict,
                 HttpOnly = true,
-                Secure = true
+                Secure = true,
+                MaxAge = TimeSpan.FromMinutes(_settings.Jwt.AccessTokenExpirationTime)
             });
 
             Response.Cookies.Append("refresh_token", refreshToken, new CookieOptions
@@ -134,8 +144,24 @@ namespace Tapir.Identity.API.Controllers
                 Path = "/api/auth/refresh-token",
                 SameSite = SameSiteMode.Strict,
                 HttpOnly = true,
-                Secure = true
+                Secure = true,
+                MaxAge = rememberMe ? TimeSpan.FromMinutes(_settings.Jwt.RefreshTokenExpirationTime) : null
             });
+
+            if (rememberMe)
+            {
+                Response.Cookies.Append("remember_me", "true", new CookieOptions
+                {
+                    SameSite = SameSiteMode.Strict,
+                    HttpOnly = true,
+                    Secure = true,
+                    MaxAge = TimeSpan.FromMinutes(_settings.Jwt.RefreshTokenExpirationTime)
+                });
+            }
+            else
+            {
+                Response.Cookies.Delete("remember_me");
+            }
         }
     }
 }
