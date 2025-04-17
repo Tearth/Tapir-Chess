@@ -1,6 +1,6 @@
 @HostAddress = https://localhost:9000
 
-POST {{HostAddress}}/api/auth/login
+POST {{HostAddress}}/api/auth/signin
 Accept: application/json
 Content-Type: application/json
 {
@@ -66,6 +66,16 @@ Content-Type: application/json
 {
     "OldPassword": "",
     "NewPassword": "Asd123!"
+}
+
+###
+
+POST {{HostAddress}}/api/account/info
+Accept: application/json
+Cookie: access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzOWVkNWE3Ny00ZmVhLTRlM2QtODI2NS0yZDY5YWI3Y2IyOTYiLCJuYW1lIjoiYWRtaW4iLCJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsImp0aSI6ImQ4MGIyZGExLTIxZTQtNDczYS05YTNmLWM4MmRlYTdjZGE3MSIsInJvbGUiOlsiYWRtaW4iLCJ1c2VyIl0sImV4cCI6MTc0NDkxNzE5MiwiaXNzIjoiVGFwaXIgQ2hlc3MiLCJhdWQiOiJodHRwczovL3RhcGlyY2hlc3MuZGV2In0.b6TXIVzuxP7y3Ts0DVNzExy0ux1BJlHRVMUFu4XTOXA; 
+Content-Type: application/json
+{
+    
 }
 
 ###

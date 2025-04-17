@@ -29,6 +29,9 @@ namespace Tapir.Identity.Application
             services.AddScoped<IRegisterCommandHandler, RegisterCommandHandler>();
             services.AddScoped<IResetPasswordCommandHandler, ResetPasswordCommandHandler>();
 
+            // Query handlers
+            services.AddScoped<IGetAccountQueryHandler, GetAccountQueryHandler>();
+
             // Tasks
             services.AddScoped<EmailConfirmationMailTask>();
             services.AddScoped<PasswordResetMailTask>();

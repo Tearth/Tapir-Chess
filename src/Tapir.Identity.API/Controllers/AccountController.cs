@@ -10,6 +10,16 @@ namespace Tapir.Identity.API.Controllers
     public class AccountController : ControllerBase
     {
         [HttpPost]
+        [Route("info")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(PagedResult<GetAccountQueryResult>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Info(GetAccountQuery query, [FromServices] IGetAccountQueryHandler handler)
+        {
+            return Ok(await handler.Process(query));
+        }
+
+        [HttpPost]
         [Route("change-password")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(PagedResult<RegisterCommandResult>), StatusCodes.Status200OK)]
