@@ -48,7 +48,7 @@ namespace Tapir.Identity.API.Controllers
         [HttpPost]
         [Route("register")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(PagedResult<RegisterCommandResult>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(PagedResult<ProblemDetails>), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Register(RegisterCommand command, [FromServices] IRegisterCommandHandler handler)
         {
@@ -59,7 +59,7 @@ namespace Tapir.Identity.API.Controllers
                 return Problem(result.ErrorCode, null, StatusCodes.Status400BadRequest, "Failed to complete registration.");
             }
 
-            return Ok(result);
+            return Ok();
         }
 
         [HttpPost]
@@ -122,7 +122,7 @@ namespace Tapir.Identity.API.Controllers
 
             if (string.IsNullOrEmpty(refreshToken))
             {
-                return Problem("XRefreshTokenNotFound", null, StatusCodes.Status400BadRequest, "Failed to refresh token.");
+                return Problem("RefreshTokenNotFound", null, StatusCodes.Status400BadRequest, "Failed to refresh token.");
             }
 
             var result = await handler.Process(new RefreshTokenCommand

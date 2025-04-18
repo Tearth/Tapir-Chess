@@ -5,6 +5,20 @@ export class ERRORS {
         return 'Field cannot be empty.'
       case 'InvalidUsernameOrPassword':
         return 'Invalid username or password.'
+      case 'InvalidEmail':
+        return 'Invalid e-mail address.'
+      case 'PasswordTooShort':
+        return 'Password is too short'
+      case 'PasswordRequiresNonAlphanumeric':
+        return 'Password requires non alphanumeric.'
+      case 'PasswordRequiresDigit':
+        return 'Password requires digit.'
+      case 'PasswordRequiresUpper':
+        return 'Password requires uppercase char.'
+      case 'PasswordRequiresLower':
+        return 'Password requires lowercase char.'
+      case 'DuplicateEmail':
+        return 'Duplicated e-mail address.'
       default:
         return 'Unknown error.'
     }
