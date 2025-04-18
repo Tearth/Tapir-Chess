@@ -12,28 +12,48 @@
       </div>
     </div>
     <div class="flex gap-2">
-      <div class="navbar-center">
+      <div class="navbar-center" v-if="!userStore.signedIn">
         <ul class="menu menu-horizontal text-lg">
-          <li><RouterLink to="/SignIn">SIGN IN</RouterLink></li>
-          <li><RouterLink to="/SignIn">JOIN US</RouterLink></li>
+          <li><RouterLink to="/signin">SIGN IN</RouterLink></li>
+          <li><RouterLink to="/register">JOIN US</RouterLink></li>
         </ul>
       </div>
-
-      <!--<div class="dropdown dropdown-end">
-          <div tabIndex={0} role="button" class="btn btn-ghost btn-circle avatar">
-            <div class="w-10 rounded-full">
-              <img
-                alt="Tailwind CSS Navbar component"
-                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-            </div>
+      <div class="navbar-center" v-else>
+        <div class="dropdown dropdown-end">
+          <div tabIndex="{0}" role="button" class="btn btn-ghost text-lg">
+            {{ userStore.username }}
           </div>
           <ul
-            tabIndex={0}
-            class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-            <li><a>Profile</a></li>
-            <li><a>Logout</a></li>
+            tabIndex="{0}"
+            class="menu menu-md dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+          >
+            <li><RouterLink to="/profile">Profile</RouterLink></li>
+            <li><RouterLink to="/settings">Settings</RouterLink></li>
+            <li><a @click="signout">Sign out</a></li>
           </ul>
-        </div> -->
+        </div>
+      </div>
     </div>
   </div>
 </template>
+
+<script lang="ts">
+import router from '@/router'
+import { useUserStore } from '@/stores/user'
+import { mapStores } from 'pinia'
+import { HTTP } from '@/utils/http'
+
+export default {
+  computed: {
+    ...mapStores(useUserStore),
+  },
+  methods: {
+    signout() {
+      HTTP.post('/api/auth/signout', {}).finally(() => {
+        useUserStore().fetch()
+        router.push('/')
+      })
+    },
+  },
+}
+</script>

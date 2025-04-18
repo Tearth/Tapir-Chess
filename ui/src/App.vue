@@ -6,3 +6,14 @@ import Navbar from './components/Navbar.vue'
   <Navbar />
   <RouterView />
 </template>
+
+<script lang="ts">
+import { onMounted } from 'vue'
+import { useUserStore } from '@/stores/user'
+
+export default {
+  mounted() {
+    useUserStore().fetch()
+  },
+}
+</script>

@@ -10,10 +10,12 @@ namespace Tapir.Identity.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly AppSettings _settings;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public AuthController(AppSettings settings)
+        public AuthController(AppSettings settings, IWebHostEnvironment webHostEnvironment)
         {
             _settings = settings;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [HttpPost]
@@ -31,6 +33,15 @@ namespace Tapir.Identity.API.Controllers
 
             SetCookies(result.AccessToken!, result.RefreshToken!, command.RememberMe);
 
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("signout")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> SignOut()
+        {
+            ClearCookies();
             return Ok();
         }
 
@@ -131,37 +142,78 @@ namespace Tapir.Identity.API.Controllers
 
         private void SetCookies(string accessToken, string refreshToken, bool rememberMe)
         {
+            var sameSite = _webHostEnvironment.IsDevelopment() ? SameSiteMode.None : SameSiteMode.Strict;
+            var expirationTime = rememberMe ? TimeSpan.FromMinutes(_settings.Jwt.RefreshTokenExpirationTime) : (TimeSpan?)null;
+
             Response.Cookies.Append("access_token", accessToken, new CookieOptions
             {
-                SameSite = SameSiteMode.Strict,
+                SameSite = sameSite,
                 HttpOnly = true,
                 Secure = true,
-                MaxAge = TimeSpan.FromMinutes(_settings.Jwt.AccessTokenExpirationTime)
+                IsEssential = true
             });
 
             Response.Cookies.Append("refresh_token", refreshToken, new CookieOptions
             {
                 Path = "/api/auth/refresh-token",
-                SameSite = SameSiteMode.Strict,
+                SameSite = sameSite,
                 HttpOnly = true,
                 Secure = true,
-                MaxAge = rememberMe ? TimeSpan.FromMinutes(_settings.Jwt.RefreshTokenExpirationTime) : null
+                IsEssential = true,
+                MaxAge = expirationTime
             });
 
             if (rememberMe)
             {
                 Response.Cookies.Append("remember_me", "true", new CookieOptions
                 {
-                    SameSite = SameSiteMode.Strict,
+                    SameSite = sameSite,
                     HttpOnly = true,
                     Secure = true,
-                    MaxAge = TimeSpan.FromMinutes(_settings.Jwt.RefreshTokenExpirationTime)
+                    IsEssential = true,
+                    MaxAge = expirationTime
                 });
             }
             else
             {
-                Response.Cookies.Delete("remember_me");
+                Response.Cookies.Append("remember_me", "", new CookieOptions
+                {
+                    SameSite = sameSite,
+                    HttpOnly = true,
+                    Secure = true,
+                    Expires = DateTimeOffset.MinValue
+                });
             }
+        }
+
+        private void ClearCookies()
+        {
+            var sameSite = _webHostEnvironment.IsDevelopment() ? SameSiteMode.None : SameSiteMode.Strict;
+
+            Response.Cookies.Append("access_token", "", new CookieOptions
+            {
+                SameSite = sameSite,
+                HttpOnly = true,
+                Secure = true,
+                Expires = DateTimeOffset.MinValue
+            });
+
+            Response.Cookies.Append("refresh_token", "", new CookieOptions
+            {
+                Path = "/api/auth/refresh-token",
+                SameSite = sameSite,
+                HttpOnly = true,
+                Secure = true,
+                Expires = DateTimeOffset.MinValue
+            });
+
+            Response.Cookies.Append("remember_me", "", new CookieOptions
+            {
+                SameSite = sameSite,
+                HttpOnly = true,
+                Secure = true,
+                Expires = DateTimeOffset.MinValue
+            });
         }
     }
 }
