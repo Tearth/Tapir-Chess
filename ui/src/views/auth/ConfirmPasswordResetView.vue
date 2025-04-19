@@ -23,7 +23,9 @@
         <div role="alert" class="alert alert-success alert-outline">
           <span>Your password has been reset!</span>
         </div>
-        <div class="text-sm pt-3">You can now <RouterLink to="/signin" class="link link-neutral">sign in</RouterLink> using new credentials.</div>
+        <div class="text-sm pt-3">
+          You can now <RouterLink to="/auth/signin" class="link link-neutral">sign in</RouterLink> using new credentials.
+        </div>
       </fieldset>
     </form>
   </div>

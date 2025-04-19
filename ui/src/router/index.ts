@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import SignInView from '../views/SignInView.vue'
-import RegisterView from '../views/RegisterView.vue'
-import ConfirmRegistrationView from '@/views/ConfirmRegistrationView.vue'
-import ResetPasswordView from '@/views/ResetPasswordView.vue'
-import ConfirmPasswordResetView from '@/views/ConfirmPasswordResetView.vue'
+import HomeView from '../views/auth/HomeView.vue'
+import SignInView from '../views/auth/SignInView.vue'
+import RegisterView from '../views/auth/RegisterView.vue'
+import ConfirmRegistrationView from '@/views/auth/ConfirmRegistrationView.vue'
+import ResetPasswordView from '@/views/auth/ResetPasswordView.vue'
+import ConfirmPasswordResetView from '@/views/auth/ConfirmPasswordResetView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,23 +14,23 @@ const router = createRouter({
       component: HomeView,
     },
     {
-      path: '/signin',
+      path: '/auth/signin',
       component: SignInView,
     },
     {
-      path: '/register',
+      path: '/auth/register',
       component: RegisterView,
     },
     {
-      path: '/confirm-registration',
+      path: '/auth/confirm-registration',
       component: ConfirmRegistrationView,
     },
     {
-      path: '/reset-password',
+      path: '/auth/reset-password',
       component: ResetPasswordView,
     },
     {
-      path: '/confirm-password-reset',
+      path: '/auth/confirm-password-reset',
       component: ConfirmPasswordResetView,
     },
   ],

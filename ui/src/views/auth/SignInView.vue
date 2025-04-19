@@ -22,7 +22,7 @@
             </label>
           </div>
           <div class="text-right pt-1">
-            <RouterLink to="/reset-password" class="link link-neutral">Forgot password?</RouterLink>
+            <RouterLink to="/auth/reset-password" class="link link-neutral">Forgot password?</RouterLink>
           </div>
         </div>
 
@@ -30,7 +30,7 @@
 
         <div class="text-center pt-2">
           Don't have an account?
-          <RouterLink to="/register" class="link link-neutral">Join us!</RouterLink>
+          <RouterLink to="/auth/register" class="link link-neutral">Join us!</RouterLink>
         </div>
       </fieldset>
     </form>

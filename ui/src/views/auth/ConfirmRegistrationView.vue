@@ -7,7 +7,7 @@
         <div role="alert" class="alert alert-success alert-outline">
           <span>Thank you for joining us!</span>
         </div>
-        <div class="text-sm pt-3">You can now <RouterLink to="/signin" class="link link-neutral">sign in</RouterLink> to your account.</div>
+        <div class="text-sm pt-3">You can now <RouterLink to="/auth/signin" class="link link-neutral">sign in</RouterLink> to your account.</div>
       </div>
       <div v-else-if="status == ConfirmRegistrationStatus.Error">
         <div role="alert" class="alert alert-error alert-outline">

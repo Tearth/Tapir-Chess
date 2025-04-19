@@ -8,7 +8,6 @@ import Navbar from './components/Navbar.vue'
 </template>
 
 <script lang="ts">
-import { onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
 
 export default {
