@@ -6,7 +6,7 @@
         <div v-if="error" role="alert" class="alert alert-error alert-outline">
           <span>{{ error }}</span>
         </div>
-        <label class="fieldset-label">Username</label>
+        <label class="fieldset-label">Username or e-mail address</label>
         <input v-model="username" class="input" />
         <span v-if="usernameValidation" class="text-red-500">{{ usernameValidation }}</span>
 
@@ -78,12 +78,12 @@ export default {
 
           // Validation errors
           if (response.errors != null) {
-            if (response.errors.Username != null) {
-              this.usernameValidation = ERRORS.get(response.errors.Username[0])
+            if (response.errors.username != null) {
+              this.usernameValidation = ERRORS.get(response.errors.username[0])
             }
 
-            if (response.errors.Password != null) {
-              this.passwordValidation = ERRORS.get(response.errors.Password[0])
+            if (response.errors.password != null) {
+              this.passwordValidation = ERRORS.get(response.errors.password[0])
             }
           } else if (response.detail != null) {
             this.error = ERRORS.get(response.detail)

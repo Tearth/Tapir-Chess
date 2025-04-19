@@ -8,7 +8,7 @@ export class ERRORS {
       case 'InvalidEmail':
         return 'Invalid e-mail address.'
       case 'PasswordTooShort':
-        return 'Password is too short'
+        return 'Password is too short.'
       case 'PasswordRequiresNonAlphanumeric':
         return 'Password requires non alphanumeric.'
       case 'PasswordRequiresDigit':
@@ -19,6 +19,8 @@ export class ERRORS {
         return 'Password requires lowercase char.'
       case 'DuplicateEmail':
         return 'Duplicated e-mail address.'
+      case 'UserNotFound':
+        return 'User does not exists.'
       default:
         return 'Unknown error.'
     }

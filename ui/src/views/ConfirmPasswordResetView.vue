@@ -2,35 +2,28 @@
   <div class="flex flex-col items-center justify-center px-6 pt-16">
     <form @submit.prevent="submitForm">
       <fieldset v-if="!formSent" class="fieldset w-xs bg-base-200 border border-base-300 p-4 rounded-box gap-3">
-        <legend class="fieldset-legend">Register</legend>
+        <legend class="fieldset-legend">Confirm password reset</legend>
         <div v-if="error" role="alert" class="alert alert-error alert-outline">
           <span>{{ error }}</span>
         </div>
-        <label class="fieldset-label">Username</label>
-        <input v-model="username" class="input" />
-        <span v-if="usernameValidation" class="text-red-500">{{ usernameValidation }}</span>
 
-        <label class="fieldset-label">E-Mail</label>
-        <input v-model="email" class="input" />
-        <span v-if="emailValidation" class="text-red-500">{{ emailValidation }}</span>
-
-        <label class="fieldset-label">Password</label>
+        <label class="fieldset-label">New password</label>
         <input v-model="password" type="password" class="input" />
         <span v-if="passwordValidation" class="text-red-500">{{ passwordValidation }}</span>
 
-        <label class="fieldset-label">Confirm password</label>
+        <label class="fieldset-label">Confirm new password</label>
         <input v-model="confirmPassword" type="password" class="input" />
         <span v-if="confirmPasswordValidation" class="text-red-500">{{ confirmPasswordValidation }}</span>
 
-        <button type="submit" class="btn btn-neutral mt-4" :disabled="inProgress">Register</button>
+        <button type="submit" class="btn btn-neutral mt-4" :disabled="inProgress">Reset password</button>
       </fieldset>
       <fieldset v-else class="fieldset w-xs bg-base-200 border border-base-300 p-4 rounded-box gap-3">
-        <legend class="fieldset-legend">Register</legend>
+        <legend class="fieldset-legend">Confirm password reset</legend>
 
         <div role="alert" class="alert alert-success alert-outline">
-          <span>Thank you for joining us!</span>
+          <span>Your password has been reset!</span>
         </div>
-        <div class="text-sm pt-3">Please check your email to confirm the account and follow the link to complete your registration.</div>
+        <div class="text-sm pt-3">You can now <RouterLink to="/signin" class="link link-neutral">sign in</RouterLink> using new credentials.</div>
       </fieldset>
     </form>
   </div>
@@ -38,23 +31,19 @@
 
 <script lang="ts">
 import router from '@/router'
+import { useRouter, useRoute } from 'vue-router'
 import { HTTP } from '@/utils/http'
 import { ERRORS } from '@/utils/errors'
 
 export default {
   data() {
     return {
-      username: '',
-      email: '',
       password: '',
       confirmPassword: '',
-      rememberMe: false,
       inProgress: false,
       formSent: false,
 
       error: '',
-      usernameValidation: '',
-      emailValidation: '',
       passwordValidation: '',
       confirmPasswordValidation: '',
     }
@@ -68,9 +57,13 @@ export default {
 
       this.inProgress = true
 
-      HTTP.post('/api/auth/register', {
-        username: this.username,
-        email: this.email,
+      let urlParams = new URLSearchParams(window.location.search)
+      let userId = urlParams.get('userId')
+      let token = urlParams.get('token')
+
+      HTTP.post('/api/auth/reset-password/confirm', {
+        userId: userId,
+        token: token,
         password: this.password,
       })
         .then((response) => {
@@ -80,21 +73,11 @@ export default {
           let response = error.response.data
 
           this.error = ''
-          this.usernameValidation = ''
-          this.emailValidation = ''
           this.passwordValidation = ''
           this.confirmPasswordValidation = ''
 
           // Validation errors
           if (response.errors != null) {
-            if (response.errors.username != null) {
-              this.usernameValidation = ERRORS.get(response.errors.username[0])
-            }
-
-            if (response.errors.email != null) {
-              this.emailValidation = ERRORS.get(response.errors.email[0])
-            }
-
             if (response.errors.password != null) {
               this.passwordValidation = ERRORS.get(response.errors.password[0])
             }
