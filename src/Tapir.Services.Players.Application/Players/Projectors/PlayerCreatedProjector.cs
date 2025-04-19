@@ -18,11 +18,10 @@ namespace Tapir.Services.Players.Application.Players.Projectors
         {
             using (var connection = _database.Open())
             {
-                await connection.ExecuteAsync("INSERT INTO Players (Id, CreatedAt, UserId) VALUES (@AggregateId, @CreatedAt, @UserId)", new
+                await connection.ExecuteAsync("INSERT INTO Players (Id, CreatedAt) VALUES (@AggregateId, @CreatedAt)", new
                 {
                     @event.AggregateId,
-                    @event.CreatedAt,
-                    @event.UserId
+                    @event.CreatedAt
                 });
             }
         }

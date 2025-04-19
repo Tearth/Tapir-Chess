@@ -8,7 +8,6 @@ namespace Tapir.Services.Players.Domain.Players.Entities
 {
     public class PlayerEntity : AggregateRoot
     {
-        public Guid UserId { get; set; }
         public DateTime CreatedAt { get; private set; }
         public string? Username { get; private set; }
         public string? Email { get; private set; }
@@ -20,9 +19,9 @@ namespace Tapir.Services.Players.Domain.Players.Entities
 
         }
 
-        public PlayerEntity(Guid id, Guid userId)
+        public PlayerEntity(Guid id)
         {
-            var @event = new PlayerCreatedEvent(id, userId, DateTime.UtcNow);
+            var @event = new PlayerCreatedEvent(id, DateTime.UtcNow);
 
             ApplyEvent(@event);
             ApplyUncommittedEvent(@event);
@@ -103,7 +102,6 @@ namespace Tapir.Services.Players.Domain.Players.Entities
         {
             Id = @event.AggregateId;
             CreatedAt = @event.CreatedAt;
-            UserId = @event.UserId;
         }
 
         private void ExecuteEvent(PlayerUsernameUpdatedEvent @event)

@@ -28,7 +28,7 @@ namespace Tapir.Services.Players.Application.Players.Commands
 
         public async Task<Unit> Process(CreatePlayerCommand command)
         {
-            var entity = new PlayerEntity(Guid.NewGuid(), command.UserId);
+            var entity = new PlayerEntity(command.UserId);
 
             entity.SetUsername(command.Username);
             entity.SetEmail(command.Email);

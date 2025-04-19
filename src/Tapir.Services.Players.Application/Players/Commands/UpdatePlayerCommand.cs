@@ -35,7 +35,7 @@ namespace Tapir.Services.News.Application.News.Commands
             var entity = await _playerRepository.Load(request.Id);
             var userId = _httpContextAccessor.HttpContext?.User.GetId();
             
-            if (userId == null || entity.UserId != Guid.Parse(userId))
+            if (userId == null || entity.Id != Guid.Parse(userId))
             {
                 throw new UnauthorizedAccessException();
             }

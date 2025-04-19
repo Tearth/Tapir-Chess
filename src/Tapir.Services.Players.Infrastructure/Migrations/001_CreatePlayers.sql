@@ -3,7 +3,6 @@ CREATE TABLE Players (
   CreatedAt TIMESTAMP NOT NULL,
   UpdatedAt TIMESTAMP NULL,
   DeletedAt TIMESTAMP NULL,
-  UserId UUID NOT NULL,
   Username TEXT NULL,
   Email TEXT NULL,
   Country TEXT NULL,
