@@ -16,6 +16,11 @@ namespace Tapir.Identity.API.Middleware
                 { "trackId", actionContext.HttpContext.TraceIdentifier }
             };
 
+            problemDetails.Errors = problemDetails.Errors.ToDictionary(
+                pair => char.ToLower(pair.Key[0]) + pair.Key[1..],
+                pair => pair.Value
+            );
+
             return new BadRequestObjectResult(problemDetails);
         }
     }
