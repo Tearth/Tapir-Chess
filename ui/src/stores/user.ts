@@ -7,22 +7,37 @@ export const useUserStore = defineStore('user', () => {
   const username = ref('')
   const email = ref('')
   const signedIn = ref(false)
+  const loaded = ref(false)
 
-  function fetch() {
-    HTTP.post('/api/account/info', {})
-      .then((response) => {
-        id.value = response.data.id
-        username.value = response.data.username
-        email.value = response.data.email
-        signedIn.value = true
-      })
-      .catch((error) => {
-        id.value = ''
-        username.value = ''
-        email.value = ''
-        signedIn.value = false
-      })
+  async function fetch() {
+    try {
+      const response = await HTTP.post('/api/account/info', {})
+
+      id.value = response.data.id
+      username.value = response.data.username
+      email.value = response.data.email
+      signedIn.value = true
+      loaded.value = true
+    } catch {
+      id.value = ''
+      username.value = ''
+      email.value = ''
+      signedIn.value = false
+    }
   }
 
-  return { id, username, email, signedIn, fetch }
+  async function get() {
+    if (!loaded.value) {
+      await fetch()
+    }
+
+    return {
+      id,
+      username,
+      email,
+      signedIn,
+    }
+  }
+
+  return { id, username, email, signedIn, loaded, fetch, get }
 })

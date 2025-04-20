@@ -9,10 +9,18 @@ import Navbar from './components/Navbar.vue'
 
 <script lang="ts">
 import { useUserStore } from '@/stores/user'
+import { useProfileStore } from './stores/profile'
 
 export default {
-  mounted() {
-    useUserStore().fetch()
+  async mounted() {
+    const userStore = useUserStore()
+    const profileStore = useProfileStore()
+
+    await userStore.fetch()
+
+    if (userStore.signedIn) {
+      await profileStore.fetch()
+    }
   },
 }
 </script>

@@ -19,6 +19,8 @@ export class ERRORS {
         return 'Password requires lowercase char.'
       case 'DuplicateEmail':
         return 'Duplicated e-mail address.'
+      case 'DuplicateUserName':
+        return 'Username already exists.'
       case 'UserNotFound':
         return 'User does not exists.'
       default:

@@ -25,7 +25,7 @@
           </div>
           <ul tabIndex="{0}" class="menu menu-md dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
             <li><RouterLink to="/auth/profile">Profile</RouterLink></li>
-            <li><RouterLink to="/auth/settings">Settings</RouterLink></li>
+            <li><RouterLink to="/account/settings/profile">Settings</RouterLink></li>
             <li><a @click="signout">Sign out</a></li>
           </ul>
         </div>

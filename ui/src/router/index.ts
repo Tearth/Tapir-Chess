@@ -5,6 +5,9 @@ import RegisterView from '../views/auth/RegisterView.vue'
 import ConfirmRegistrationView from '@/views/auth/ConfirmRegistrationView.vue'
 import ResetPasswordView from '@/views/auth/ResetPasswordView.vue'
 import ConfirmPasswordResetView from '@/views/auth/ConfirmPasswordResetView.vue'
+import SettingsView from '@/views/account/settings/SettingsView.vue'
+import SettingsProfileView from '@/views/account/settings/SettingsProfileView.vue'
+import SettingsSecurityView from '@/views/account/settings/SettingsSecurityView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,6 +35,20 @@ const router = createRouter({
     {
       path: '/auth/confirm-password-reset',
       component: ConfirmPasswordResetView,
+    },
+    {
+      path: '/account/settings',
+      component: SettingsView,
+      children: [
+        {
+          path: 'profile',
+          component: SettingsProfileView,
+        },
+        {
+          path: 'security',
+          component: SettingsSecurityView,
+        },
+      ],
     },
   ],
 })
