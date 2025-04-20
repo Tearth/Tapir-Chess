@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using Tapir.Core.Queries;
 using Tapir.Identity.Application.Account.Commands;
-using Tapir.Identity.Application.Auth.Commands;
+using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
 namespace Tapir.Identity.API.Controllers
 {
@@ -20,9 +21,26 @@ namespace Tapir.Identity.API.Controllers
         }
 
         [HttpPost]
+        [Route("change-username")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ChangeUsername(ChangeUsernameCommand command, [FromServices] IChangeUsernameCommandHandler handler)
+        {
+            var result = await handler.Process(command);
+
+            if (!result.Success)
+            {
+                return Problem(result.ErrorCode, null, StatusCodes.Status400BadRequest, "Failed to change username.");
+            }
+
+            return Ok();
+        }
+
+        [HttpPost]
         [Route("change-password")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(PagedResult<RegisterCommandResult>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ChangePassword(ChangePasswordCommand command, [FromServices] IChangePasswordCommandHandler handler)
         {
@@ -33,7 +51,7 @@ namespace Tapir.Identity.API.Controllers
                 return Problem(result.ErrorCode, null, StatusCodes.Status400BadRequest, "Failed to change password.");
             }
 
-            return Ok(result);
+            return Ok();
         }
     }
 }

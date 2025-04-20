@@ -22,6 +22,7 @@ namespace Tapir.Identity.Application
 
             // Command handlers
             services.AddScoped<IChangePasswordCommandHandler, ChangePasswordCommandHandler>();
+            services.AddScoped<IChangeUsernameCommandHandler, ChangeUsernameCommandHandler>();
             services.AddScoped<IConfirmEmailCommandHandler, ConfirmEmailCommandHandler>();
             services.AddScoped<IConfirmPasswordCommandHandler, ConfirmPasswordCommandHandler>();
             services.AddScoped<ISignInCommandHandler, SignInCommandHandler>();

@@ -17,7 +17,7 @@ namespace Tapir.Services.Players.Application.Messages
         {
             await _handler.Process(new CreatePlayerCommand
             {
-                UserId = @event.Id,
+                Id = @event.Id,
                 Username = @event.Username,
                 Email = @event.Email
             });

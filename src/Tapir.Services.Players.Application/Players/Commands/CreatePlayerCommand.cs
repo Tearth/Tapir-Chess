@@ -7,7 +7,7 @@ namespace Tapir.Services.Players.Application.Players.Commands
 {
     public class CreatePlayerCommand
     {
-        public required Guid UserId{ get; set; }
+        public required Guid Id { get; set; }
         public required string Username { get; set; }
         public required string Email { get; set; }
     }
@@ -28,7 +28,7 @@ namespace Tapir.Services.Players.Application.Players.Commands
 
         public async Task<Unit> Process(CreatePlayerCommand command)
         {
-            var entity = new PlayerEntity(command.UserId);
+            var entity = new PlayerEntity(command.Id);
 
             entity.SetUsername(command.Username);
             entity.SetEmail(command.Email);

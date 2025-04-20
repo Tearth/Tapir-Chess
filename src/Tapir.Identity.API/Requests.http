@@ -11,6 +11,15 @@ Content-Type: application/json
 
 ###
 
+POST {{HostAddress}}/api/auth/signout
+Accept: application/json
+Content-Type: application/json
+{
+
+}
+
+###
+
 POST {{HostAddress}}/api/auth/register
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyZDg4Y2M5Yy0wMGMyLTQ0MDEtYWYxOC01NTEwYjAwMjFiNjkiLCJlbWFpbCI6InRlc3RAdGVzdC5wbCIsImp0aSI6ImI1NjM3Zjc0LWQ1OTctNDM3Mi1iMzRkLTY3YjZmYWQ3YThlZiIsImV4cCI6MTc0MjU4NzQ0NCwiaXNzIjoiVGFwaXIgQ2hlc3MiLCJhdWQiOiJodHRwczovL3RhcGlyY2hlc3MuZGV2In0.E-_fXlQqUF2gRK2QJ8xHBmnhX-Mt-8XcDAGi7mYIAKo
 Accept: application/json
@@ -55,6 +64,16 @@ Content-Type: application/json
     "UserId": "YmJkZjA2ODUtZmYyMi00YzMwLTkzYWYtNGNiMTgwYjM0ZjIz",
     "Token": "Q2ZESjhCVjJpUmNXUmlwTGpJakJrZFBJR1V6TW12UDFlMVRXZXN4ZGk4cnRCbHFEdjdUczUxMkcvWHhnYlluZklFNmVzVWJRaG8vL3pmL3hNclhFWXBEb1lKV1E3TTdWSmNLRkEvVnA5QUlsbEVsa3hFSG1IMHN5UUUvZHZDSTYwaDcyNEJ3b084VFdaUVNBMzVGeFRxdFRrbjluOVdzT1psTFhtMm1YVFY1b0lieUlIbG9mb2cyL1ZrQXYxcEZqQmNDWWs5RTk5T0Y2dXZma2xGS3hNK0IyMlJ0ckptMmw2N2szQTl3S2ZUMjI2TTJy",
     "Password": "Test123!"
+}
+
+###
+
+POST {{HostAddress}}/api/account/change-username
+Accept: application/json
+Cookie: access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkYWUzZTY1OS0wMTAyLTRjMDAtYWQxNC02YTM2OGFhZjU5ZWUiLCJuYW1lIjoiYWRtaW4iLCJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsImp0aSI6IjkxOThmNjA0LTk5ZGQtNGJmNC1hOWVjLTA3YjliNTNhYTEzYiIsInJvbGUiOlsiYWRtaW4iLCJ1c2VyIl0sImV4cCI6MTc0NTE1NzQ1OSwiaXNzIjoiVGFwaXIgQ2hlc3MiLCJhdWQiOiJodHRwczovL3RhcGlyY2hlc3MuZGV2In0.79joFMUX3bdgIAnMce8Yk5hKBi6aNMUZ11NrdeK97eQ; path=/; secure; samesite=none; httponly, refresh_token=MQc1SVwy7eT7rzxV%2B4RDOBrI9NKR32EXgkK8CeRuO%2FabbeQJGw9MOpdXEHgiyxrGvCLi%2BpoQtXfS%2FPw8JAWdun605sMsK%2BEn4W6xS9%2BSRGN48cSX9AuT3AH5ZG1H0Wauz4ItFVbVWZ9OFYp%2F59FgS7ovJNHFTXNzAorM8yg0ugA%3D; max-age=15552000; path=/api/auth/refresh-token; secure; samesite=none; httponly, remember_me=true; max-age=15552000; path=/; secure; samesite=none; httponly
+Content-Type: application/json
+{
+    "Username": "test123"
 }
 
 ###

@@ -28,7 +28,8 @@ namespace Tapir.Services.Players.Application
 
             // Command handlers
             services.AddScoped<ICreatePlayerCommandHandler, CreatePlayerCommandHandler>();
-            services.AddScoped<IUpdatePlayerCommandHandler, UpdatePlayerCommandHandler>();
+            services.AddScoped<IUpdatePlayerIdentityCommandHandler, UpdatePlayerIdentityCommandHandler>();
+            services.AddScoped<IUpdatePlayerProfileCommandHandler, UpdatePlayerProfileCommandHandler>();
 
             // Query handlers
             services.AddScoped<IGetPlayerListQueryHandler, GetPlayerListQueryHandler>();
@@ -43,6 +44,7 @@ namespace Tapir.Services.Players.Application
 
             // Message handlers
             services.AddScoped<IEventHandler<UserCreatedMessage>, UserCreatedMessageHandler>();
+            services.AddScoped<IEventHandler<UserUpdatedMessage>, UserUpdatedMessageHandler>();
 
             // Tasks
             services.AddScoped<SynchronizeDomainEventsTask>();

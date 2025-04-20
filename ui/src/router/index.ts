@@ -7,6 +7,7 @@ import ResetPasswordView from '@/views/auth/ResetPasswordView.vue'
 import ConfirmPasswordResetView from '@/views/auth/ConfirmPasswordResetView.vue'
 import SettingsView from '@/views/account/settings/SettingsView.vue'
 import SettingsProfileView from '@/views/account/settings/SettingsProfileView.vue'
+import SettingsUsernameView from '@/views/account/settings/SettingsUsernameView.vue'
 import SettingsPasswordView from '@/views/account/settings/SettingsPasswordView.vue'
 
 const router = createRouter({
@@ -43,6 +44,10 @@ const router = createRouter({
         {
           path: 'profile',
           component: SettingsProfileView,
+        },
+        {
+          path: 'username',
+          component: SettingsUsernameView,
         },
         {
           path: 'password',

@@ -52,7 +52,7 @@ namespace Tapir.Services.Players.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Update(Guid id, UpdatePlayerCommand command, [FromServices] IUpdatePlayerCommandHandler handler)
+        public async Task<IActionResult> Update(Guid id, UpdatePlayerProfileCommand command, [FromServices] IUpdatePlayerProfileCommandHandler handler)
         {
             if (id != command.Id)
             {
