@@ -23,6 +23,8 @@ export class ERRORS {
         return 'Username already exists.'
       case 'UserNotFound':
         return 'User does not exists.'
+      case 'PasswordMismatch':
+        return 'Old password is not correct.'
       default:
         return 'Unknown error.'
     }

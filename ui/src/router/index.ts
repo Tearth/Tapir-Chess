@@ -7,7 +7,7 @@ import ResetPasswordView from '@/views/auth/ResetPasswordView.vue'
 import ConfirmPasswordResetView from '@/views/auth/ConfirmPasswordResetView.vue'
 import SettingsView from '@/views/account/settings/SettingsView.vue'
 import SettingsProfileView from '@/views/account/settings/SettingsProfileView.vue'
-import SettingsSecurityView from '@/views/account/settings/SettingsSecurityView.vue'
+import SettingsPasswordView from '@/views/account/settings/SettingsPasswordView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -45,8 +45,8 @@ const router = createRouter({
           component: SettingsProfileView,
         },
         {
-          path: 'security',
-          component: SettingsSecurityView,
+          path: 'password',
+          component: SettingsPasswordView,
         },
       ],
     },

@@ -10,11 +10,11 @@
         </div>
         <label class="fieldset-label bold">About me</label>
         <textarea v-model="aboutMe" rows="4" class="input w-full p-2.5 h-40"></textarea>
-        <span v-if="usernameValidation" class="text-red-500">{{ usernameValidation }}</span>
+        <span v-if="aboutMeValidation" class="text-red-500">{{ aboutMeValidation }}</span>
 
         <label class="fieldset-label">Country</label>
         <input v-model="country" class="input w-full" />
-        <span v-if="passwordValidation" class="text-red-500">{{ passwordValidation }}</span>
+        <span v-if="countryValidation" class="text-red-500">{{ countryValidation }}</span>
 
         <div>
           <button type="submit" class="btn btn-success mt-4 w-max float-right" :disabled="inProgress">Save</button>
@@ -68,6 +68,9 @@ export default {
         country: this.country,
       })
         .then((response) => {
+          this.error = ''
+          this.aboutMeValidation = ''
+          this.countryValidation = ''
           this.showSuccess = true
         })
         .catch((error) => {
@@ -76,6 +79,7 @@ export default {
           this.error = ''
           this.aboutMeValidation = ''
           this.countryValidation = ''
+          this.showSuccess = false
 
           // Validation errors
           if (response.errors != null) {
