@@ -6,9 +6,11 @@ import ConfirmRegistrationView from '@/views/auth/ConfirmRegistrationView.vue'
 import ResetPasswordView from '@/views/auth/ResetPasswordView.vue'
 import ConfirmPasswordResetView from '@/views/auth/ConfirmPasswordResetView.vue'
 import SettingsView from '@/views/account/settings/SettingsView.vue'
-import SettingsProfileView from '@/views/account/settings/SettingsProfileView.vue'
-import SettingsUsernameView from '@/views/account/settings/SettingsUsernameView.vue'
-import SettingsPasswordView from '@/views/account/settings/SettingsPasswordView.vue'
+import EditProfileView from '@/views/account/settings/EditProfileView.vue'
+import ChangeUsernameView from '@/views/account/settings/ChangeUsernameView.vue'
+import ChangeEmailView from '@/views/account/settings/ChangeEmailView.vue'
+import ConfirmEmailChangeView from '@/views/account/settings/ConfirmEmailChangeView.vue'
+import ChangePasswordView from '@/views/account/settings/ChangePasswordView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -43,15 +45,23 @@ const router = createRouter({
       children: [
         {
           path: 'profile',
-          component: SettingsProfileView,
+          component: EditProfileView,
         },
         {
           path: 'username',
-          component: SettingsUsernameView,
+          component: ChangeUsernameView,
+        },
+        {
+          path: 'email',
+          component: ChangeEmailView,
+        },
+        {
+          path: 'email/confirm',
+          component: ConfirmEmailChangeView,
         },
         {
           path: 'password',
-          component: SettingsPasswordView,
+          component: ChangePasswordView,
         },
       ],
     },

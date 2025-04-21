@@ -39,6 +39,7 @@
     public class EndpointsSettings
     {
         public required string EmailConfirmation { get; set; }
+        public required string EmailChange { get; set; }
         public required string PasswordReset { get; set; }
     }
 }

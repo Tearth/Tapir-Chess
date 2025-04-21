@@ -1,0 +1,82 @@
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
+using Tapir.Core.Commands;
+using Tapir.Core.Messaging;
+using Tapir.Core.Messaging.Identity;
+using Tapir.Core.Validation;
+using Tapir.Identity.Infrastructure.Commands;
+using Tapir.Identity.Infrastructure.Models;
+
+namespace Tapir.Identity.Application.Account.Commands
+{
+    public class ConfirmEmailChangeCommand
+    {
+        [Required(ErrorMessage = ValidationErrorCodes.EMPTY_FIELD)]
+        public required string UserId { get; set; }
+
+        [Required(ErrorMessage = ValidationErrorCodes.EMPTY_FIELD)]
+        public required string Token { get; set; }
+
+        [Required(ErrorMessage = ValidationErrorCodes.EMPTY_FIELD)]
+        public required string Email { get; set; }
+    }
+
+    public class ConfirmEmailChangeCommandResult : CommandResultBase<ConfirmEmailChangeCommandResult>
+    {
+
+    }
+
+    public interface IConfirmEmailChangeCommandHandler : ICommandHandler<ConfirmEmailChangeCommand, ConfirmEmailChangeCommandResult>
+    {
+
+    }
+
+    public class ConfirmEmailChangeCommandHandler : IConfirmEmailChangeCommandHandler
+    {
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IMessageBus _messageBus;
+
+        public ConfirmEmailChangeCommandHandler(UserManager<ApplicationUser> userManager, IMessageBus messageBus)
+        {
+            _userManager = userManager;
+            _messageBus = messageBus;
+        }
+
+        public async Task<ConfirmEmailChangeCommandResult> Process(ConfirmEmailChangeCommand request)
+        {
+            var userId = Encoding.UTF8.GetString(Convert.FromBase64String(request.UserId));
+            var token = Encoding.UTF8.GetString(Convert.FromBase64String(request.Token));
+            var email = Encoding.UTF8.GetString(Convert.FromBase64String(request.Email));
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return ConfirmEmailChangeCommandResult.Error("UserNotFound");
+            }
+
+            var result = await _userManager.ChangeEmailAsync(user, email, token);
+
+            if (!result.Succeeded)
+            {
+                return new ConfirmEmailChangeCommandResult
+                {
+                    Success = result.Succeeded,
+                    ErrorCode = result.Errors.Select(e => e.Code).FirstOrDefault()
+                };
+            }
+
+            await _messageBus.Send(new UserUpdatedMessage
+            {
+                Id = user.Id,
+                Username = user.UserName!,
+                Email = email
+            });
+
+            return new ConfirmEmailChangeCommandResult
+            {
+                Success = true
+            };
+        }
+    }
+}

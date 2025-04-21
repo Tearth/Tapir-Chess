@@ -53,5 +53,39 @@ namespace Tapir.Identity.API.Controllers
 
             return Ok();
         }
+
+        [HttpPost]
+        [Route("change-email")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ChangeEmail(ChangeEmailCommand command, [FromServices] IChangeEmailCommandHandler handler)
+        {
+            var result = await handler.Process(command);
+
+            if (!result.Success)
+            {
+                return Problem(result.ErrorCode, null, StatusCodes.Status400BadRequest, "Failed to change e-mail.");
+            }
+
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("change-email/confirm")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ConfirmEmailChange(ConfirmEmailChangeCommand command, [FromServices] IConfirmEmailChangeCommandHandler handler)
+        {
+            var result = await handler.Process(command);
+
+            if (!result.Success)
+            {
+                return Problem(result.ErrorCode, null, StatusCodes.Status400BadRequest, "Failed to confirm e-mail change.");
+            }
+
+            return Ok();
+        }
     }
 }

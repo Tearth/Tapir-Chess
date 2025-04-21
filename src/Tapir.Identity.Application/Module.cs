@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Tapir.Core.Bus;
 using Tapir.Identity.Application.Account.Commands;
 using Tapir.Identity.Application.Auth.Commands;
+using Tapir.Identity.Application.Auth.Mails.EmailChange;
 using Tapir.Identity.Application.Auth.Mails.EmailConfirmation;
 using Tapir.Identity.Application.Auth.Mails.PasswordReset;
 using Tapir.Identity.Application.Services;
@@ -21,8 +22,10 @@ namespace Tapir.Identity.Application
             services.AddScoped<TokenGenerator>();
 
             // Command handlers
+            services.AddScoped<IChangeEmailCommandHandler, ChangeEmailCommandHandler>();
             services.AddScoped<IChangePasswordCommandHandler, ChangePasswordCommandHandler>();
             services.AddScoped<IChangeUsernameCommandHandler, ChangeUsernameCommandHandler>();
+            services.AddScoped<IConfirmEmailChangeCommandHandler, ConfirmEmailChangeCommandHandler>();
             services.AddScoped<IConfirmEmailCommandHandler, ConfirmEmailCommandHandler>();
             services.AddScoped<IConfirmPasswordCommandHandler, ConfirmPasswordCommandHandler>();
             services.AddScoped<ISignInCommandHandler, SignInCommandHandler>();
@@ -35,6 +38,7 @@ namespace Tapir.Identity.Application
 
             // Tasks
             services.AddScoped<EmailConfirmationMailTask>();
+            services.AddScoped<EmailChangeMailTask>();
             services.AddScoped<PasswordResetMailTask>();
 
             return services;
