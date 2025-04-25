@@ -5,6 +5,7 @@
         <div v-if="showSuccess" role="alert" class="alert alert-success alert-outline">
           <span>E-mail with the link has been sent!</span>
         </div>
+
         <div v-if="error" role="alert" class="alert alert-error alert-outline">
           <span>{{ error }}</span>
         </div>

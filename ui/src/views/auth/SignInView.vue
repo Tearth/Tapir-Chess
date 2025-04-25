@@ -42,6 +42,7 @@ import router from '@/router'
 import { HTTP } from '@/utils/http'
 import { ERRORS } from '@/utils/errors'
 import { useUserStore } from '@/stores/user'
+import { useProfileStore } from '@/stores/profile'
 
 export default {
   data() {
@@ -67,6 +68,7 @@ export default {
       })
         .then((response) => {
           useUserStore().fetch()
+          useProfileStore().fetch()
           router.push('/')
         })
         .catch((error) => {

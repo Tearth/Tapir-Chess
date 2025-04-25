@@ -11,6 +11,7 @@ import ChangeUsernameView from '@/views/account/settings/ChangeUsernameView.vue'
 import ChangeEmailView from '@/views/account/settings/ChangeEmailView.vue'
 import ConfirmEmailChangeView from '@/views/account/settings/ConfirmEmailChangeView.vue'
 import ChangePasswordView from '@/views/account/settings/ChangePasswordView.vue'
+import GameView from '@/views/games/GameView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -64,6 +65,10 @@ const router = createRouter({
           component: ChangePasswordView,
         },
       ],
+    },
+    {
+      path: '/games/:id',
+      component: GameView,
     },
   ],
 })
