@@ -1,7 +1,7 @@
 <template>
   <div class="navbar bg-base-100 shadow-sm">
     <div class="flex">
-      <a class="btn btn-ghost text-3xl pb-1">Tapir Chess</a>
+      <RouterLink to="/" class="btn btn-ghost text-3xl pb-1">Tapir Chess</RouterLink>
     </div>
     <div class="flex-1 gap-2">
       <div class="navbar-center">
