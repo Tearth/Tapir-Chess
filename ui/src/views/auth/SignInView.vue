@@ -14,14 +14,14 @@
         <input v-model="password" type="password" class="input" />
         <span v-if="passwordValidation" class="text-red-500">{{ passwordValidation }}</span>
 
-        <div class="grid grid-cols-2 grid-rows-1 pt-1">
-          <div>
+        <div class="flex flex-row pt-1">
+          <div class="grow-1">
             <label class="fieldset-label">
               <input v-model="rememberMe" type="checkbox" class="checkbox" />
               Remember me
             </label>
           </div>
-          <div class="text-right pt-1">
+          <div class="grow-1 text-right pt-1">
             <RouterLink to="/auth/reset-password" class="link link-neutral">Forgot password?</RouterLink>
           </div>
         </div>
