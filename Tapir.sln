@@ -82,6 +82,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Providers.MessageBus.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Services.Players.Tests", "test\Tapir.Services.Players.Tests\Tapir.Services.Players.Tests.csproj", "{55E311A8-4DE7-433F-B807-B3027D34648D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Games", "Games", "{C7C8C690-E863-49CB-BA89-07181B5A29AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Services.Games.API", "src\Tapir.Services.Games.API\Tapir.Services.Games.API.csproj", "{D16A53F9-94C0-4423-8802-730A32C07CB3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Services.Games.Application", "src\Tapir.Services.Games.Application\Tapir.Services.Games.Application.csproj", "{DDC815FF-6138-42E2-8D6B-29A1EFB602D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Services.Games.Domain", "src\Tapir.Services.Games.Domain\Tapir.Services.Games.Domain.csproj", "{E09DAA94-38BE-4E08-AA99-AEAFBD94CA12}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Services.Games.Infrastructure", "src\Tapir.Services.Games.Infrastructure\Tapir.Services.Games.Infrastructure.csproj", "{D06D0C0C-67CB-4BD2-AED2-58333CC7EAF3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -172,6 +182,22 @@ Global
 		{55E311A8-4DE7-433F-B807-B3027D34648D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55E311A8-4DE7-433F-B807-B3027D34648D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55E311A8-4DE7-433F-B807-B3027D34648D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D16A53F9-94C0-4423-8802-730A32C07CB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D16A53F9-94C0-4423-8802-730A32C07CB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D16A53F9-94C0-4423-8802-730A32C07CB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D16A53F9-94C0-4423-8802-730A32C07CB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDC815FF-6138-42E2-8D6B-29A1EFB602D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDC815FF-6138-42E2-8D6B-29A1EFB602D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDC815FF-6138-42E2-8D6B-29A1EFB602D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDC815FF-6138-42E2-8D6B-29A1EFB602D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E09DAA94-38BE-4E08-AA99-AEAFBD94CA12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E09DAA94-38BE-4E08-AA99-AEAFBD94CA12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E09DAA94-38BE-4E08-AA99-AEAFBD94CA12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E09DAA94-38BE-4E08-AA99-AEAFBD94CA12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D06D0C0C-67CB-4BD2-AED2-58333CC7EAF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D06D0C0C-67CB-4BD2-AED2-58333CC7EAF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D06D0C0C-67CB-4BD2-AED2-58333CC7EAF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D06D0C0C-67CB-4BD2-AED2-58333CC7EAF3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -207,6 +233,11 @@ Global
 		{367ACFD2-5611-4E6F-A13E-DC27D37728A0} = {9A947378-FBAA-431C-97C6-78BEDB903701}
 		{B1F4754A-1A13-40C1-BD72-683A93190590} = {F8A81F53-D6BE-489C-BCDB-11D62A804A91}
 		{55E311A8-4DE7-433F-B807-B3027D34648D} = {D6F40452-611E-45CC-AE31-CD62CA89D95F}
+		{C7C8C690-E863-49CB-BA89-07181B5A29AF} = {FF808455-853D-4B75-937B-3ED33C2CA374}
+		{D16A53F9-94C0-4423-8802-730A32C07CB3} = {C7C8C690-E863-49CB-BA89-07181B5A29AF}
+		{DDC815FF-6138-42E2-8D6B-29A1EFB602D4} = {C7C8C690-E863-49CB-BA89-07181B5A29AF}
+		{E09DAA94-38BE-4E08-AA99-AEAFBD94CA12} = {C7C8C690-E863-49CB-BA89-07181B5A29AF}
+		{D06D0C0C-67CB-4BD2-AED2-58333CC7EAF3} = {C7C8C690-E863-49CB-BA89-07181B5A29AF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0CBFA5DE-DAE7-416F-BF01-40C96FA4551D}

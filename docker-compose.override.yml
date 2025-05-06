@@ -46,6 +46,18 @@ services:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      
+  tapir-services-games:
+    ports:
+      - "9040:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 
   postgresql:
     ports:
@@ -53,7 +65,7 @@ services:
     environment:
       - POSTGRES_USER=tapir
       - POSTGRES_PASSWORD=Bk4XPevMmNHnFDd
-      - POSTGRES_MULTIPLE_DB=identity,news,players
+      - POSTGRES_MULTIPLE_DB=identity,news,players,games
     volumes: 
       - ./scripts/postgresql-init.sh:/docker-entrypoint-initdb.d/postgresql-init.sh
       - postgresql:/var/lib/postgresql/data

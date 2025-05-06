@@ -1,4 +1,4 @@
-let databases = ['news', 'players'];
+let databases = ['news', 'players', 'games'];
 
 databases.forEach((name) => {
     db = db.getSiblingDB(name);

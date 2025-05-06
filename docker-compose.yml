@@ -27,6 +27,13 @@ services:
       context: .
       dockerfile: src/Tapir.Services.Players.API/Dockerfile
 
+  tapir-services-games:
+    image: ${DOCKER_REGISTRY-}tapirservicesgames
+    hostname: tapir-services-games
+    build:
+      context: .
+      dockerfile: src/Tapir.Services.Games.API/Dockerfile
+
   postgresql:
     image: postgres:latest
     hostname: postgresql
