@@ -1,4 +1,5 @@
 import axios from 'axios'
+import * as WS from '@/utils/ws'
 
 export const HTTP = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
@@ -14,6 +15,7 @@ HTTP.interceptors.response.use(
       originalRequest._retry = true
 
       await HTTP.post('/api/auth/refresh-token')
+      await WS.reconnect()
       return HTTP(originalRequest)
     }
 

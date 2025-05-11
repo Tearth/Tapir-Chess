@@ -39,6 +39,7 @@ import router from '@/router'
 import { useUserStore } from '@/stores/user'
 import { mapStores } from 'pinia'
 import { HTTP } from '@/utils/http'
+import * as WS from '@/utils/ws'
 
 export default {
   computed: {
@@ -48,6 +49,8 @@ export default {
     signout() {
       HTTP.post('/api/auth/signout', {}).finally(() => {
         useUserStore().fetch()
+
+        WS.reconnect()
         router.push('/')
       })
     },

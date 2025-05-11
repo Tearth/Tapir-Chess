@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
+using Tapir.Services.Games.API.Controllers;
 using Tapir.Services.Games.API.Middleware;
 using Tapir.Services.Games.Application;
 using Tapir.Services.Games.Infrastructure;
@@ -25,6 +26,7 @@ namespace Tapir.Services.Games.API
             {
                 options.InvalidModelStateResponseFactory = (actionContext) => ValidationHandler.InvalidModelStateResponseFactory(options, actionContext);
             });
+            builder.Services.AddSignalR();
 
             var app = builder.Build();
             app.UseAuthorization();
@@ -32,6 +34,7 @@ namespace Tapir.Services.Games.API
             app.UseSwagger();
             app.UseSwaggerUI();
             app.UseExceptionHandler();
+            app.MapHub<WebSocketController>("/api/games/ws");
             app.Run();
         }
     }

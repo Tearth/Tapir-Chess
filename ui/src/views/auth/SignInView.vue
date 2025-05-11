@@ -43,6 +43,7 @@ import { HTTP } from '@/utils/http'
 import { ERRORS } from '@/utils/errors'
 import { useUserStore } from '@/stores/user'
 import { useProfileStore } from '@/stores/profile'
+import * as WS from '@/utils/ws'
 
 export default {
   data() {
@@ -69,6 +70,8 @@ export default {
         .then((response) => {
           useUserStore().fetch()
           useProfileStore().fetch()
+
+          WS.reconnect()
           router.push('/')
         })
         .catch((error) => {

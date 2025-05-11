@@ -10,6 +10,7 @@ import Navbar from './components/Navbar.vue'
 <script lang="ts">
 import { useUserStore } from '@/stores/user'
 import { useProfileStore } from './stores/profile'
+import * as WS from '@/utils/ws'
 
 export default {
   async mounted() {
@@ -21,6 +22,8 @@ export default {
     if (userStore.signedIn) {
       await profileStore.fetch()
     }
+
+    await WS.open()
   },
 }
 </script>
