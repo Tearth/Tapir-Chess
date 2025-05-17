@@ -14,12 +14,12 @@ namespace Tapir.Services.Games.Domain.Rooms.Entities
 
     public class RoomEntity : AggregateRoot
     {
-        public DateTime CreatedAt { get; set; }
-        public Guid UserId { get; set; }
-        public string Username { get; set; }
-        public Guid? GameId { get; set; }
-        public TimeControl TimeControl { get; set; }
-        public RoomStatus Status { get; set; }
+        public DateTime CreatedAt { get; private set; }
+        public Guid UserId { get; private set; }
+        public string Username { get; private set; }
+        public Guid? GameId { get; private set; }
+        public TimeControl TimeControl { get; private set; }
+        public RoomStatus Status { get; private set; }
 
         public RoomEntity()
         {
