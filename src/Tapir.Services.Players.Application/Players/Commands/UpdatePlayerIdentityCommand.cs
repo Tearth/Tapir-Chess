@@ -33,6 +33,14 @@ namespace Tapir.Services.News.Application.News.Commands
         {
             var entity = await _playerRepository.Load(command.Id);
 
+            if (user != null)
+            {
+                if (entity.Id != user.GetId())
+                {
+                    throw new UnauthorizedAccessException();
+                }
+            }
+
             if (command.Username != entity.Username)
             {
                 entity.SetUsername(command.Username);
