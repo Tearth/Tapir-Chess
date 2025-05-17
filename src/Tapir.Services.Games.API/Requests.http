@@ -1,0 +1,19 @@
+@HostAddress = http://localhost:9040
+
+GET {{HostAddress}}/api/rooms?pageSize=10&pageNumber=1
+Accept: application/json
+
+###
+
+GET {{HostAddress}}/api/players/c0e78186-fabc-4deb-b985-0e09cca7d87e
+Accept: application/json
+
+###
+
+POST {{HostAddress}}/api/rooms/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5ZjM3OWIyMC05YTQ2LTQyYTMtYWIzZS05ZDhhZDc4OTlmMGMiLCJuYW1lIjoiYWRtaW4iLCJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdCIsImp0aSI6IjEyZjk2YzEyLTM3YTktNGJkNC1iOGM1LTNjN2VkNWMzNTZiNiIsInJvbGUiOlsiYWRtaW4iLCJ1c2VyIl0sImV4cCI6MTc0NzQ4MDkxNCwiaXNzIjoiVGFwaXIgQ2hlc3MiLCJhdWQiOiJodHRwczovL3RhcGlyY2hlc3MuZGV2In0.a3osG3dPSxSBKDWMpIFMFxINs4HvA0qCRedGaBLxPdQ
+Content-Type: application/json
+{
+    "time": 10,
+    "increment": 5
+}

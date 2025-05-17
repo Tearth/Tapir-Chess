@@ -18,7 +18,7 @@ namespace Tapir.Services.News.Domain
             // Repositories
             services.AddScoped<IAggregateRepository<NewsEntity>, AggregateRepository<NewsEntity>>();
 
-            // Event handlers
+            // Events
             eventRegistry.Add<NewsAliasUpdatedEvent>();
             eventRegistry.Add<NewsContentUpdatedEvent>();
             eventRegistry.Add<NewsCreatedEvent>();

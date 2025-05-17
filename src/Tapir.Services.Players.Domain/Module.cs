@@ -18,7 +18,7 @@ namespace Tapir.Services.Players.Domain
             // Repositories
             services.AddScoped<IAggregateRepository<PlayerEntity>, AggregateRepository<PlayerEntity>>();
 
-            // Event handlers
+            // Events
             eventRegistry.Add<PlayerAboutMeUpdatedEvent>();
             eventRegistry.Add<PlayerCountryUpdatedEvent>();
             eventRegistry.Add<PlayerCreatedEvent>();

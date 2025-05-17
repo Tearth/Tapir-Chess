@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Tapir.Core.Events;
 using Tapir.Core.Persistence;
+using Tapir.Services.Games.Domain.Rooms.Entities;
+using Tapir.Services.Games.Domain.Rooms.Events;
 
 namespace Tapir.Services.Games.Domain
 {
@@ -14,8 +16,12 @@ namespace Tapir.Services.Games.Domain
             services.AddSingleton<IDomainEventRegistry>(eventRegistry);
 
             // Repositories
+            services.AddScoped<IAggregateRepository<Room>, AggregateRepository<Room>>();
 
-            // Event handlers
+            // Events
+            eventRegistry.Add<RoomCancelledEvent>();
+            eventRegistry.Add<RoomClosedEvent>();
+            eventRegistry.Add<RoomCreatedEvent>();
 
             return services;
         }

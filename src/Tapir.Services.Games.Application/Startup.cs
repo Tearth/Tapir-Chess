@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using Tapir.Core.Messaging;
 using Tapir.Core.Scheduler;
+using Tapir.Services.Rooms.Application.Tasks;
 
 namespace Tapir.Services.Games.Application
 {
@@ -19,8 +20,9 @@ namespace Tapir.Services.Games.Application
             using (var scope = _serviceScopeFactory.CreateScope())
             {
                 var taskScheduler = scope.ServiceProvider.GetRequiredService<ITaskScheduler>();
-                
+
                 // Tasks
+                await taskScheduler.Register(new SynchronizeDomainEventsTask(), "0/1 * * * * ?");
             }
         }
 
