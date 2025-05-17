@@ -48,11 +48,28 @@ namespace Tapir.Services.Games.API.Controllers
         [HttpPost]
         [Route("")]
         [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Create(CreateRoomCommand command, [FromServices] ICreateRoomCommandHandler handler)
         {
-            await handler.Process(command, User);
+            var result = await handler.Process(command, User);
+            var url = "/api/rooms/" + result.Id;
+
+            return Created(url, null);
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Delete(Guid id, [FromServices] ICancelRoomCommandHandler handler)
+        {
+            await handler.Process(new CancelRoomCommand
+            {
+                Id = id
+            }, User);
             return Ok();
         }
     }

@@ -13,7 +13,12 @@ namespace Tapir.Services.News.Application.News.Commands
         public required string Content { get; set; }
     }
 
-    public interface ICreateNewsCommandHandler : ICommandHandler<CreateNewsCommand, Unit>
+    public class CreateNewsCommandResult
+    {
+        public Guid Id { get; set; }
+    }
+
+    public interface ICreateNewsCommandHandler : ICommandHandler<CreateNewsCommand, CreateNewsCommandResult>
     {
 
     }
@@ -27,7 +32,7 @@ namespace Tapir.Services.News.Application.News.Commands
             _newsRepository = newsRepository;
         }
 
-        public async Task<Unit> Process(CreateNewsCommand command, ClaimsPrincipal? user)
+        public async Task<CreateNewsCommandResult> Process(CreateNewsCommand command, ClaimsPrincipal? user)
         {
             var entity = new NewsEntity(Guid.NewGuid());
 
@@ -36,7 +41,11 @@ namespace Tapir.Services.News.Application.News.Commands
             entity.SetContent(command.Content);
 
             await _newsRepository.Save(entity);
-            return Unit.Default;
+
+            return new CreateNewsCommandResult
+            {
+                Id = entity.Id
+            };
         }
     }
 }

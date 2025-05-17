@@ -20,7 +20,12 @@ namespace Tapir.Services.Games.Application.Rooms.Commands
         public required int Increment { get; set; }
     }
 
-    public interface ICreateRoomCommandHandler : ICommandHandler<CreateRoomCommand, Unit>
+    public class CreateRoomCommandResult
+    {
+        public Guid Id { get; set; }
+    }
+
+    public interface ICreateRoomCommandHandler : ICommandHandler<CreateRoomCommand, CreateRoomCommandResult>
     {
 
     }
@@ -34,7 +39,7 @@ namespace Tapir.Services.Games.Application.Rooms.Commands
             _roomRepository = roomRepository;
         }
 
-        public async Task<Unit> Process(CreateRoomCommand command, ClaimsPrincipal? user)
+        public async Task<CreateRoomCommandResult> Process(CreateRoomCommand command, ClaimsPrincipal? user)
         {
             if (user.GetId() is not Guid userId)
             {
@@ -47,9 +52,13 @@ namespace Tapir.Services.Games.Application.Rooms.Commands
             }
 
             var entity = new RoomEntity(Guid.NewGuid(), userId, username, new TimeControl(command.Time, command.Increment));
-
+            
             await _roomRepository.Save(entity);
-            return Unit.Default;
+
+            return new CreateRoomCommandResult
+            {
+                Id = entity.Id
+            };
         }
     }
 }

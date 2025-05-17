@@ -48,12 +48,14 @@ namespace Tapir.Services.News.API.Controllers
         [HttpPost]
         [Route("")]
         [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Create(CreateNewsCommand command, [FromServices] ICreateNewsCommandHandler handler)
         {
-            await handler.Process(command, User);
-            return Ok();
+            var result = await handler.Process(command, User);
+            var url = "/api/news/" + result.Id;
+
+            return Created(url, null);
         }
 
         [HttpPatch]
