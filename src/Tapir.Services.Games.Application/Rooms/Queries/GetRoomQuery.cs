@@ -3,6 +3,7 @@ using System.Security.Claims;
 using Tapir.Core.Commands;
 using Tapir.Core.Persistence;
 using Tapir.Services.Games.Application.Rooms.Queries.DTOs;
+using Tapir.Services.Games.Domain.Rooms.Entities;
 
 namespace Tapir.Services.Games.Application.Rooms.Queries
 {
@@ -30,9 +31,10 @@ namespace Tapir.Services.Games.Application.Rooms.Queries
         {
             using (var connection = _database.Open())
             {
-                return await connection.QueryFirstOrDefaultAsync<RoomDto>("SELECT * FROM Rooms WHERE Id = @Id", new
+                return await connection.QueryFirstOrDefaultAsync<RoomDto>("SELECT * FROM Rooms WHERE Id = @Id AND Status = @Status", new
                 {
                     query.Id,
+                    Status = RoomStatus.Open
                 });
             }
         }
