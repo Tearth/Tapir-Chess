@@ -32,17 +32,17 @@ namespace Tapir.Services.News.Application.News.Commands
         {
             var entity = await _newsRepository.Load(command.Id);
 
-            if (command.Title != null)
+            if (command.Title != null && entity.Title != command.Title)
             {
                 entity.SetTitle(command.Title);
             }
 
-            if (command.Alias != null)
+            if (command.Alias != null && entity.Alias != command.Alias)
             {
                 entity.SetAlias(command.Alias);
             }
 
-            if (command.Content != null)
+            if (command.Content != null && entity.Content != command.Content)
             {
                 entity.SetContent(command.Content);
             }

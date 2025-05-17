@@ -32,19 +32,21 @@ namespace Tapir.Services.News.Application.News.Commands
         public async Task<Unit> Process(UpdatePlayerProfileCommand command, ClaimsPrincipal? user)
         {
             var entity = await _playerRepository.Load(command.Id);
-            var userId = user.GetId();
             
-            if (userId == null || entity.Id != userId)
+            if (user != null)
             {
-                throw new UnauthorizedAccessException();
+                if (entity.Id != user.GetId())
+                {
+                    throw new UnauthorizedAccessException();
+                }
             }
 
-            if (command.Country != null)
+            if (command.Country != null && entity.Country != command.Country)
             {
                 entity.SetCountry(command.Country);
             }
 
-            if (command.AboutMe != null)
+            if (command.AboutMe != null && entity.AboutMe != command.AboutMe)
             {
                 entity.SetAboutMe(command.AboutMe);
             }
