@@ -45,7 +45,7 @@ namespace Tapir.Services.Games.Tests.Unit.Rooms
         {
             // Arrange
             var entity = new Room();
-            var gameId = Guid.NewGuid().ToString();
+            var gameId = Guid.NewGuid();
 
             entity.Close(gameId);
 

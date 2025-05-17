@@ -37,7 +37,7 @@ namespace Tapir.Services.Games.Application.Rooms.Commands
 
         public async Task<Unit> Process(CreateRoomCommand command)
         {
-            if (_httpContextAccessor.HttpContext?.User.GetId() is not string userId)
+            if (_httpContextAccessor.HttpContext?.User.GetId() is not Guid userId)
             {
                 throw new UnauthorizedAccessException();
             }
@@ -47,7 +47,7 @@ namespace Tapir.Services.Games.Application.Rooms.Commands
                 throw new UnauthorizedAccessException();
             }
 
-            var entity = new Room(Guid.NewGuid(), Guid.Parse(userId), username, new TimeControl(command.Time, command.Increment));
+            var entity = new Room(Guid.NewGuid(), userId, username, new TimeControl(command.Time, command.Increment));
 
             await _roomRepository.Save(entity);
             return Unit.Default;

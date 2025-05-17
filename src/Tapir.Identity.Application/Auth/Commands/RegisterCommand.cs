@@ -71,7 +71,7 @@ namespace Tapir.Identity.Application.Auth.Commands
             await _taskScheduler.Run(new EmailConfirmationMailTask
             {
                 To = user.Email,
-                UserId = user.Id.ToString(),
+                UserId = user.Id,
                 Token = await _userManager.GenerateEmailConfirmationTokenAsync(user)
             });
 

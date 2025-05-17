@@ -8,7 +8,7 @@ namespace Tapir.Identity.Application.Auth.Mails.PasswordReset
     public class PasswordResetMailTask : MailBase, ITask
     {
         public required string To { get; set; }
-        public required string UserId { get; set; }
+        public required Guid UserId { get; set; }
         public required string Token { get; set; }
 
         private readonly IMailClient _mailClient;
@@ -25,7 +25,7 @@ namespace Tapir.Identity.Application.Auth.Mails.PasswordReset
             var content = await ReadTemplate("PasswordResetMailTemplate.html");
             var urlTemplate = _settings.Endpoints.PasswordReset;
             
-            urlTemplate = urlTemplate.Replace("{USERID}", Convert.ToBase64String(Encoding.UTF8.GetBytes(UserId)));
+            urlTemplate = urlTemplate.Replace("{USERID}", Convert.ToBase64String(Encoding.UTF8.GetBytes(UserId.ToString())));
             urlTemplate = urlTemplate.Replace("{TOKEN}", Convert.ToBase64String(Encoding.UTF8.GetBytes(Token)));
             content = content.Replace("{URL}", urlTemplate);
 

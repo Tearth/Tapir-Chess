@@ -47,7 +47,7 @@ namespace Tapir.Identity.Application.Account.Commands
                 return ChangePasswordCommandResult.Error("UserNotFound");
             }
 
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null)
             {
                 return ChangePasswordCommandResult.Error("UserNotFound");

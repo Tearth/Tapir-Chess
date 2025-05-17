@@ -5,7 +5,7 @@ Accept: application/json
 
 ###
 
-GET {{HostAddress}}/api/players/c0e78186-fabc-4deb-b985-0e09cca7d87e
+GET {{HostAddress}}/api/rooms/a29f1c86-3938-4c53-b032-de4e6a4d69f8
 Accept: application/json
 
 ###

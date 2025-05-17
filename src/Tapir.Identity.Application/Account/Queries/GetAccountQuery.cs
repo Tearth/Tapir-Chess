@@ -12,7 +12,7 @@ namespace Tapir.Identity.Application.Account.Commands
 
     public class GetAccountQueryResult : CommandResultBase<GetAccountQueryResult>
     {
-        public string? Id { get; set; }
+        public Guid? Id { get; set; }
         public string? Username { get; set; }
         public string? Email { get; set; }
     }

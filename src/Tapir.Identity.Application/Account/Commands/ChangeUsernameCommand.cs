@@ -48,7 +48,7 @@ namespace Tapir.Identity.Application.Account.Commands
                 return ChangeUsernameCommandResult.Error("UserNotFound");
             }
 
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null)
             {
                 return ChangeUsernameCommandResult.Error("UserNotFound");

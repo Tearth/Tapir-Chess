@@ -11,11 +11,12 @@ namespace Tapir.Services.Games.Tests.Unit.Rooms
         {
             // Arrange
             var id = Guid.NewGuid();
-            var userId = Guid.NewGuid().ToString();
+            var userId = Guid.NewGuid();
+            var username = "test";
             var timeControl = new TimeControl(10, 5);
 
             // Act
-            var newsEntity = new Room(id, userId, timeControl);
+            var newsEntity = new Room(id, userId, username, timeControl);
 
             // Assert
             Assert.Multiple(() =>

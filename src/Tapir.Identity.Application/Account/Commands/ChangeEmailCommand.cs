@@ -51,7 +51,7 @@ namespace Tapir.Identity.Application.Account.Commands
                 return ChangeEmailCommandResult.Error("UserNotFound");
             }
 
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null)
             {
                 return ChangeEmailCommandResult.Error("UserNotFound");
@@ -60,7 +60,7 @@ namespace Tapir.Identity.Application.Account.Commands
             await _taskScheduler.Run(new EmailChangeMailTask
             {
                 To = user.Email!,
-                UserId = user.Id.ToString(),
+                UserId = user.Id,
                 Token = await _userManager.GenerateChangeEmailTokenAsync(user, request.Email),
                 NewEmail = request.Email,
             });
