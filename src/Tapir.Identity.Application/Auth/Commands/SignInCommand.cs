@@ -45,16 +45,16 @@ namespace Tapir.Identity.Application.Auth.Commands
             _databaseContext = databaseContext;
         }
 
-        public async Task<SignInCommandResult> Process(SignInCommand request)
+        public async Task<SignInCommandResult> Process(SignInCommand command)
         {
-            var user = await _userManager.FindByNameAsync(request.Username) ?? await _userManager.FindByEmailAsync(request.Username);
+            var user = await _userManager.FindByNameAsync(command.Username) ?? await _userManager.FindByEmailAsync(command.Username);
 
             if (user == null)
             {
                 return SignInCommandResult.Error("InvalidUsernameOrPassword");
             }
 
-            if (await _userManager.CheckPasswordAsync(user, request.Password))
+            if (await _userManager.CheckPasswordAsync(user, command.Password))
             {
                 var roles = await _userManager.GetRolesAsync(user);
                 var accessToken = _tokenGenerator.GenerateAccessToken(user.Id, user.UserName, user.Email, roles.ToList());

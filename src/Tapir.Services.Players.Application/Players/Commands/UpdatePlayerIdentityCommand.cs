@@ -28,18 +28,18 @@ namespace Tapir.Services.News.Application.News.Commands
             _playerRepository = newsRepository;
         }
 
-        public async Task<Unit> Process(UpdatePlayerIdentityCommand request)
+        public async Task<Unit> Process(UpdatePlayerIdentityCommand command)
         {
-            var entity = await _playerRepository.Load(request.Id);
+            var entity = await _playerRepository.Load(command.Id);
 
-            if (request.Username != entity.Username)
+            if (command.Username != entity.Username)
             {
-                entity.SetUsername(request.Username);
+                entity.SetUsername(command.Username);
             }
 
-            if (request.Email != entity.Email)
+            if (command.Email != entity.Email)
             {
-                entity.SetEmail(request.Email);
+                entity.SetEmail(command.Email);
             }
 
             await _playerRepository.Save(entity);

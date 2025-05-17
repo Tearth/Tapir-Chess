@@ -25,13 +25,13 @@ namespace Tapir.Services.Games.Application.Rooms.Queries
             _database = database;
         }
 
-        public async Task<RoomDto?> Process(GetRoomQuery request)
+        public async Task<RoomDto?> Process(GetRoomQuery query)
         {
             using (var connection = _database.Open())
             {
                 return await connection.QueryFirstOrDefaultAsync<RoomDto>("SELECT * FROM Rooms WHERE Id = @Id", new
                 {
-                    request.Id,
+                    query.Id,
                 });
             }
         }

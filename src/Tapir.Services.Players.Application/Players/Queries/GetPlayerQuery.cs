@@ -25,13 +25,13 @@ namespace Tapir.Services.Players.Application.Players.Queries
             _database = database;
         }
 
-        public async Task<PlayerDto?> Process(GetPlayerQuery request)
+        public async Task<PlayerDto?> Process(GetPlayerQuery query)
         {
             using (var connection = _database.Open())
             {
                 return await connection.QueryFirstOrDefaultAsync<PlayerDto>("SELECT * FROM Players WHERE Id = @Id", new
                 {
-                    request.Id,
+                    query.Id,
                 });
             }
         }

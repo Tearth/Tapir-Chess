@@ -48,14 +48,14 @@ namespace Tapir.Identity.Application.Auth.Commands
             _taskScheduler = taskScheduler;
         }
 
-        public async Task<RegisterCommandResult> Process(RegisterCommand request)
+        public async Task<RegisterCommandResult> Process(RegisterCommand command)
         {
             var user = new ApplicationUser
             {
-                UserName = request.Username,
-                Email = request.Email
+                UserName = command.Username,
+                Email = command.Email
             };
-            var result = await _userManager.CreateAsync(user, request.Password);
+            var result = await _userManager.CreateAsync(user, command.Password);
 
             if (!result.Succeeded)
             {
@@ -78,8 +78,8 @@ namespace Tapir.Identity.Application.Auth.Commands
             await _messageBus.Send(new UserCreatedMessage
             {
                 Id = user.Id,
-                Username = request.Username,
-                Email = request.Email
+                Username = command.Username,
+                Email = command.Email
             });
 
             return new RegisterCommandResult

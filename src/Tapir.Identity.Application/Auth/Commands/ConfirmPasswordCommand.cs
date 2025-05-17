@@ -39,10 +39,10 @@ namespace Tapir.Identity.Application.Auth.Commands
             _userManager = userManager;
         }
 
-        public async Task<ConfirmPasswordCommandResult> Process(ConfirmPasswordCommand request)
+        public async Task<ConfirmPasswordCommandResult> Process(ConfirmPasswordCommand command)
         {
-            var userId = Encoding.UTF8.GetString(Convert.FromBase64String(request.UserId));
-            var token = Encoding.UTF8.GetString(Convert.FromBase64String(request.Token));
+            var userId = Encoding.UTF8.GetString(Convert.FromBase64String(command.UserId));
+            var token = Encoding.UTF8.GetString(Convert.FromBase64String(command.Token));
             var user = await _userManager.FindByIdAsync(userId);
 
             if (user == null)
@@ -50,7 +50,7 @@ namespace Tapir.Identity.Application.Auth.Commands
                 return ConfirmPasswordCommandResult.Error("UserNotFound");
             }
 
-            var result = await _userManager.ResetPasswordAsync(user, token, request.Password);
+            var result = await _userManager.ResetPasswordAsync(user, token, command.Password);
 
             return new ConfirmPasswordCommandResult
             {

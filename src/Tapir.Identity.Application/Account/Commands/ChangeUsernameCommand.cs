@@ -40,7 +40,7 @@ namespace Tapir.Identity.Application.Account.Commands
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<ChangeUsernameCommandResult> Process(ChangeUsernameCommand request)
+        public async Task<ChangeUsernameCommandResult> Process(ChangeUsernameCommand command)
         {
             var userId = _httpContextAccessor.HttpContext?.User.GetId();
             if (userId == null)
@@ -54,7 +54,7 @@ namespace Tapir.Identity.Application.Account.Commands
                 return ChangeUsernameCommandResult.Error("UserNotFound");
             }
 
-            var result = await _userManager.SetUserNameAsync(user, request.Username);
+            var result = await _userManager.SetUserNameAsync(user, command.Username);
 
             if (!result.Succeeded)
             {
@@ -68,7 +68,7 @@ namespace Tapir.Identity.Application.Account.Commands
             await _messageBus.Send(new UserUpdatedMessage
             {
                 Id = user.Id,
-                Username = request.Username,
+                Username = command.Username,
                 Email = user.Email!
             });
 

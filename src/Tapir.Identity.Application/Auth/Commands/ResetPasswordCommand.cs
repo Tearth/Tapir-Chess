@@ -38,9 +38,9 @@ namespace Tapir.Identity.Application.Auth.Commands
             _taskScheduler = taskScheduler;
         }
 
-        public async Task<ResetPasswordCommandResult> Process(ResetPasswordCommand request)
+        public async Task<ResetPasswordCommandResult> Process(ResetPasswordCommand command)
         {
-            var user = await _userManager.FindByEmailAsync(request.Email);
+            var user = await _userManager.FindByEmailAsync(command.Email);
 
             if (user == null)
             {

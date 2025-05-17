@@ -27,22 +27,22 @@ namespace Tapir.Services.Players.Application.Players.Queries
             _database = database;
         }
 
-        public async Task<PagedResult<PlayerDto>> Process(GetPlayerListQuery request)
+        public async Task<PagedResult<PlayerDto>> Process(GetPlayerListQuery query)
         {
             using (var connection = _database.Open())
             {
                 var totalCount = await connection.ExecuteScalarAsync<int>("SELECT COUNT(*) FROM Players");
                 var players = await connection.QueryAsync<PlayerDto>("SELECT * FROM Players ORDER BY CreatedAt DESC LIMIT @Limit OFFSET @Offset", new
                 {
-                    Limit = request.PageSize,
-                    Offset = (request.PageNumber - 1) * request.PageSize,
+                    Limit = query.PageSize,
+                    Offset = (query.PageNumber - 1) * query.PageSize,
                 });
 
                 return new PagedResult<PlayerDto>
                 {
                     Items = players.ToList(),
-                    PageNumber = request.PageNumber,
-                    PageSize = request.PageSize,
+                    PageNumber = query.PageNumber,
+                    PageSize = query.PageSize,
                     TotalCount = totalCount
                 };
             }

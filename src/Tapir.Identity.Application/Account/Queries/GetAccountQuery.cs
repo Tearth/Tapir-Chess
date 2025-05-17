@@ -31,7 +31,7 @@ namespace Tapir.Identity.Application.Account.Commands
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<GetAccountQueryResult> Process(GetAccountQuery request)
+        public async Task<GetAccountQueryResult> Process(GetAccountQuery query)
         {
             var user = _httpContextAccessor.HttpContext?.User;
 

@@ -27,22 +27,22 @@ namespace Tapir.Services.News.Application.News.Queries
             _database = database;
         }
 
-        public async Task<PagedResult<NewsDto>> Process(GetNewsListQuery request)
+        public async Task<PagedResult<NewsDto>> Process(GetNewsListQuery query)
         {
             using (var connection = _database.Open())
             {
                 var totalCount = await connection.ExecuteScalarAsync<int>("SELECT COUNT(*) FROM News WHERE Deleted = false");
                 var news = await connection.QueryAsync<NewsDto>("SELECT * FROM News WHERE Deleted = false ORDER BY CreatedAt DESC LIMIT @Limit OFFSET @Offset", new
                 {
-                    Limit = request.PageSize,
-                    Offset = (request.PageNumber - 1) * request.PageSize,
+                    Limit = query.PageSize,
+                    Offset = (query.PageNumber - 1) * query.PageSize,
                 });
 
                 return new PagedResult<NewsDto>
                 {
                     Items = news.ToList(),
-                    PageNumber = request.PageNumber,
-                    PageSize = request.PageSize,
+                    PageNumber = query.PageNumber,
+                    PageSize = query.PageSize,
                     TotalCount = totalCount
                 };
             }

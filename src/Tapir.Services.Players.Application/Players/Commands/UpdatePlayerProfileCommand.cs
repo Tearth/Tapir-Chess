@@ -30,9 +30,9 @@ namespace Tapir.Services.News.Application.News.Commands
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<Unit> Process(UpdatePlayerProfileCommand request)
+        public async Task<Unit> Process(UpdatePlayerProfileCommand command)
         {
-            var entity = await _playerRepository.Load(request.Id);
+            var entity = await _playerRepository.Load(command.Id);
             var userId = _httpContextAccessor.HttpContext?.User.GetId();
             
             if (userId == null || entity.Id != userId)
@@ -40,14 +40,14 @@ namespace Tapir.Services.News.Application.News.Commands
                 throw new UnauthorizedAccessException();
             }
 
-            if (request.Country != null)
+            if (command.Country != null)
             {
-                entity.SetCountry(request.Country);
+                entity.SetCountry(command.Country);
             }
 
-            if (request.AboutMe != null)
+            if (command.AboutMe != null)
             {
-                entity.SetAboutMe(request.AboutMe);
+                entity.SetAboutMe(command.AboutMe);
             }
 
             await _playerRepository.Save(entity);

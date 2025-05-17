@@ -43,11 +43,11 @@ namespace Tapir.Identity.Application.Account.Commands
             _messageBus = messageBus;
         }
 
-        public async Task<ConfirmEmailChangeCommandResult> Process(ConfirmEmailChangeCommand request)
+        public async Task<ConfirmEmailChangeCommandResult> Process(ConfirmEmailChangeCommand command)
         {
-            var userId = Encoding.UTF8.GetString(Convert.FromBase64String(request.UserId));
-            var token = Encoding.UTF8.GetString(Convert.FromBase64String(request.Token));
-            var email = Encoding.UTF8.GetString(Convert.FromBase64String(request.Email));
+            var userId = Encoding.UTF8.GetString(Convert.FromBase64String(command.UserId));
+            var token = Encoding.UTF8.GetString(Convert.FromBase64String(command.Token));
+            var email = Encoding.UTF8.GetString(Convert.FromBase64String(command.Email));
             var user = await _userManager.FindByIdAsync(userId);
 
             if (user == null)

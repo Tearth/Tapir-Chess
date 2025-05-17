@@ -28,7 +28,7 @@ namespace Tapir.Services.Games.Application.Rooms.Queries
             _database = database;
         }
 
-        public async Task<PagedResult<RoomDto>> Process(GetRoomListQuery request)
+        public async Task<PagedResult<RoomDto>> Process(GetRoomListQuery query)
         {
             using (var connection = _database.Open())
             {
@@ -40,15 +40,15 @@ namespace Tapir.Services.Games.Application.Rooms.Queries
                 var rooms = await connection.QueryAsync<RoomDto>("SELECT * FROM Rooms WHERE Status = @Status ORDER BY CreatedAt DESC LIMIT @Limit OFFSET @Offset", new
                 {
                     Status = RoomStatus.Open,
-                    Limit = request.PageSize,
-                    Offset = (request.PageNumber - 1) * request.PageSize,
+                    Limit = query.PageSize,
+                    Offset = (query.PageNumber - 1) * query.PageSize,
                 });
 
                 return new PagedResult<RoomDto>
                 {
                     Items = rooms.ToList(),
-                    PageNumber = request.PageNumber,
-                    PageSize = request.PageSize,
+                    PageNumber = query.PageNumber,
+                    PageSize = query.PageSize,
                     TotalCount = totalCount
                 };
             }

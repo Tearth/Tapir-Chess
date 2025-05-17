@@ -40,11 +40,11 @@ namespace Tapir.Identity.Application.Auth.Commands
             _databaseContext = databaseContext;
         }
 
-        public async Task<RefreshTokenCommandResult> Process(RefreshTokenCommand request)
+        public async Task<RefreshTokenCommandResult> Process(RefreshTokenCommand command)
         {
-            var userToken = await _databaseContext.RefreshTokens.FirstOrDefaultAsync(p => p.Value == request.RefreshToken);
+            var userToken = await _databaseContext.RefreshTokens.FirstOrDefaultAsync(p => p.Value == command.RefreshToken);
 
-            if (userToken?.Value == request.RefreshToken)
+            if (userToken?.Value == command.RefreshToken)
             {
                 var user = await _userManager.FindByIdAsync(userToken.UserId.ToString());
 

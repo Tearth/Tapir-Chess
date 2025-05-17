@@ -43,7 +43,7 @@ namespace Tapir.Identity.Application.Account.Commands
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<ChangeEmailCommandResult> Process(ChangeEmailCommand request)
+        public async Task<ChangeEmailCommandResult> Process(ChangeEmailCommand command)
         {
             var userId = _httpContextAccessor.HttpContext?.User.GetId();
             if (userId == null)
@@ -61,8 +61,8 @@ namespace Tapir.Identity.Application.Account.Commands
             {
                 To = user.Email!,
                 UserId = user.Id,
-                Token = await _userManager.GenerateChangeEmailTokenAsync(user, request.Email),
-                NewEmail = request.Email,
+                Token = await _userManager.GenerateChangeEmailTokenAsync(user, command.Email),
+                NewEmail = command.Email,
             });
 
             return new ChangeEmailCommandResult

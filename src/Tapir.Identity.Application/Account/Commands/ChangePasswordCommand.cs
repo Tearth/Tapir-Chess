@@ -39,7 +39,7 @@ namespace Tapir.Identity.Application.Account.Commands
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<ChangePasswordCommandResult> Process(ChangePasswordCommand request)
+        public async Task<ChangePasswordCommandResult> Process(ChangePasswordCommand command)
         {
             var userId = _httpContextAccessor.HttpContext?.User.GetId();
             if (userId == null)
@@ -53,7 +53,7 @@ namespace Tapir.Identity.Application.Account.Commands
                 return ChangePasswordCommandResult.Error("UserNotFound");
             }
 
-            var result = await _userManager.ChangePasswordAsync(user, request.OldPassword, request.NewPassword);
+            var result = await _userManager.ChangePasswordAsync(user, command.OldPassword, command.NewPassword);
             return new ChangePasswordCommandResult
             {
                 Success = result.Succeeded,

@@ -24,9 +24,9 @@ namespace Tapir.Services.News.Application.News.Commands
             _newsRepository = newsRepository;
         }
 
-        public async Task<Unit> Process(DeleteNewsCommand request)
+        public async Task<Unit> Process(DeleteNewsCommand command)
         {
-            var entity = await _newsRepository.Load(request.Id);
+            var entity = await _newsRepository.Load(command.Id);
 
             entity.Delete();
 

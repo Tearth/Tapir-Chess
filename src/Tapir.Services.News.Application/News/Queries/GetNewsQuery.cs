@@ -25,13 +25,13 @@ namespace Tapir.Services.News.Application.News.Queries
             _database = database;
         }
 
-        public async Task<NewsDto?> Process(GetNewsQuery request)
+        public async Task<NewsDto?> Process(GetNewsQuery query)
         {
             using (var connection = _database.Open())
             {
                 return await connection.QueryFirstOrDefaultAsync<NewsDto>("SELECT * FROM News WHERE Id = @Id AND Deleted = false", new
                 {
-                    request.Id,
+                    query.Id,
                 });
             }
         }
