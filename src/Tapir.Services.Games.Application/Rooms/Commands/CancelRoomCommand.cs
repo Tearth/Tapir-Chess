@@ -37,6 +37,14 @@ namespace Tapir.Services.Games.Application.Rooms.Commands
         {
             var entity = await _roomRepository.Load(command.Id);
 
+            if (user != null)
+            {
+                if (entity.UserId != user.GetId())
+                {
+                    throw new UnauthorizedAccessException();
+                }
+            }
+
             entity.Cancel();
 
             await _roomRepository.Save(entity);
