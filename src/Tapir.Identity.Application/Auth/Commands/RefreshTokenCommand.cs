@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using Tapir.Core.Commands;
 using Tapir.Core.Validation;
 using Tapir.Identity.Application.Services;
@@ -40,28 +41,28 @@ namespace Tapir.Identity.Application.Auth.Commands
             _databaseContext = databaseContext;
         }
 
-        public async Task<RefreshTokenCommandResult> Process(RefreshTokenCommand command)
+        public async Task<RefreshTokenCommandResult> Process(RefreshTokenCommand command, ClaimsPrincipal? user)
         {
             var userToken = await _databaseContext.RefreshTokens.FirstOrDefaultAsync(p => p.Value == command.RefreshToken);
 
             if (userToken?.Value == command.RefreshToken)
             {
-                var user = await _userManager.FindByIdAsync(userToken.UserId.ToString());
+                var applicationUser = await _userManager.FindByIdAsync(userToken.UserId.ToString());
 
-                if (user == null)
+                if (applicationUser == null)
                 {
                     return RefreshTokenCommandResult.Error("UserNotFound");
                 }
 
-                var roles = await _userManager.GetRolesAsync(user);
-                var accessToken = _tokenGenerator.GenerateAccessToken(user.Id, user.UserName, user.Email, roles.ToList());
+                var roles = await _userManager.GetRolesAsync(applicationUser);
+                var accessToken = _tokenGenerator.GenerateAccessToken(applicationUser.Id, applicationUser.UserName, applicationUser.Email, roles.ToList());
                 var refreshToken = _tokenGenerator.GenerateRefreshToken();
 
                 _databaseContext.RefreshTokens.Remove(userToken);
 
                 await _databaseContext.RefreshTokens.AddAsync(new RefreshToken<Guid>
                 {
-                    UserId = user.Id,
+                    UserId = applicationUser.Id,
                     CreatedAt = DateTime.UtcNow,
                     Value = refreshToken
                 });

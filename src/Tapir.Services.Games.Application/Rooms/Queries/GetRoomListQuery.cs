@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using System.Security.Claims;
 using Tapir.Core.Commands;
 using Tapir.Core.Persistence;
 using Tapir.Core.Queries;
@@ -28,7 +29,7 @@ namespace Tapir.Services.Games.Application.Rooms.Queries
             _database = database;
         }
 
-        public async Task<PagedResult<RoomDto>> Process(GetRoomListQuery query)
+        public async Task<PagedResult<RoomDto>> Process(GetRoomListQuery query, ClaimsPrincipal? user)
         {
             using (var connection = _database.Open())
             {

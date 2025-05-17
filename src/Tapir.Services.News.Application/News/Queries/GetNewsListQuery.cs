@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using System.Security.Claims;
 using Tapir.Core.Commands;
 using Tapir.Core.Persistence;
 using Tapir.Core.Queries;
@@ -27,7 +28,7 @@ namespace Tapir.Services.News.Application.News.Queries
             _database = database;
         }
 
-        public async Task<PagedResult<NewsDto>> Process(GetNewsListQuery query)
+        public async Task<PagedResult<NewsDto>> Process(GetNewsListQuery query, ClaimsPrincipal? user)
         {
             using (var connection = _database.Open())
             {

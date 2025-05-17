@@ -24,7 +24,7 @@ namespace Tapir.Identity.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> SignIn(SignInCommand command, [FromServices] ISignInCommandHandler handler)
         {
-            var result = await handler.Process(command);
+            var result = await handler.Process(command, User);
             
             if (!result.Success)
             {
@@ -52,7 +52,7 @@ namespace Tapir.Identity.API.Controllers
         [ProducesResponseType(typeof(PagedResult<ProblemDetails>), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Register(RegisterCommand command, [FromServices] IRegisterCommandHandler handler)
         {
-            var result = await handler.Process(command);
+            var result = await handler.Process(command, User);
             
             if (!result.Success)
             {
@@ -68,7 +68,7 @@ namespace Tapir.Identity.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ConfirmEmail(ConfirmEmailCommand command, [FromServices] IConfirmEmailCommandHandler handler)
         {
-            var result = await handler.Process(command);
+            var result = await handler.Process(command, User);
 
             if (!result.Success)
             {
@@ -85,7 +85,7 @@ namespace Tapir.Identity.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ResetPassword(ResetPasswordCommand command, [FromServices] IResetPasswordCommandHandler handler)
         {
-            var result = await handler.Process(command);
+            var result = await handler.Process(command, User);
 
             if (!result.Success)
             {
@@ -101,7 +101,7 @@ namespace Tapir.Identity.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ConfirmPassword(ConfirmPasswordCommand command, [FromServices] IConfirmPasswordCommandHandler handler)
         {
-            var result = await handler.Process(command);
+            var result = await handler.Process(command, User);
 
             if (!result.Success)
             {
@@ -128,7 +128,7 @@ namespace Tapir.Identity.API.Controllers
             var result = await handler.Process(new RefreshTokenCommand
             {
                 RefreshToken = refreshToken
-            });
+            }, User);
 
             if (!result.Success)
             {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using Tapir.Core.Commands;
 using Tapir.Core.Validation;
 using Tapir.Identity.Application.Services;
@@ -45,24 +46,24 @@ namespace Tapir.Identity.Application.Auth.Commands
             _databaseContext = databaseContext;
         }
 
-        public async Task<SignInCommandResult> Process(SignInCommand command)
+        public async Task<SignInCommandResult> Process(SignInCommand command, ClaimsPrincipal? user)
         {
-            var user = await _userManager.FindByNameAsync(command.Username) ?? await _userManager.FindByEmailAsync(command.Username);
+            var applicationUser = await _userManager.FindByNameAsync(command.Username) ?? await _userManager.FindByEmailAsync(command.Username);
 
-            if (user == null)
+            if (applicationUser == null)
             {
                 return SignInCommandResult.Error("InvalidUsernameOrPassword");
             }
 
-            if (await _userManager.CheckPasswordAsync(user, command.Password))
+            if (await _userManager.CheckPasswordAsync(applicationUser, command.Password))
             {
-                var roles = await _userManager.GetRolesAsync(user);
-                var accessToken = _tokenGenerator.GenerateAccessToken(user.Id, user.UserName, user.Email, roles.ToList());
+                var roles = await _userManager.GetRolesAsync(applicationUser);
+                var accessToken = _tokenGenerator.GenerateAccessToken(applicationUser.Id, applicationUser.UserName, applicationUser.Email, roles.ToList());
                 var refreshToken = _tokenGenerator.GenerateRefreshToken();
 
                 await _databaseContext.RefreshTokens.AddAsync(new RefreshToken<Guid>
                 {
-                    UserId = user.Id,
+                    UserId = applicationUser.Id,
                     CreatedAt = DateTime.UtcNow,
                     Value = refreshToken
                 });

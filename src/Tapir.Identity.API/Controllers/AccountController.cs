@@ -17,7 +17,7 @@ namespace Tapir.Identity.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Info(GetAccountQuery query, [FromServices] IGetAccountQueryHandler handler)
         {
-            return Ok(await handler.Process(query));
+            return Ok(await handler.Process(query, User));
         }
 
         [HttpPost]
@@ -27,7 +27,7 @@ namespace Tapir.Identity.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ChangeUsername(ChangeUsernameCommand command, [FromServices] IChangeUsernameCommandHandler handler)
         {
-            var result = await handler.Process(command);
+            var result = await handler.Process(command, User);
 
             if (!result.Success)
             {
@@ -44,7 +44,7 @@ namespace Tapir.Identity.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ChangePassword(ChangePasswordCommand command, [FromServices] IChangePasswordCommandHandler handler)
         {
-            var result = await handler.Process(command);
+            var result = await handler.Process(command, User);
 
             if (!result.Success)
             {
@@ -61,7 +61,7 @@ namespace Tapir.Identity.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ChangeEmail(ChangeEmailCommand command, [FromServices] IChangeEmailCommandHandler handler)
         {
-            var result = await handler.Process(command);
+            var result = await handler.Process(command, User);
 
             if (!result.Success)
             {
@@ -78,7 +78,7 @@ namespace Tapir.Identity.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ConfirmEmailChange(ConfirmEmailChangeCommand command, [FromServices] IConfirmEmailChangeCommandHandler handler)
         {
-            var result = await handler.Process(command);
+            var result = await handler.Process(command, User);
 
             if (!result.Success)
             {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using System.Text;
 using Tapir.Core.Commands;
 using Tapir.Core.Validation;
@@ -36,18 +37,18 @@ namespace Tapir.Identity.Application.Auth.Commands
             _userManager = userManager;
         }
 
-        public async Task<ConfirmEmailCommandResult> Process(ConfirmEmailCommand command)
+        public async Task<ConfirmEmailCommandResult> Process(ConfirmEmailCommand command, ClaimsPrincipal? user)
         {
             var userId = Encoding.UTF8.GetString(Convert.FromBase64String(command.UserId));
             var token = Encoding.UTF8.GetString(Convert.FromBase64String(command.Token));
-            var user = await _userManager.FindByIdAsync(userId);
+            var applicationUser = await _userManager.FindByIdAsync(userId);
 
-            if (user == null)
+            if (applicationUser == null)
             {
                 return ConfirmEmailCommandResult.Error("UserNotFound");
             }
 
-            var result = await _userManager.ConfirmEmailAsync(user, token);
+            var result = await _userManager.ConfirmEmailAsync(applicationUser, token);
 
             return new ConfirmEmailCommandResult
             {

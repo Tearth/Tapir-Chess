@@ -1,4 +1,5 @@
-﻿using Tapir.Core.Commands;
+﻿using System.Security.Claims;
+using Tapir.Core.Commands;
 using Tapir.Core.Persistence;
 using Tapir.Core.Types;
 using Tapir.Services.News.Domain.News.Entities;
@@ -24,7 +25,7 @@ namespace Tapir.Services.News.Application.News.Commands
             _newsRepository = newsRepository;
         }
 
-        public async Task<Unit> Process(DeleteNewsCommand command)
+        public async Task<Unit> Process(DeleteNewsCommand command, ClaimsPrincipal? user)
         {
             var entity = await _newsRepository.Load(command.Id);
 

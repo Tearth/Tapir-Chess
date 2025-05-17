@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using Tapir.Core.Commands;
 using Tapir.Core.Identity;
 using Tapir.Core.Messaging;
@@ -31,30 +32,28 @@ namespace Tapir.Identity.Application.Account.Commands
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMessageBus _messageBus;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ChangeUsernameCommandHandler(UserManager<ApplicationUser> userManager, IMessageBus messageBus, IHttpContextAccessor httpContextAccessor)
+        public ChangeUsernameCommandHandler(UserManager<ApplicationUser> userManager, IMessageBus messageBus)
         {
             _userManager = userManager;
             _messageBus = messageBus;
-            _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<ChangeUsernameCommandResult> Process(ChangeUsernameCommand command)
+        public async Task<ChangeUsernameCommandResult> Process(ChangeUsernameCommand command, ClaimsPrincipal? user)
         {
-            var userId = _httpContextAccessor.HttpContext?.User.GetId();
+            var userId = user.GetId();
             if (userId == null)
             {
                 return ChangeUsernameCommandResult.Error("UserNotFound");
             }
 
-            var user = await _userManager.FindByIdAsync(userId.ToString());
-            if (user == null)
+            var applicationUser = await _userManager.FindByIdAsync(userId.ToString());
+            if (applicationUser == null)
             {
                 return ChangeUsernameCommandResult.Error("UserNotFound");
             }
 
-            var result = await _userManager.SetUserNameAsync(user, command.Username);
+            var result = await _userManager.SetUserNameAsync(applicationUser, command.Username);
 
             if (!result.Succeeded)
             {
@@ -67,9 +66,9 @@ namespace Tapir.Identity.Application.Account.Commands
 
             await _messageBus.Send(new UserUpdatedMessage
             {
-                Id = user.Id,
+                Id = applicationUser.Id,
                 Username = command.Username,
-                Email = user.Email!
+                Email = applicationUser.Email!
             });
 
             return new ChangeUsernameCommandResult

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using Tapir.Core.Commands;
 using Tapir.Core.Identity;
 using Tapir.Core.Validation;
@@ -31,29 +32,27 @@ namespace Tapir.Identity.Application.Account.Commands
     public class ChangePasswordCommandHandler : IChangePasswordCommandHandler
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ChangePasswordCommandHandler(UserManager<ApplicationUser> userManager, IHttpContextAccessor httpContextAccessor)
+        public ChangePasswordCommandHandler(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
-            _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<ChangePasswordCommandResult> Process(ChangePasswordCommand command)
+        public async Task<ChangePasswordCommandResult> Process(ChangePasswordCommand command, ClaimsPrincipal? user)
         {
-            var userId = _httpContextAccessor.HttpContext?.User.GetId();
+            var userId = user.GetId();
             if (userId == null)
             {
                 return ChangePasswordCommandResult.Error("UserNotFound");
             }
 
-            var user = await _userManager.FindByIdAsync(userId.ToString());
-            if (user == null)
+            var applicationUser = await _userManager.FindByIdAsync(userId.ToString());
+            if (applicationUser == null)
             {
                 return ChangePasswordCommandResult.Error("UserNotFound");
             }
 
-            var result = await _userManager.ChangePasswordAsync(user, command.OldPassword, command.NewPassword);
+            var result = await _userManager.ChangePasswordAsync(applicationUser, command.OldPassword, command.NewPassword);
             return new ChangePasswordCommandResult
             {
                 Success = result.Succeeded,

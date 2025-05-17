@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Tapir.Core.Commands;
@@ -33,7 +34,7 @@ namespace Tapir.Services.Games.Application.Rooms.Commands
             _roomRepository = roomRepository;
         }
 
-        public async Task<Unit> Process(CloseRoomCommand command)
+        public async Task<Unit> Process(CloseRoomCommand command, ClaimsPrincipal? user)
         {
             var entity = await _roomRepository.Load(command.Id);
 

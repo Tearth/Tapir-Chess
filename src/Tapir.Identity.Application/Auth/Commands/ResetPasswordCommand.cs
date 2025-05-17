@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using Tapir.Core.Commands;
 using Tapir.Core.Scheduler;
 using Tapir.Core.Validation;
@@ -38,20 +39,20 @@ namespace Tapir.Identity.Application.Auth.Commands
             _taskScheduler = taskScheduler;
         }
 
-        public async Task<ResetPasswordCommandResult> Process(ResetPasswordCommand command)
+        public async Task<ResetPasswordCommandResult> Process(ResetPasswordCommand command, ClaimsPrincipal? user)
         {
-            var user = await _userManager.FindByEmailAsync(command.Email);
+            var applicationUser = await _userManager.FindByEmailAsync(command.Email);
 
-            if (user == null)
+            if (applicationUser == null)
             {
                 return ResetPasswordCommandResult.Error("UserNotFound");
             }
 
             await _taskScheduler.Run(new PasswordResetMailTask
             {
-                To = user.Email!,
-                UserId = user.Id,
-                Token = await _userManager.GeneratePasswordResetTokenAsync(user)
+                To = applicationUser.Email!,
+                UserId = applicationUser.Id,
+                Token = await _userManager.GeneratePasswordResetTokenAsync(applicationUser)
             });
 
             return new ResetPasswordCommandResult

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using Tapir.Core.Commands;
 using Tapir.Core.Messaging;
 using Tapir.Core.Messaging.Identity;
@@ -48,14 +49,14 @@ namespace Tapir.Identity.Application.Auth.Commands
             _taskScheduler = taskScheduler;
         }
 
-        public async Task<RegisterCommandResult> Process(RegisterCommand command)
+        public async Task<RegisterCommandResult> Process(RegisterCommand command, ClaimsPrincipal? user)
         {
-            var user = new ApplicationUser
+            var applicationUser = new ApplicationUser
             {
                 UserName = command.Username,
                 Email = command.Email
             };
-            var result = await _userManager.CreateAsync(user, command.Password);
+            var result = await _userManager.CreateAsync(applicationUser, command.Password);
 
             if (!result.Succeeded)
             {
@@ -66,18 +67,18 @@ namespace Tapir.Identity.Application.Auth.Commands
                 };
             }
 
-            await _userManager.AddToRoleAsync(user, "user");
+            await _userManager.AddToRoleAsync(applicationUser, "user");
 
             await _taskScheduler.Run(new EmailConfirmationMailTask
             {
-                To = user.Email,
-                UserId = user.Id,
-                Token = await _userManager.GenerateEmailConfirmationTokenAsync(user)
+                To = applicationUser.Email,
+                UserId = applicationUser.Id,
+                Token = await _userManager.GenerateEmailConfirmationTokenAsync(applicationUser)
             });
 
             await _messageBus.Send(new UserCreatedMessage
             {
-                Id = user.Id,
+                Id = applicationUser.Id,
                 Username = command.Username,
                 Email = command.Email
             });

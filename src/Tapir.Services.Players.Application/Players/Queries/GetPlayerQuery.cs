@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using System.Security.Claims;
 using Tapir.Core.Commands;
 using Tapir.Core.Persistence;
 using Tapir.Services.Players.Application.Players.Queries.DTOs;
@@ -25,7 +26,7 @@ namespace Tapir.Services.Players.Application.Players.Queries
             _database = database;
         }
 
-        public async Task<PlayerDto?> Process(GetPlayerQuery query)
+        public async Task<PlayerDto?> Process(GetPlayerQuery query, ClaimsPrincipal? user)
         {
             using (var connection = _database.Open())
             {

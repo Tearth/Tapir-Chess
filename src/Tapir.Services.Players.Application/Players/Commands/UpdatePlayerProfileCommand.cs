@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 using Tapir.Core.Commands;
 using Tapir.Core.Identity;
 using Tapir.Core.Persistence;
@@ -22,18 +23,16 @@ namespace Tapir.Services.News.Application.News.Commands
     public class UpdatePlayerProfileCommandHandler : IUpdatePlayerProfileCommandHandler
     {
         private readonly IAggregateRepository<PlayerEntity> _playerRepository;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public UpdatePlayerProfileCommandHandler(IAggregateRepository<PlayerEntity> newsRepository, IHttpContextAccessor httpContextAccessor)
+        public UpdatePlayerProfileCommandHandler(IAggregateRepository<PlayerEntity> newsRepository)
         {
             _playerRepository = newsRepository;
-            _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<Unit> Process(UpdatePlayerProfileCommand command)
+        public async Task<Unit> Process(UpdatePlayerProfileCommand command, ClaimsPrincipal? user)
         {
             var entity = await _playerRepository.Load(command.Id);
-            var userId = _httpContextAccessor.HttpContext?.User.GetId();
+            var userId = user.GetId();
             
             if (userId == null || entity.Id != userId)
             {

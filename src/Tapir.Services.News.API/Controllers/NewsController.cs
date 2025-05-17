@@ -20,7 +20,7 @@ namespace Tapir.Services.News.API.Controllers
             {
                 PageNumber = pageNumber ?? 1,
                 PageSize = pageSize ?? 10
-            });
+            }, User);
 
             return Ok(news);
         }
@@ -35,7 +35,7 @@ namespace Tapir.Services.News.API.Controllers
             var news = await handler.Process(new GetNewsQuery
             {
                 Id = id
-            });
+            }, User);
 
             if (news == null)
             {
@@ -52,7 +52,7 @@ namespace Tapir.Services.News.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Create(CreateNewsCommand command, [FromServices] ICreateNewsCommandHandler handler)
         {
-            await handler.Process(command);
+            await handler.Process(command, User);
             return Ok();
         }
 
@@ -70,7 +70,7 @@ namespace Tapir.Services.News.API.Controllers
                 return BadRequest();
             }
 
-            await handler.Process(command);
+            await handler.Process(command, User);
             return Ok();
         }
 
@@ -85,7 +85,7 @@ namespace Tapir.Services.News.API.Controllers
             await handler.Process(new DeleteNewsCommand
             {
                 Id = id
-            });
+            }, User);
             return Ok();
         }
     }

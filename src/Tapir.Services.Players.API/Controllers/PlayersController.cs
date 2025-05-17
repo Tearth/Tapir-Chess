@@ -20,7 +20,7 @@ namespace Tapir.Services.Players.API.Controllers
             {
                 PageNumber = pageNumber ?? 1,
                 PageSize = pageSize ?? 10
-            });
+            }, User);
 
             return Ok(players);
         }
@@ -35,7 +35,7 @@ namespace Tapir.Services.Players.API.Controllers
             var player = await handler.Process(new GetPlayerQuery
             {
                 Id = id
-            });
+            }, User);
 
             if (player == null)
             {
@@ -59,7 +59,7 @@ namespace Tapir.Services.Players.API.Controllers
                 return BadRequest();
             }
 
-            await handler.Process(command);
+            await handler.Process(command, User);
             return Ok();
         }
     }

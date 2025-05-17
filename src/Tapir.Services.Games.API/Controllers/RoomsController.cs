@@ -20,7 +20,7 @@ namespace Tapir.Services.Games.API.Controllers
             {
                 PageNumber = pageNumber ?? 1,
                 PageSize = pageSize ?? 10
-            });
+            }, User);
 
             return Ok(rooms);
         }
@@ -35,7 +35,7 @@ namespace Tapir.Services.Games.API.Controllers
             var room = await handler.Process(new GetRoomQuery
             {
                 Id = id
-            });
+            }, User);
 
             if (room == null)
             {
@@ -52,7 +52,7 @@ namespace Tapir.Services.Games.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Create(CreateRoomCommand command, [FromServices] ICreateRoomCommandHandler handler)
         {
-            await handler.Process(command);
+            await handler.Process(command, User);
             return Ok();
         }
     }

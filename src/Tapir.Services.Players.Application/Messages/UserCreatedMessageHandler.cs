@@ -20,7 +20,7 @@ namespace Tapir.Services.Players.Application.Messages
                 Id = @event.Id,
                 Username = @event.Username,
                 Email = @event.Email
-            });
+            }, null);
         }
     }
 }

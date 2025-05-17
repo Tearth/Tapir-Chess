@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using System.Text;
 using Tapir.Core.Commands;
 using Tapir.Core.Validation;
@@ -39,18 +40,18 @@ namespace Tapir.Identity.Application.Auth.Commands
             _userManager = userManager;
         }
 
-        public async Task<ConfirmPasswordCommandResult> Process(ConfirmPasswordCommand command)
+        public async Task<ConfirmPasswordCommandResult> Process(ConfirmPasswordCommand command, ClaimsPrincipal? user)
         {
             var userId = Encoding.UTF8.GetString(Convert.FromBase64String(command.UserId));
             var token = Encoding.UTF8.GetString(Convert.FromBase64String(command.Token));
-            var user = await _userManager.FindByIdAsync(userId);
+            var applicationUser = await _userManager.FindByIdAsync(userId);
 
-            if (user == null)
+            if (applicationUser == null)
             {
                 return ConfirmPasswordCommandResult.Error("UserNotFound");
             }
 
-            var result = await _userManager.ResetPasswordAsync(user, token, command.Password);
+            var result = await _userManager.ResetPasswordAsync(applicationUser, token, command.Password);
 
             return new ConfirmPasswordCommandResult
             {

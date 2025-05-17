@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Tapir.Core.Commands;
@@ -27,22 +28,20 @@ namespace Tapir.Services.Games.Application.Rooms.Commands
     public class CreateRoomCommandHandler : ICreateRoomCommandHandler
     {
         private readonly IAggregateRepository<RoomEntity> _roomRepository;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CreateRoomCommandHandler(IAggregateRepository<RoomEntity> roomRepository, IHttpContextAccessor httpContextAccessor)
+        public CreateRoomCommandHandler(IAggregateRepository<RoomEntity> roomRepository)
         {
             _roomRepository = roomRepository;
-            _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<Unit> Process(CreateRoomCommand command)
+        public async Task<Unit> Process(CreateRoomCommand command, ClaimsPrincipal? user)
         {
-            if (_httpContextAccessor.HttpContext?.User.GetId() is not Guid userId)
+            if (user.GetId() is not Guid userId)
             {
                 throw new UnauthorizedAccessException();
             }
 
-            if (_httpContextAccessor.HttpContext?.User.GetName() is not string username)
+            if (user.GetName() is not string username)
             {
                 throw new UnauthorizedAccessException();
             }

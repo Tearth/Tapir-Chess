@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 using Tapir.Core.Commands;
 using Tapir.Core.Identity;
 using Tapir.Core.Persistence;
@@ -28,7 +29,7 @@ namespace Tapir.Services.News.Application.News.Commands
             _playerRepository = newsRepository;
         }
 
-        public async Task<Unit> Process(UpdatePlayerIdentityCommand command)
+        public async Task<Unit> Process(UpdatePlayerIdentityCommand command, ClaimsPrincipal? user)
         {
             var entity = await _playerRepository.Load(command.Id);
 

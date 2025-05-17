@@ -45,24 +45,6 @@ namespace Tapir.Identity.Application
                         throw new InvalidOperationException(string.Join(", ", result.Errors.Select(p => p.Description)));
                     }
                 }
-
-                if (await userManager.FindByNameAsync("admin") == null)
-                {
-                    var user = new ApplicationUser
-                    {
-                        UserName = "admin",
-                        Email = "admin@localhost",
-                        EmailConfirmed = true
-                    };
-                    var result = await userManager.CreateAsync(user, "Admin123!");
-                    
-                    if (!result.Succeeded)
-                    {
-                        throw new InvalidOperationException(string.Join(", ", result.Errors.Select(p => p.Description)));
-                    }
-
-                    await userManager.AddToRolesAsync(user, ["admin", "user"]);
-                }
             }
         }
 

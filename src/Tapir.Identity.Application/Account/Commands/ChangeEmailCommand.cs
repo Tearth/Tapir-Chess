@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using Tapir.Core.Commands;
 using Tapir.Core.Identity;
 using Tapir.Core.Scheduler;
@@ -34,34 +35,32 @@ namespace Tapir.Identity.Application.Account.Commands
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ITaskScheduler _taskScheduler;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ChangeEmailCommandHandler(UserManager<ApplicationUser> userManager, ITaskScheduler taskScheduler, IHttpContextAccessor httpContextAccessor)
+        public ChangeEmailCommandHandler(UserManager<ApplicationUser> userManager, ITaskScheduler taskScheduler)
         {
             _userManager = userManager;
             _taskScheduler = taskScheduler;
-            _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<ChangeEmailCommandResult> Process(ChangeEmailCommand command)
+        public async Task<ChangeEmailCommandResult> Process(ChangeEmailCommand command, ClaimsPrincipal? user)
         {
-            var userId = _httpContextAccessor.HttpContext?.User.GetId();
+            var userId = user.GetId();
             if (userId == null)
             {
                 return ChangeEmailCommandResult.Error("UserNotFound");
             }
 
-            var user = await _userManager.FindByIdAsync(userId.ToString());
-            if (user == null)
+            var applicationUser = await _userManager.FindByIdAsync(userId.ToString());
+            if (applicationUser == null)
             {
                 return ChangeEmailCommandResult.Error("UserNotFound");
             }
 
             await _taskScheduler.Run(new EmailChangeMailTask
             {
-                To = user.Email!,
-                UserId = user.Id,
-                Token = await _userManager.GenerateChangeEmailTokenAsync(user, command.Email),
+                To = applicationUser.Email!,
+                UserId = applicationUser.Id,
+                Token = await _userManager.GenerateChangeEmailTokenAsync(applicationUser, command.Email),
                 NewEmail = command.Email,
             });
 

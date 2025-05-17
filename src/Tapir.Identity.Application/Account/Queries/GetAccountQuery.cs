@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 using Tapir.Core.Commands;
 using Tapir.Core.Identity;
 using Tapir.Identity.Infrastructure.Commands;
@@ -24,17 +25,13 @@ namespace Tapir.Identity.Application.Account.Commands
 
     public class GetAccountQueryHandler : IGetAccountQueryHandler
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public GetAccountQueryHandler(IHttpContextAccessor httpContextAccessor)
+        public GetAccountQueryHandler()
         {
-            _httpContextAccessor = httpContextAccessor;
+
         }
 
-        public async Task<GetAccountQueryResult> Process(GetAccountQuery query)
+        public async Task<GetAccountQueryResult> Process(GetAccountQuery query, ClaimsPrincipal? user)
         {
-            var user = _httpContextAccessor.HttpContext?.User;
-
             return new GetAccountQueryResult
             {
                 Success = true,

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using System.Text;
 using Tapir.Core.Commands;
 using Tapir.Core.Messaging;
@@ -43,19 +44,19 @@ namespace Tapir.Identity.Application.Account.Commands
             _messageBus = messageBus;
         }
 
-        public async Task<ConfirmEmailChangeCommandResult> Process(ConfirmEmailChangeCommand command)
+        public async Task<ConfirmEmailChangeCommandResult> Process(ConfirmEmailChangeCommand command, ClaimsPrincipal? user)
         {
             var userId = Encoding.UTF8.GetString(Convert.FromBase64String(command.UserId));
             var token = Encoding.UTF8.GetString(Convert.FromBase64String(command.Token));
             var email = Encoding.UTF8.GetString(Convert.FromBase64String(command.Email));
-            var user = await _userManager.FindByIdAsync(userId);
+            var applicationUser = await _userManager.FindByIdAsync(userId);
 
-            if (user == null)
+            if (applicationUser == null)
             {
                 return ConfirmEmailChangeCommandResult.Error("UserNotFound");
             }
 
-            var result = await _userManager.ChangeEmailAsync(user, email, token);
+            var result = await _userManager.ChangeEmailAsync(applicationUser, email, token);
 
             if (!result.Succeeded)
             {
@@ -68,8 +69,8 @@ namespace Tapir.Identity.Application.Account.Commands
 
             await _messageBus.Send(new UserUpdatedMessage
             {
-                Id = user.Id,
-                Username = user.UserName!,
+                Id = applicationUser.Id,
+                Username = applicationUser.UserName!,
                 Email = email
             });
 

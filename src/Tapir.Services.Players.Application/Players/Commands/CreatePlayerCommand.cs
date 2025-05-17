@@ -1,4 +1,5 @@
-﻿using Tapir.Core.Commands;
+﻿using System.Security.Claims;
+using Tapir.Core.Commands;
 using Tapir.Core.Persistence;
 using Tapir.Core.Types;
 using Tapir.Services.Players.Domain.Players.Entities;
@@ -26,7 +27,7 @@ namespace Tapir.Services.Players.Application.Players.Commands
             _playerRepository = playersRepository;
         }
 
-        public async Task<Unit> Process(CreatePlayerCommand command)
+        public async Task<Unit> Process(CreatePlayerCommand command, ClaimsPrincipal? user)
         {
             var entity = new PlayerEntity(command.Id);
 

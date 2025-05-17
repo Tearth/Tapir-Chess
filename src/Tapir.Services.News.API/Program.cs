@@ -12,7 +12,6 @@ namespace Tapir.Services.News.API
         {
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddControllers();
-            builder.Services.AddHttpContextAccessor();
             builder.Services.AddInfrastructure(builder.Configuration);
             builder.Services.AddApplication(builder.Configuration);
             builder.Services.AddSwaggerGen(c =>
