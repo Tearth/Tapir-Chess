@@ -47,7 +47,7 @@ namespace Tapir.Services.Players.Application
             services.AddScoped<IEventHandler<UserUpdatedMessage>, UserUpdatedMessageHandler>();
 
             // Tasks
-            services.AddScoped<SynchronizeDomainEventsTask>();
+            services.AddScoped<DomainEventSynchronizationTask>();
 
             return services;
         }

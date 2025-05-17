@@ -39,7 +39,7 @@ namespace Tapir.Services.Games.Application
             services.AddScoped<IEventHandler<RoomCreatedEvent>, RoomCreatedProjector>();
 
             // Tasks
-            services.AddScoped<SynchronizeDomainEventsTask>();
+            services.AddScoped<DomainEventSynchronizationTask>();
 
             return services;
         }

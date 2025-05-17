@@ -22,7 +22,7 @@ namespace Tapir.Services.Games.Application
                 var taskScheduler = scope.ServiceProvider.GetRequiredService<ITaskScheduler>();
 
                 // Tasks
-                await taskScheduler.Register(new SynchronizeDomainEventsTask(), "0/1 * * * * ?");
+                await taskScheduler.Register(new DomainEventSynchronizationTask(), "0/1 * * * * ?");
             }
         }
 

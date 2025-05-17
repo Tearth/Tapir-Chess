@@ -41,7 +41,7 @@ namespace Tapir.Services.News.Application
             services.AddScoped<IEventHandler<NewsTitleUpdatedEvent>, NewsTitleUpdatedProjector>();
 
             // Tasks
-            services.AddScoped<SynchronizeDomainEventsTask>();
+            services.AddScoped<DomainEventSynchronizationTask>();
 
             return services;
         }

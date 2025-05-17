@@ -1,13 +1,13 @@
 ﻿using Tapir.Core.Events;
 using Tapir.Core.Scheduler;
 
-namespace Tapir.Services.Players.Application.Tasks
+namespace Tapir.Services.Rooms.Application.Tasks
 {
-    public class SynchronizeDomainEventsTask : ITask
+    public class DomainEventSynchronizationTask : ITask
     {
         private readonly IDomainEventSynchronizer _synchronizer;
 
-        public SynchronizeDomainEventsTask(IDomainEventSynchronizer? synchronizer = null)
+        public DomainEventSynchronizationTask(IDomainEventSynchronizer? synchronizer = null)
         {
             _synchronizer = synchronizer!;
         }
