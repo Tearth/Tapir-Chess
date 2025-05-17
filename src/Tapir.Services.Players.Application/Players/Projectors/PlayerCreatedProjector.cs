@@ -18,7 +18,7 @@ namespace Tapir.Services.Players.Application.Players.Projectors
         {
             using (var connection = _database.Open())
             {
-                await connection.ExecuteAsync("INSERT INTO Players (Id, CreatedAt) VALUES (@AggregateId, @CreatedAt)", new
+                await connection.ExecuteAsync("INSERT INTO Players (Id, CreatedAt) VALUES (@AggregateId, @CreatedAt) ON CONFLICT (Id) DO NOTHING", new
                 {
                     @event.AggregateId,
                     @event.CreatedAt
