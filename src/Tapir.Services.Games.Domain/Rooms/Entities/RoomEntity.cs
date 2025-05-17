@@ -12,7 +12,7 @@ namespace Tapir.Services.Games.Domain.Rooms.Entities
         Cancelled
     }
 
-    public class Room : AggregateRoot
+    public class RoomEntity : AggregateRoot
     {
         public DateTime CreatedAt { get; set; }
         public Guid UserId { get; set; }
@@ -21,12 +21,12 @@ namespace Tapir.Services.Games.Domain.Rooms.Entities
         public TimeControl TimeControl { get; set; }
         public RoomStatus Status { get; set; }
 
-        public Room()
+        public RoomEntity()
         {
 
         }
 
-        public Room(Guid id, Guid userId, string username, TimeControl timeControl)
+        public RoomEntity(Guid id, Guid userId, string username, TimeControl timeControl)
         {
             if (timeControl.Time == 0 && timeControl.Increment == 0)
             {

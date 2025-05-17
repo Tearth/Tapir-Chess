@@ -10,18 +10,18 @@ namespace Tapir.Services.News.Tests.Unit.News
         public void SetAlias_ValidAlias_EventEmitted()
         {
             // Arrange
-            var newsEntity = new NewsEntity();
+            var entity = new NewsEntity();
             var alias = "correct-alias";
 
             // Act
-            newsEntity.SetAlias(alias);
+            entity.SetAlias(alias);
 
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(newsEntity.Alias, Is.EqualTo(alias));
-                Assert.That(newsEntity.GetUncommittedEvents().Count, Is.EqualTo(1));
-                Assert.That(newsEntity.GetUncommittedEvents<NewsAliasUpdatedEvent>()[0].Alias, Is.EqualTo(alias));
+                Assert.That(entity.Alias, Is.EqualTo(alias));
+                Assert.That(entity.GetUncommittedEvents().Count, Is.EqualTo(1));
+                Assert.That(entity.GetUncommittedEvents<NewsAliasUpdatedEvent>()[0].Alias, Is.EqualTo(alias));
             });
         }
 
@@ -29,10 +29,10 @@ namespace Tapir.Services.News.Tests.Unit.News
         public void SetAlias_EmptyAlias_ThrowsDomainException()
         {
             // Arrange
-            var newsEntity = new NewsEntity();
+            var entity = new NewsEntity();
 
             // Act
-            var act = () => newsEntity.SetAlias("");
+            var act = () => entity.SetAlias("");
 
             // Assert
             Assert.That(act, Throws.TypeOf<DomainException>());
@@ -42,10 +42,10 @@ namespace Tapir.Services.News.Tests.Unit.News
         public void SetAlias_AliasWithWhitespace_ThrowsDomainException()
         {
             // Arrange
-            var newsEntity = new NewsEntity();
+            var entity = new NewsEntity();
 
             // Act
-            var act = () => newsEntity.SetAlias("alias with whitespaces");
+            var act = () => entity.SetAlias("alias with whitespaces");
 
             // Assert
             Assert.That(act, Throws.TypeOf<DomainException>());
@@ -55,10 +55,10 @@ namespace Tapir.Services.News.Tests.Unit.News
         public void SetAlias_AliasWithUppercase_ThrowsDomainException()
         {
             // Arrange
-            var newsEntity = new NewsEntity(Guid.NewGuid());
+            var entity = new NewsEntity(Guid.NewGuid());
 
             // Act
-            var act = () => newsEntity.SetAlias("Alias");
+            var act = () => entity.SetAlias("Alias");
 
             // Assert
             Assert.That(act, Throws.TypeOf<DomainException>());

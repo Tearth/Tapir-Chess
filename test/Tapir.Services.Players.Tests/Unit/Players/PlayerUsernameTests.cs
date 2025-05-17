@@ -10,18 +10,18 @@ namespace Tapir.Services.Players.Tests.Unit.Players
         public void SetUsername_ValidUsername_EventEmitted()
         {
             // Arrange
-            var newsEntity = new PlayerEntity();
+            var entity = new PlayerEntity();
             var username = "Username";
 
             // Act
-            newsEntity.SetUsername(username);
+            entity.SetUsername(username);
 
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(newsEntity.Username, Is.EqualTo(username));
-                Assert.That(newsEntity.GetUncommittedEvents().Count, Is.EqualTo(1));
-                Assert.That(newsEntity.GetUncommittedEvents<PlayerUsernameUpdatedEvent>()[0].Username, Is.EqualTo(username));
+                Assert.That(entity.Username, Is.EqualTo(username));
+                Assert.That(entity.GetUncommittedEvents().Count, Is.EqualTo(1));
+                Assert.That(entity.GetUncommittedEvents<PlayerUsernameUpdatedEvent>()[0].Username, Is.EqualTo(username));
             });
         }
 
@@ -29,10 +29,10 @@ namespace Tapir.Services.Players.Tests.Unit.Players
         public void SetUsername_EmptyUsername_ThrowsDomainException()
         {
             // Arrange
-            var newsEntity = new PlayerEntity();
+            var entity = new PlayerEntity();
 
             // Act
-            var act = () => newsEntity.SetUsername("");
+            var act = () => entity.SetUsername("");
 
             // Assert
             Assert.That(act, Throws.TypeOf<DomainException>());

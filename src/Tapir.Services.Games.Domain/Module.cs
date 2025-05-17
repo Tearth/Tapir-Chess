@@ -16,7 +16,7 @@ namespace Tapir.Services.Games.Domain
             services.AddSingleton<IDomainEventRegistry>(eventRegistry);
 
             // Repositories
-            services.AddScoped<IAggregateRepository<Room>, AggregateRepository<Room>>();
+            services.AddScoped<IAggregateRepository<RoomEntity>, AggregateRepository<RoomEntity>>();
 
             // Events
             eventRegistry.Add<RoomCancelledEvent>();

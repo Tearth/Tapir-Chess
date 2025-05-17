@@ -10,17 +10,17 @@ namespace Tapir.Services.News.Tests.Unit.News
         public void DeleteNews_ValidNews_EventEmitted()
         {
             // Arrange
-            var newsEntity = new NewsEntity();
+            var entity = new NewsEntity();
 
             // Act
-            newsEntity.Delete();
+            entity.Delete();
 
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(newsEntity.Deleted, Is.True);
-                Assert.That(newsEntity.GetUncommittedEvents().Count, Is.EqualTo(1));
-                Assert.That(newsEntity.GetUncommittedEvents<NewsDeletedEvent>()[0], Is.Not.Null);
+                Assert.That(entity.Deleted, Is.True);
+                Assert.That(entity.GetUncommittedEvents().Count, Is.EqualTo(1));
+                Assert.That(entity.GetUncommittedEvents<NewsDeletedEvent>()[0], Is.Not.Null);
             });
         }
 
@@ -28,11 +28,11 @@ namespace Tapir.Services.News.Tests.Unit.News
         public void DeleteNews_AlreadyDeletedNews_ThrowsDomainException()
         {
             // Arrange
-            var newsEntity = new NewsEntity();
-            newsEntity.Delete();
+            var entity = new NewsEntity();
+            entity.Delete();
 
             // Act
-            var act = () => newsEntity.Delete();
+            var act = () => entity.Delete();
 
             // Assert
             Assert.That(act, Throws.TypeOf<DomainException>());

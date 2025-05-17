@@ -16,16 +16,16 @@ namespace Tapir.Services.Games.Tests.Unit.Rooms
             var timeControl = new TimeControl(10, 5);
 
             // Act
-            var newsEntity = new Room(id, userId, username, timeControl);
+            var entity = new RoomEntity(id, userId, username, timeControl);
 
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(newsEntity.Id, Is.EqualTo(id));
-                Assert.That(newsEntity.UserId, Is.EqualTo(userId));
-                Assert.That(newsEntity.TimeControl, Is.EqualTo(timeControl));
-                Assert.That(newsEntity.GetUncommittedEvents().Count, Is.EqualTo(1));
-                Assert.That(newsEntity.GetUncommittedEvents<RoomCreatedEvent>().Count, Is.EqualTo(1));
+                Assert.That(entity.Id, Is.EqualTo(id));
+                Assert.That(entity.UserId, Is.EqualTo(userId));
+                Assert.That(entity.TimeControl, Is.EqualTo(timeControl));
+                Assert.That(entity.GetUncommittedEvents().Count, Is.EqualTo(1));
+                Assert.That(entity.GetUncommittedEvents<RoomCreatedEvent>().Count, Is.EqualTo(1));
             });
         }
     }

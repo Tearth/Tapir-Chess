@@ -13,14 +13,14 @@ namespace Tapir.Services.Players.Tests.Unit.Players
             var id = Guid.NewGuid();
 
             // Act
-            var newsEntity = new PlayerEntity(id);
+            var entity = new PlayerEntity(id);
 
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(newsEntity.Id, Is.EqualTo(id));
-                Assert.That(newsEntity.GetUncommittedEvents().Count, Is.EqualTo(1));
-                Assert.That(newsEntity.GetUncommittedEvents<PlayerCreatedEvent>().Count, Is.EqualTo(1));
+                Assert.That(entity.Id, Is.EqualTo(id));
+                Assert.That(entity.GetUncommittedEvents().Count, Is.EqualTo(1));
+                Assert.That(entity.GetUncommittedEvents<PlayerCreatedEvent>().Count, Is.EqualTo(1));
             });
         }
     }

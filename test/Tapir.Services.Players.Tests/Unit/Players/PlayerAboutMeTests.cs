@@ -10,18 +10,18 @@ namespace Tapir.Services.Players.Tests.Unit.Players
         public void SetAboutMe_ValidAboutMe_EventEmitted()
         {
             // Arrange
-            var newsEntity = new PlayerEntity();
+            var entity = new PlayerEntity();
             var aboutMe = "AboutMe";
 
             // Act
-            newsEntity.SetAboutMe(aboutMe);
+            entity.SetAboutMe(aboutMe);
 
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(newsEntity.AboutMe, Is.EqualTo(aboutMe));
-                Assert.That(newsEntity.GetUncommittedEvents().Count, Is.EqualTo(1));
-                Assert.That(newsEntity.GetUncommittedEvents<PlayerAboutMeUpdatedEvent>()[0].AboutMe, Is.EqualTo(aboutMe));
+                Assert.That(entity.AboutMe, Is.EqualTo(aboutMe));
+                Assert.That(entity.GetUncommittedEvents().Count, Is.EqualTo(1));
+                Assert.That(entity.GetUncommittedEvents<PlayerAboutMeUpdatedEvent>()[0].AboutMe, Is.EqualTo(aboutMe));
             });
         }
 
@@ -29,10 +29,10 @@ namespace Tapir.Services.Players.Tests.Unit.Players
         public void SetAboutMe_EmptyAboutMe_ThrowsDomainException()
         {
             // Arrange
-            var newsEntity = new PlayerEntity();
+            var entity = new PlayerEntity();
 
             // Act
-            var act = () => newsEntity.SetAboutMe("");
+            var act = () => entity.SetAboutMe("");
 
             // Assert
             Assert.That(act, Throws.TypeOf<DomainException>());

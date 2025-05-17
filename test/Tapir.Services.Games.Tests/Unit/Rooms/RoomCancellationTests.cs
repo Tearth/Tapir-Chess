@@ -11,7 +11,7 @@ namespace Tapir.Services.Games.Tests.Unit.Rooms
         public void CancelRoom_ValidRoom_EventEmitted()
         {
             // Arrange
-            var entity = new Room();
+            var entity = new RoomEntity();
 
             // Act
             entity.Cancel();
@@ -29,7 +29,7 @@ namespace Tapir.Services.Games.Tests.Unit.Rooms
         public void CancelRoom_AlreadyCancelledRoom_EventEmitted()
         {
             // Arrange
-            var entity = new Room();
+            var entity = new RoomEntity();
             entity.Cancel();
 
             // Act
@@ -44,7 +44,7 @@ namespace Tapir.Services.Games.Tests.Unit.Rooms
         public void CancelRoom_AlreadyClosedRoom_EventEmitted()
         {
             // Arrange
-            var entity = new Room();
+            var entity = new RoomEntity();
             var gameId = Guid.NewGuid();
 
             entity.Close(gameId);

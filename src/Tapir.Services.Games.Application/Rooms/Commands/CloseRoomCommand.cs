@@ -26,9 +26,9 @@ namespace Tapir.Services.Games.Application.Rooms.Commands
 
     public class CloseRoomCommandHandler : ICloseRoomCommandHandler
     {
-        private readonly IAggregateRepository<Room> _roomRepository;
+        private readonly IAggregateRepository<RoomEntity> _roomRepository;
 
-        public CloseRoomCommandHandler(IAggregateRepository<Room> roomRepository)
+        public CloseRoomCommandHandler(IAggregateRepository<RoomEntity> roomRepository)
         {
             _roomRepository = roomRepository;
         }

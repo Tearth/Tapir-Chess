@@ -25,9 +25,9 @@ namespace Tapir.Services.Games.Application.Rooms.Commands
 
     public class CancelRoomCommandHandler : ICancelRoomCommandHandler
     {
-        private readonly IAggregateRepository<Room> _roomRepository;
+        private readonly IAggregateRepository<RoomEntity> _roomRepository;
 
-        public CancelRoomCommandHandler(IAggregateRepository<Room> roomRepository)
+        public CancelRoomCommandHandler(IAggregateRepository<RoomEntity> roomRepository)
         {
             _roomRepository = roomRepository;
         }

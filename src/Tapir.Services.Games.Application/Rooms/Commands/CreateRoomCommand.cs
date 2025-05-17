@@ -26,10 +26,10 @@ namespace Tapir.Services.Games.Application.Rooms.Commands
 
     public class CreateRoomCommandHandler : ICreateRoomCommandHandler
     {
-        private readonly IAggregateRepository<Room> _roomRepository;
+        private readonly IAggregateRepository<RoomEntity> _roomRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CreateRoomCommandHandler(IAggregateRepository<Room> roomRepository, IHttpContextAccessor httpContextAccessor)
+        public CreateRoomCommandHandler(IAggregateRepository<RoomEntity> roomRepository, IHttpContextAccessor httpContextAccessor)
         {
             _roomRepository = roomRepository;
             _httpContextAccessor = httpContextAccessor;
@@ -47,7 +47,7 @@ namespace Tapir.Services.Games.Application.Rooms.Commands
                 throw new UnauthorizedAccessException();
             }
 
-            var entity = new Room(Guid.NewGuid(), userId, username, new TimeControl(command.Time, command.Increment));
+            var entity = new RoomEntity(Guid.NewGuid(), userId, username, new TimeControl(command.Time, command.Increment));
 
             await _roomRepository.Save(entity);
             return Unit.Default;

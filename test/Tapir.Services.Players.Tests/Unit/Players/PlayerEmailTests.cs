@@ -10,18 +10,18 @@ namespace Tapir.Services.Players.Tests.Unit.Players
         public void SetEmail_ValidEmail_EventEmitted()
         {
             // Arrange
-            var newsEntity = new PlayerEntity();
+            var entity = new PlayerEntity();
             var email = "test@test.pl";
 
             // Act
-            newsEntity.SetEmail(email);
+            entity.SetEmail(email);
 
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(newsEntity.Email, Is.EqualTo(email));
-                Assert.That(newsEntity.GetUncommittedEvents().Count, Is.EqualTo(1));
-                Assert.That(newsEntity.GetUncommittedEvents<PlayerEmailUpdatedEvent>()[0].Email, Is.EqualTo(email));
+                Assert.That(entity.Email, Is.EqualTo(email));
+                Assert.That(entity.GetUncommittedEvents().Count, Is.EqualTo(1));
+                Assert.That(entity.GetUncommittedEvents<PlayerEmailUpdatedEvent>()[0].Email, Is.EqualTo(email));
             });
         }
 
@@ -29,10 +29,10 @@ namespace Tapir.Services.Players.Tests.Unit.Players
         public void SetEmail_EmptyEmail_ThrowsDomainException()
         {
             // Arrange
-            var newsEntity = new PlayerEntity();
+            var entity = new PlayerEntity();
 
             // Act
-            var act = () => newsEntity.SetEmail("");
+            var act = () => entity.SetEmail("");
 
             // Assert
             Assert.That(act, Throws.TypeOf<DomainException>());
@@ -42,10 +42,10 @@ namespace Tapir.Services.Players.Tests.Unit.Players
         public void SetEmail_InvalidEmail_ThrowsDomainException()
         {
             // Arrange
-            var newsEntity = new PlayerEntity();
+            var entity = new PlayerEntity();
 
             // Act
-            var act = () => newsEntity.SetEmail("invalid_email@");
+            var act = () => entity.SetEmail("invalid_email@");
 
             // Assert
             Assert.That(act, Throws.TypeOf<DomainException>());
