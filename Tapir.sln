@@ -94,6 +94,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Services.Games.Infras
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Services.Games.Tests", "test\Tapir.Services.Games.Tests\Tapir.Services.Games.Tests.csproj", "{65875CE5-F7FB-4C64-ACBA-D5750FC97E15}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapir.Providers.Chess.PaxChess", "src\Tapir.Providers.Chess.PaxChess\Tapir.Providers.Chess.PaxChess.csproj", "{6D937C5A-79C6-472F-ADF3-F03199378AEA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -204,6 +206,10 @@ Global
 		{65875CE5-F7FB-4C64-ACBA-D5750FC97E15}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65875CE5-F7FB-4C64-ACBA-D5750FC97E15}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{65875CE5-F7FB-4C64-ACBA-D5750FC97E15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D937C5A-79C6-472F-ADF3-F03199378AEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D937C5A-79C6-472F-ADF3-F03199378AEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D937C5A-79C6-472F-ADF3-F03199378AEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D937C5A-79C6-472F-ADF3-F03199378AEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -245,6 +251,7 @@ Global
 		{E09DAA94-38BE-4E08-AA99-AEAFBD94CA12} = {C7C8C690-E863-49CB-BA89-07181B5A29AF}
 		{D06D0C0C-67CB-4BD2-AED2-58333CC7EAF3} = {C7C8C690-E863-49CB-BA89-07181B5A29AF}
 		{65875CE5-F7FB-4C64-ACBA-D5750FC97E15} = {D6F40452-611E-45CC-AE31-CD62CA89D95F}
+		{6D937C5A-79C6-472F-ADF3-F03199378AEA} = {F8A81F53-D6BE-489C-BCDB-11D62A804A91}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0CBFA5DE-DAE7-416F-BF01-40C96FA4551D}

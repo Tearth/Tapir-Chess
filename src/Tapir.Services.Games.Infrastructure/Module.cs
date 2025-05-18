@@ -8,6 +8,7 @@ using Serilog;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Tapir.Providers.Chess.PaxChess;
 
 namespace Tapir.Services.Games.Infrastructure
 {
@@ -92,6 +93,9 @@ namespace Tapir.Services.Games.Infrastructure
 
                 cfg.ConnectionString = connectionString;
             });
+
+            // Chess
+            services.AddPaxChess();
 
             // Logger
             services.AddSerilog((context, cfg) =>
