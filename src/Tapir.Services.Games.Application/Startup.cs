@@ -1,8 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Tapir.Core.Messaging;
 using Tapir.Core.Scheduler;
-using Tapir.Services.Rooms.Application.Tasks;
+using Tapir.Services.Games.Application.Tasks;
 
 namespace Tapir.Services.Games.Application
 {

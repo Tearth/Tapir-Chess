@@ -72,7 +72,6 @@ namespace Tapir.Services.Games.Domain.Rooms.Entities
             ApplyUncommittedEvent(@event);
         }
 
-
         public void Cancel()
         {
             if (Status == RoomStatus.Closed)
@@ -117,7 +116,6 @@ namespace Tapir.Services.Games.Domain.Rooms.Entities
             GameId = @event.GameId;
             Status = RoomStatus.Closed;
         }
-
 
         private void ExecuteEvent(RoomCancelledEvent @event)
         {

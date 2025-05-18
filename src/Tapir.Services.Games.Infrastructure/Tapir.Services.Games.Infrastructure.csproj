@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Migrations\000_InitQuartz.sql" />
+    <EmbeddedResource Include="Migrations\002_CreateGames.sql" />
     <EmbeddedResource Include="Migrations\001_CreateRooms.sql" />
   </ItemGroup>
 

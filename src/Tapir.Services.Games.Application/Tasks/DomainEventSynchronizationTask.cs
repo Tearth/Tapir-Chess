@@ -1,7 +1,7 @@
 ﻿using Tapir.Core.Events;
 using Tapir.Core.Scheduler;
 
-namespace Tapir.Services.Rooms.Application.Tasks
+namespace Tapir.Services.Games.Application.Tasks
 {
     public class DomainEventSynchronizationTask : ITask
     {
