@@ -13,3 +13,7 @@ export async function reconnect() {
   await WS.stop()
   await WS.start()
 }
+
+WS.on('onGameCreated', function (id) {
+  console.log(id)
+})

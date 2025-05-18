@@ -22,6 +22,7 @@ namespace Tapir.Services.Games.Application
 
                 // Tasks
                 await taskScheduler.Register(new DomainEventSynchronizationTask(), "0/1 * * * * ?");
+                await taskScheduler.Register(new MatchmakingTask(), "0/1 * * * * ?");
             }
         }
 

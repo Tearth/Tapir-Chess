@@ -1,8 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
-using Tapir.Services.Games.API.Controllers;
+using Tapir.Core.Bus;
+using Tapir.Services.Games.API.Events;
+using Tapir.Services.Games.API.Hubs;
 using Tapir.Services.Games.API.Middleware;
 using Tapir.Services.Games.Application;
+using Tapir.Services.Games.Application.Games.Projectors;
+using Tapir.Services.Games.Domain.Rooms.Events;
 using Tapir.Services.Games.Infrastructure;
 
 namespace Tapir.Services.Games.API
@@ -27,13 +31,16 @@ namespace Tapir.Services.Games.API
             });
             builder.Services.AddSignalR();
 
+            // Event handlers
+            builder.Services.AddScoped<IEventHandler<GameCreatedEvent>, GameCreatedEventHandler>();
+
             var app = builder.Build();
             app.UseAuthorization();
             app.MapControllers();
             app.UseSwagger();
             app.UseSwaggerUI();
             app.UseExceptionHandler();
-            app.MapHub<WebSocketController>("/api/games/ws");
+            app.MapHub<WebSocketHub>("/api/games/ws");
             app.Run();
         }
     }

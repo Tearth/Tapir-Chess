@@ -91,6 +91,7 @@ namespace Tapir.Gateway
             var app = builder.Build();
             app.UseCors(x => x
                 .WithOrigins(settings.AllowedOrigins)
+                .WithExposedHeaders("Location")
                 .AllowAnyMethod()
                 .AllowCredentials()
                 .AllowAnyHeader());

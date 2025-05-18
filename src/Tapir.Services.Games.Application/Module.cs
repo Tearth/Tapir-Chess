@@ -44,6 +44,7 @@ namespace Tapir.Services.Games.Application
 
             // Tasks
             services.AddScoped<DomainEventSynchronizationTask>();
+            services.AddScoped<MatchmakingTask>();
 
             return services;
         }
