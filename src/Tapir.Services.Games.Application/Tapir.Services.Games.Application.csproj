@@ -19,8 +19,4 @@
     <ProjectReference Include="..\Tapir.Services.Games.Domain\Tapir.Services.Games.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Games\Queries\" />
-  </ItemGroup>
-
 </Project>

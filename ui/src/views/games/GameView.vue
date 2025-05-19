@@ -9,12 +9,12 @@ import Board from '@/components/Board.vue'
         <div class="flex flex-row">
           <img src="/assets/icons/turtle.svg" class="time-icon" />
           <div class="flex flex-col ml-4">
-            <div>10+5 • Rankingowa</div>
-            <test>1 minutę temu</test>
+            <div>{{ time }}+{{ increment }} • Rankingowa</div>
+            <div>{{ createdAt.format('DD.MM.YYYY HH:mm') }}</div>
           </div>
         </div>
-        <div>⚪ Player A (1600)</div>
-        <div>⚫ Player B (1750)</div>
+        <div>⚪ {{ usernameWhite }} (1600)</div>
+        <div>⚫ {{ usernameBlack }} (1750)</div>
       </div>
       <textarea
         class="textarea textarea-ghost grow-1 w-full bg-base-200 border border-base-300 p-4 lg:rounded-b-md gap-3"
@@ -34,9 +34,11 @@ import Board from '@/components/Board.vue'
     </div>
     <div class="flex items-center">
       <div class="flex flex-row w-full lg:w-[300px] lg:flex-col flex-wrap justify-center content-center">
-        <div class="grow-1 bg-green-600 border border-base-300 p-4 lg:rounded-t-md gap-3 text-5xl text-center font-medium">10:00</div>
+        <div class="grow-1 bg-green-600 border border-base-300 p-4 lg:rounded-t-md gap-3 text-5xl text-center font-medium">
+          {{ moment.utc(timeWhite * 60).format('mm:ss') }}
+        </div>
         <div class="hidden lg:block h-[200px] w-full bg-base-200 border border-base-300 p-4 gap-3">
-          1. e4 e5 2. c7 c5 1.1. e4 e5 2. c7 c5 1.1. e4 e5 2. c7 c5 1.1. e4 e5 2. c7 c5 1.
+          {{ pgn }}
         </div>
         <div class="hidden lg:flex flex-row">
           <button class="btn btn-soft grow-1 pt-6 pb-6">
@@ -46,7 +48,9 @@ import Board from '@/components/Board.vue'
             <img src="/assets/icons/flag.svg" class="button-icon" />
           </button>
         </div>
-        <div class="grow-1 bg-base-200 border border-base-300 p-4 lg:rounded-b-md gap-3 text-5xl text-center font-medium">10:00</div>
+        <div class="grow-1 bg-base-200 border border-base-300 p-4 lg:rounded-b-md gap-3 text-5xl text-center font-medium">
+          {{ moment.utc(timeBlack * 60).format('mm:ss') }}
+        </div>
       </div>
     </div>
   </div>
@@ -74,3 +78,47 @@ import Board from '@/components/Board.vue'
   }
 }
 </style>
+
+<script lang="ts">
+import { ERRORS } from '@/utils/errors'
+import { HTTP } from '@/utils/http'
+import * as BUS from '@/utils/bus'
+import router from '@/router'
+import * as WS from '@/utils/ws'
+import moment from 'moment'
+
+export default {
+  data() {
+    return {
+      createdAt: moment(),
+      usernameWhite: '',
+      usernameBlack: '',
+      time: 0,
+      increment: 0,
+      timeWhite: 0,
+      timeBlack: 0,
+      pgn: '',
+    }
+  },
+  async mounted() {
+    BUS.emitter.on('onGameInfo', this.onGameInfo)
+
+    await WS.getGameInfo(this.$route.params.id.toString())
+  },
+  unmounted() {
+    BUS.emitter.off('onGameInfo', this.onGameInfo)
+  },
+  methods: {
+    onGameInfo(data: any) {
+      this.createdAt = moment(data.createdAt)
+      this.usernameWhite = data.usernameWhite
+      this.usernameBlack = data.usernameBlack
+      this.time = data.time
+      this.increment = data.increment
+      this.timeWhite = data.timeWhite
+      this.timeBlack = data.timeBlack
+      this.pgn = data.pgn
+    },
+  },
+}
+</script>

@@ -4,6 +4,7 @@
 
 <script lang="ts">
 import { Chess, type PieceSymbol, type Color, SQUARES, WHITE, BLACK, PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING } from 'chess.js'
+import * as BUS from '@/utils/bus'
 
 enum BoardPov {
   White,
@@ -22,9 +23,14 @@ export default {
     }
   },
   mounted() {
+    BUS.emitter.on('onGameInfo', this.onGameInfo)
+
     window.addEventListener('resize', this.onResizeHandler)
     window.addEventListener('mousemove', this.onMouseMoveHandler)
     this.redrawBoard()
+  },
+  unmounted() {
+    BUS.emitter.off('onGameInfo', this.onGameInfo)
   },
   methods: {
     redrawBoard() {
@@ -198,6 +204,9 @@ export default {
 
       this.movingPieceId = ''
       this.redrawBoard()
+    },
+    onGameInfo(data: any) {
+      this.chess.loadPgn(data.pgn)
     },
   },
 }

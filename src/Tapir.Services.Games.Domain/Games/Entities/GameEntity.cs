@@ -105,6 +105,7 @@ namespace Tapir.Services.Games.Domain.Rooms.Entities
             TimeControl = @event.TimeControl;
             TimeWhite = @event.TimeControl.Time * 1000;
             TimeBlack = @event.TimeControl.Time * 1000;
+            Pgn = "";
         }
     }
 }

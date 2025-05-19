@@ -19,8 +19,8 @@ namespace Tapir.Services.Games.Application.Games.Projectors
             using (var connection = _database.Open())
             {
                 await connection.ExecuteAsync(
-                    "INSERT INTO Games (Id, CreatedAt, UserIdWhite, UserIdBlack, UsernameWhite, UsernameBlack, Time, Increment, TimeWhite, TimeBlack) " +
-                    "VALUES (@AggregateId, @CreatedAt, @UserIdWhite, @UserIdBlack, @UsernameWhite, @UsernameBlack, @Time, @Increment, @TimeWhite, @TimeBlack) " +
+                    "INSERT INTO Games (Id, CreatedAt, UserIdWhite, UserIdBlack, UsernameWhite, UsernameBlack, Time, Increment, TimeWhite, TimeBlack, Pgn) " +
+                    "VALUES (@AggregateId, @CreatedAt, @UserIdWhite, @UserIdBlack, @UsernameWhite, @UsernameBlack, @Time, @Increment, @TimeWhite, @TimeBlack, '') " +
                     "ON CONFLICT (Id) DO NOTHING", 
                 new
                 {

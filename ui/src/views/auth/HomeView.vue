@@ -25,6 +25,8 @@
 <script lang="ts">
 import { ERRORS } from '@/utils/errors'
 import { HTTP } from '@/utils/http'
+import * as BUS from '@/utils/bus'
+import router from '@/router'
 
 export default {
   data() {
@@ -46,6 +48,12 @@ export default {
         { time: 30, increment: 20, name: 'Classical' },
       ],
     }
+  },
+  mounted() {
+    BUS.emitter.on('onGameCreated', this.onGameCreated)
+  },
+  unmounted() {
+    BUS.emitter.off('onGameCreated', this.onGameCreated)
   },
   methods: {
     async createRoom(index: number) {
@@ -76,6 +84,11 @@ export default {
         this.roomIndex = 0
         this.roomId = ''
       }
+    },
+    onGameCreated(id: any) {
+      router.push({
+        path: '/games/' + id,
+      })
     },
   },
 }

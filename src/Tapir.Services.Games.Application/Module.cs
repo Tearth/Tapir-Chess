@@ -4,6 +4,7 @@ using Tapir.Core.Bus;
 using Tapir.Core.Events;
 using Tapir.Services.Games.Application.Games.Commands;
 using Tapir.Services.Games.Application.Games.Projectors;
+using Tapir.Services.Games.Application.Games.Queries;
 using Tapir.Services.Games.Application.Rooms.Commands;
 using Tapir.Services.Games.Application.Rooms.Projectors;
 using Tapir.Services.Games.Application.Rooms.Queries;
@@ -33,6 +34,7 @@ namespace Tapir.Services.Games.Application
             services.AddScoped<ICreateRoomCommandHandler, CreateRoomCommandHandler>();
 
             // Query handlers
+            services.AddScoped<IGetGameLiveQueryHandler, GetGameLiveHandler>();
             services.AddScoped<IGetRoomListQueryHandler, GetRoomListQueryHandler>();
             services.AddScoped<IGetRoomQueryHandler, GetRoomQueryHandler>();
 
