@@ -19,8 +19,8 @@ namespace Tapir.Services.Games.Application.Games.Projectors
             using (var connection = _database.Open())
             {
                 await connection.ExecuteAsync(
-                    "INSERT INTO Games (Id, CreatedAt, UserIdWhite, UserIdBlack, UsernameWhite, UsernameBlack, Time, Increment, TimeWhite, TimeBlack, Pgn) " +
-                    "VALUES (@AggregateId, @CreatedAt, @UserIdWhite, @UserIdBlack, @UsernameWhite, @UsernameBlack, @Time, @Increment, @TimeWhite, @TimeBlack, '') " +
+                    "INSERT INTO Games (Id, CreatedAt, UserIdWhite, UserIdBlack, UsernameWhite, UsernameBlack, Time, Increment, TimeWhite, TimeBlack, Fen) " +
+                    "VALUES (@AggregateId, @CreatedAt, @UserIdWhite, @UserIdBlack, @UsernameWhite, @UsernameBlack, @Time, @Increment, @TimeWhite, @TimeBlack, @Fen) " +
                     "ON CONFLICT (Id) DO NOTHING", 
                 new
                 {
@@ -32,8 +32,9 @@ namespace Tapir.Services.Games.Application.Games.Projectors
                     @event.UsernameBlack,
                     @event.TimeControl.Time,
                     @event.TimeControl.Increment,
-                    TimeWhite = @event.TimeControl.Time * 1000,
-                    TimeBlack = @event.TimeControl.Time * 1000
+                    TimeWhite = @event.TimeControl.Time * 60 * 1000,
+                    TimeBlack = @event.TimeControl.Time * 60 * 1000,
+                    @event.Fen
                 });
             }
         }

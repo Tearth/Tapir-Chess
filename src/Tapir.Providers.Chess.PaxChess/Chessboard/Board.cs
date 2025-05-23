@@ -22,19 +22,35 @@ namespace Tapir.Providers.Chess.PaxChess.Chessboard
             _game.LoadPgn(pgn);
         }
 
-        public bool Move(string longNotation)
+        public MakeMoveResult MakeMove(string move)
         {
-            if (longNotation.Length < 4 || longNotation.Length > 5)
+            if (move.Length < 4 || move.Length > 5)
             {
-                return false;
+                return new MakeMoveResult
+                {
+                    Valid = false
+                };
             }
 
-            var from = FieldToPosition(longNotation.Substring(0, 2));
-            var to = FieldToPosition(longNotation.Substring(2, 2));
-            var promotion = SymbolToPieceType(longNotation.Length == 5 ? longNotation.Substring(3, 1) : null);
-            var move = new EngineMove(from, to, promotion);
+            var from = FieldToPosition(move.Substring(0, 2));
+            var to = FieldToPosition(move.Substring(2, 2));
+            var promotion = SymbolToPieceType(move.Length == 5 ? move.Substring(3, 1) : null);
+            var result = _game.Move(new EngineMove(from, to, promotion));
 
-            return _game.Move(move) == MoveState.Ok;
+            if (result != MoveState.Ok)
+            {
+                return new MakeMoveResult
+                {
+                    Valid = false
+                };
+            }
+            
+            return new MakeMoveResult
+            {
+                Valid = true,
+                MoveShort = _game.State.CurrentMove!.PgnMove,
+                Fen = Fen.MapList(_game.State)
+            };
         }
 
         private Position FieldToPosition(string field)

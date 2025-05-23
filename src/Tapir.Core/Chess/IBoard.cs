@@ -2,6 +2,6 @@
 {
     public interface IBoard
     {
-        bool Move(string longNotation);
+        MakeMoveResult MakeMove(string move);
     }
 }

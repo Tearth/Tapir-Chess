@@ -21,6 +21,8 @@ namespace Tapir.Services.Games.Domain
 
             // Events
             eventRegistry.Add<GameCreatedEvent>();
+            eventRegistry.Add<GameStartedEvent>();
+            eventRegistry.Add<MoveMadeEvent>();
             eventRegistry.Add<RoomCancelledEvent>();
             eventRegistry.Add<RoomClosedEvent>();
             eventRegistry.Add<RoomCreatedEvent>();

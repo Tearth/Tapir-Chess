@@ -28,7 +28,7 @@ namespace Tapir.Services.Games.Tests.Unit.Rooms
         }
 
         [Test]
-        public void CloseRoom_AlreadyCancelledRoom_EventEmitted()
+        public void CloseRoom_AlreadyCancelledRoom_ThrowsDomainException()
         {
             // Arrange
             var entity = new RoomEntity();
@@ -45,7 +45,7 @@ namespace Tapir.Services.Games.Tests.Unit.Rooms
 
 
         [Test]
-        public void CloseRoom_AlreadyClosedRoom_EventEmitted()
+        public void CloseRoom_AlreadyClosedRoom_ThrowsDomainException()
         {
             // Arrange
             var gameId = Guid.NewGuid();

@@ -25,10 +25,26 @@ export async function getGameInfo(id: string) {
   await WS.send('GetGameInfo', id)
 }
 
+export async function makeMove(id: string, move: string) {
+  if (WS.state != signalR.HubConnectionState.Connected) {
+    await open()
+  }
+
+  await WS.send('MakeMove', id, move)
+}
+
 WS.on('onGameCreated', function (id) {
   BUS.emitter.emit('onGameCreated', id)
 })
 
+WS.on('onGameStarted', function (id) {
+  BUS.emitter.emit('onGameStarted', id)
+})
+
 WS.on('onGameInfo', function (data) {
   BUS.emitter.emit('onGameInfo', data)
+})
+
+WS.on('onMoveMade', function (data) {
+  BUS.emitter.emit('onMoveMade', data)
 })

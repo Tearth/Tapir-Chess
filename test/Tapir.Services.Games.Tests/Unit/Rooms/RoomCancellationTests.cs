@@ -26,7 +26,7 @@ namespace Tapir.Services.Games.Tests.Unit.Rooms
         }
 
         [Test]
-        public void CancelRoom_AlreadyCancelledRoom_EventEmitted()
+        public void CancelRoom_AlreadyCancelledRoom_ThrowsDomainException()
         {
             // Arrange
             var entity = new RoomEntity();
@@ -41,7 +41,7 @@ namespace Tapir.Services.Games.Tests.Unit.Rooms
 
 
         [Test]
-        public void CancelRoom_AlreadyClosedRoom_EventEmitted()
+        public void CancelRoom_AlreadyClosedRoom_ThrowsDomainException()
         {
             // Arrange
             var entity = new RoomEntity();

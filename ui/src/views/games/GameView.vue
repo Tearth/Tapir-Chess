@@ -35,7 +35,7 @@ import Board from '@/components/Board.vue'
     <div class="flex items-center">
       <div class="flex flex-row w-full lg:w-[300px] lg:flex-col flex-wrap justify-center content-center">
         <div class="grow-1 bg-green-600 border border-base-300 p-4 lg:rounded-t-md gap-3 text-5xl text-center font-medium">
-          {{ moment.utc(timeWhite * 60).format('mm:ss') }}
+          {{ moment.utc(timeWhite).format('mm:ss') }}
         </div>
         <div class="hidden lg:block h-[200px] w-full bg-base-200 border border-base-300 p-4 gap-3">
           {{ pgn }}
@@ -49,7 +49,7 @@ import Board from '@/components/Board.vue'
           </button>
         </div>
         <div class="grow-1 bg-base-200 border border-base-300 p-4 lg:rounded-b-md gap-3 text-5xl text-center font-medium">
-          {{ moment.utc(timeBlack * 60).format('mm:ss') }}
+          {{ moment.utc(timeBlack).format('mm:ss') }}
         </div>
       </div>
     </div>
@@ -86,6 +86,7 @@ import * as BUS from '@/utils/bus'
 import router from '@/router'
 import * as WS from '@/utils/ws'
 import moment from 'moment'
+import { WHITE, BLACK } from 'chess.js'
 
 export default {
   data() {
@@ -98,17 +99,36 @@ export default {
       timeWhite: 0,
       timeBlack: 0,
       pgn: '',
+      sideToMove: WHITE,
+      inProgress: false,
+      clockCallback: 0,
     }
   },
   async mounted() {
+    BUS.emitter.on('onGameStarted', this.onGameStarted)
     BUS.emitter.on('onGameInfo', this.onGameInfo)
+    BUS.emitter.on('onMoveMade', this.onMoveMade)
+
+    this.clockCallback = setInterval(this.updateClock, 100)
 
     await WS.getGameInfo(this.$route.params.id.toString())
   },
   unmounted() {
+    BUS.emitter.off('onGameStarted', this.onGameStarted)
     BUS.emitter.off('onGameInfo', this.onGameInfo)
+    BUS.emitter.off('onMoveMade', this.onMoveMade)
+
+    clearInterval(this.clockCallback)
   },
   methods: {
+    updateClock() {
+      if (this.inProgress) {
+        console.log('start')
+      }
+    },
+    onGameStarted(data: any) {
+      this.inProgress = true
+    },
     onGameInfo(data: any) {
       this.createdAt = moment(data.createdAt)
       this.usernameWhite = data.usernameWhite
@@ -118,6 +138,18 @@ export default {
       this.timeWhite = data.timeWhite
       this.timeBlack = data.timeBlack
       this.pgn = data.pgn
+
+      if (data.sideToMove == 0) {
+        this.sideToMove = WHITE
+      } else {
+        this.sideToMove = BLACK
+      }
+
+      this.inProgress = data.status != 0
+    },
+    onMoveMade(data: any) {
+      this.timeWhite = data.timeWhite
+      this.timeBlack = data.timeBlack
     },
   },
 }

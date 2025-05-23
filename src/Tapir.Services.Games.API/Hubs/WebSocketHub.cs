@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Tapir.Core.Identity;
+using Tapir.Services.Games.Application.Games.Commands;
 using Tapir.Services.Games.Application.Games.Queries;
 
 namespace Tapir.Services.Games.API.Hubs
@@ -27,9 +28,18 @@ namespace Tapir.Services.Games.API.Hubs
             var result = await handler.Process(new GetGameLiveQuery
             {
                 Id = id
-            }, null);
+            }, Context.User);
 
             await Clients.Client(Context.ConnectionId).SendAsync("onGameInfo", result);
+        }
+
+        public async Task MakeMove(Guid id, string move, [FromServices] IMakeMoveCommandHandler handler)
+        {
+            var result = await handler.Process(new MakeMoveCommand
+            {
+                Id = id,
+                Move = move
+            }, Context.User);
         }
     }
 }

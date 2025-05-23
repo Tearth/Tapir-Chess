@@ -32,6 +32,7 @@ namespace Tapir.Services.Games.Application
             services.AddScoped<ICancelRoomCommandHandler, CancelRoomCommandHandler>();
             services.AddScoped<ICloseRoomCommandHandler, CloseRoomCommandHandler>();
             services.AddScoped<ICreateRoomCommandHandler, CreateRoomCommandHandler>();
+            services.AddScoped<IMakeMoveCommandHandler, MakeMoveCommandHandler>();
 
             // Query handlers
             services.AddScoped<IGetGameLiveQueryHandler, GetGameLiveHandler>();
@@ -40,6 +41,8 @@ namespace Tapir.Services.Games.Application
 
             // Event handlers
             services.AddScoped<IEventHandler<GameCreatedEvent>, GameCreatedProjector>();
+            services.AddScoped<IEventHandler<GameStartedEvent>, GameStartedProjector>();
+            services.AddScoped<IEventHandler<MoveMadeEvent>, MoveMadeProjector>();
             services.AddScoped<IEventHandler<RoomCancelledEvent>, RoomCancelledProjector>();
             services.AddScoped<IEventHandler<RoomClosedEvent>, RoomClosedProjector>();
             services.AddScoped<IEventHandler<RoomCreatedEvent>, RoomCreatedProjector>();

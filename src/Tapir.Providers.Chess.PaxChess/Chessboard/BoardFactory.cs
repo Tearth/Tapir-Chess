@@ -15,14 +15,24 @@ namespace Tapir.Providers.Chess.PaxChess.Chessboard
         public IBoard CreateFromFen(string fen)
         {
             var board = new Board();
-            board.LoadFromFen(fen);
+
+            if (!string.IsNullOrEmpty(fen))
+            {
+                board.LoadFromFen(fen);
+            }
+
             return board;
         }
 
         public IBoard CreateFromPgn(string pgn)
         {
             var board = new Board();
-            board.LoadFromPgn(pgn);
+
+            if (!string.IsNullOrEmpty(pgn))
+            {
+                board.LoadFromPgn(pgn);
+            }
+
             return board;
         }
     }

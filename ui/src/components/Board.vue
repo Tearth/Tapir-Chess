@@ -3,19 +3,18 @@
 </template>
 
 <script lang="ts">
+import { useRouter, useRoute } from 'vue-router'
+import { useUserStore } from '@/stores/user'
 import { Chess, type PieceSymbol, type Color, SQUARES, WHITE, BLACK, PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING } from 'chess.js'
 import * as BUS from '@/utils/bus'
-
-enum BoardPov {
-  White,
-  Black,
-}
+import * as WS from '@/utils/ws'
 
 export default {
   data() {
     return {
+      id: '',
       chess: new Chess(),
-      pov: BoardPov.White,
+      pov: WHITE,
       squareSize: 0,
       movingPieceId: '',
       cursorPositionX: 0,
@@ -23,7 +22,11 @@ export default {
     }
   },
   mounted() {
+    const route = useRoute()
+    this.id = route.params.id!.toString()
+
     BUS.emitter.on('onGameInfo', this.onGameInfo)
+    BUS.emitter.on('onMoveMade', this.onMoveMade)
 
     window.addEventListener('resize', this.onResizeHandler)
     window.addEventListener('mousemove', this.onMouseMoveHandler)
@@ -31,6 +34,7 @@ export default {
   },
   unmounted() {
     BUS.emitter.off('onGameInfo', this.onGameInfo)
+    BUS.emitter.off('onMoveMade', this.onMoveMade)
   },
   methods: {
     redrawBoard() {
@@ -84,10 +88,12 @@ export default {
     },
     getSquareByFileRank(file: number, rank: number) {
       switch (this.pov) {
-        case BoardPov.White:
+        case WHITE:
           return file + rank * 8
-        case BoardPov.Black:
+        case BLACK:
           return file + (7 - rank) * 8
+        default:
+          return -1
       }
     },
     getSquareByCursorPosition(x: number, y: number) {
@@ -115,7 +121,7 @@ export default {
     getSquareImageUrl(file: number, rank: number) {
       let odd = (file + rank + 1) % 2 != 0
 
-      if (this.pov == BoardPov.Black) {
+      if (this.pov == BLACK) {
         odd = !odd
       }
 
@@ -177,9 +183,13 @@ export default {
       let from = piece?.getAttribute('data-square')
       let moves = this.chess.moves({ verbose: true }).filter((p) => p.from == from)
 
-      for (let i = 0; i < moves.length; i++) {
-        let squareElement = document.getElementById('S' + moves[i].to)!
-        squareElement.className = 'square square-candidate'
+      if (moves.length > 0) {
+        if (this.chess.get(moves[0].from)?.color == this.pov) {
+          for (let i = 0; i < moves.length; i++) {
+            let squareElement = document.getElementById('S' + moves[i].to)!
+            squareElement.className = 'square square-candidate'
+          }
+        }
       }
     },
     onPieceMouseUp(e: MouseEvent) {
@@ -199,6 +209,7 @@ export default {
       for (let i = 0; i < moves.length; i++) {
         if (moves[i].from == from && moves[i].to == to) {
           this.chess.move(moves[i])
+          WS.makeMove(this.id, moves[i].lan)
         }
       }
 
@@ -206,7 +217,25 @@ export default {
       this.redrawBoard()
     },
     onGameInfo(data: any) {
+      let userStore = useUserStore()
+
+      if (userStore.id == data.userIdBlack) {
+        this.pov = BLACK
+      }
+
       this.chess.loadPgn(data.pgn)
+      this.redrawBoard()
+    },
+    onMoveMade(data: any) {
+      let moves = this.chess.moves({ verbose: true })
+      for (let i = 0; i < moves.length; i++) {
+        if (moves[i].lan == data.move) {
+          this.chess.move(moves[i])
+          this.redrawBoard()
+
+          break
+        }
+      }
     },
   },
 }

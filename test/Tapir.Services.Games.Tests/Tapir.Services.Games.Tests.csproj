@@ -23,8 +23,4 @@
     <Using Include="NUnit.Framework" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Unit\Games\" />
-  </ItemGroup>
-
 </Project>
