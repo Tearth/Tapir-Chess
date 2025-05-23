@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Converters;
+using System.Text.Json.Serialization;
 using Tapir.Core.Bus;
 using Tapir.Services.Games.API.Events;
 using Tapir.Services.Games.API.Hubs;
@@ -29,7 +31,10 @@ namespace Tapir.Services.Games.API
             {
                 options.InvalidModelStateResponseFactory = (actionContext) => ValidationHandler.InvalidModelStateResponseFactory(options, actionContext);
             });
-            builder.Services.AddSignalR();
+            builder.Services.AddSignalR().AddJsonProtocol(options =>
+            {
+                options.PayloadSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
 
             // Event handlers
             builder.Services.AddScoped<IEventHandler<GameCreatedEvent>, GameCreatedEventHandler>();

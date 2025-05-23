@@ -1,5 +1,9 @@
 import * as signalR from '@microsoft/signalr'
 import * as BUS from '@/utils/bus'
+import { GameCreatedEvent } from '@/events/GameCreatedEvent'
+import type { GameStartedEvent } from '@/events/GameStartedEvent'
+import type { MoveMadeEvent } from '@/events/MoveMadeEvent'
+import type { GameInfoEvent } from '@/events/GameInfoEvent'
 
 const WS = new signalR.HubConnectionBuilder()
   .withUrl(import.meta.env.VITE_WS_URL)
@@ -33,18 +37,18 @@ export async function makeMove(id: string, move: string) {
   await WS.send('MakeMove', id, move)
 }
 
-WS.on('onGameCreated', function (id) {
-  BUS.emitter.emit('onGameCreated', id)
+WS.on('onGameCreated', function (data: GameCreatedEvent) {
+  BUS.emitter.emit('onGameCreated', data)
 })
 
-WS.on('onGameStarted', function (id) {
-  BUS.emitter.emit('onGameStarted', id)
+WS.on('onGameStarted', function (data: GameStartedEvent) {
+  BUS.emitter.emit('onGameStarted', data)
 })
 
-WS.on('onGameInfo', function (data) {
+WS.on('onGameInfo', function (data: GameInfoEvent) {
   BUS.emitter.emit('onGameInfo', data)
 })
 
-WS.on('onMoveMade', function (data) {
+WS.on('onMoveMade', function (data: MoveMadeEvent) {
   BUS.emitter.emit('onMoveMade', data)
 })

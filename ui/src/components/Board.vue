@@ -3,16 +3,13 @@
 </template>
 
 <script lang="ts">
-import { useRouter, useRoute } from 'vue-router'
-import { useUserStore } from '@/stores/user'
 import { Chess, type PieceSymbol, type Color, SQUARES, WHITE, BLACK, PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING } from 'chess.js'
 import * as BUS from '@/utils/bus'
-import * as WS from '@/utils/ws'
+import { BoardChangeEvent } from '@/events/BoardChangeEvent'
 
 export default {
   data() {
     return {
-      id: '',
       chess: new Chess(),
       pov: WHITE,
       squareSize: 0,
@@ -22,22 +19,32 @@ export default {
     }
   },
   mounted() {
-    const route = useRoute()
-    this.id = route.params.id!.toString()
-
-    BUS.emitter.on('onGameInfo', this.onGameInfo)
-    BUS.emitter.on('onMoveMade', this.onMoveMade)
-
-    window.addEventListener('resize', this.onResizeHandler)
-    window.addEventListener('mousemove', this.onMouseMoveHandler)
-    this.redrawBoard()
+    window.addEventListener('resize', this.onResize)
+    window.addEventListener('mousemove', this.onMouseMove)
+    this.drawBoard()
   },
   unmounted() {
-    BUS.emitter.off('onGameInfo', this.onGameInfo)
-    BUS.emitter.off('onMoveMade', this.onMoveMade)
+    window.removeEventListener('resize', this.onResize)
+    window.removeEventListener('mousemove', this.onMouseMove)
   },
   methods: {
-    redrawBoard() {
+    setPgn(pgn: string, pov: string) {
+      this.pov = pov
+      this.chess.loadPgn(pgn)
+      this.drawBoard()
+    },
+    makeMove(move: string) {
+      let moves = this.chess.moves({ verbose: true })
+      for (let i = 0; i < moves.length; i++) {
+        if (moves[i].lan == move) {
+          this.chess.move(moves[i])
+          this.drawBoard()
+
+          break
+        }
+      }
+    },
+    drawBoard() {
       let board = document.getElementById('board')
       let widthMargin = window.innerWidth > 1024 ? 650 : 0
       let heightMargin = window.innerWidth > 1024 ? 150 : 260
@@ -160,10 +167,10 @@ export default {
         }
       }
     },
-    onResizeHandler() {
-      this.redrawBoard()
+    onResize() {
+      this.drawBoard()
     },
-    onMouseMoveHandler(e: MouseEvent) {
+    onMouseMove(e: MouseEvent) {
       if (this.movingPieceId != '') {
         let pieceElement = document.getElementById(this.movingPieceId)!
 
@@ -198,7 +205,7 @@ export default {
       this.movingPieceId = ''
 
       if (!this.isSquareValid(square)) {
-        this.redrawBoard()
+        this.drawBoard()
         return
       }
 
@@ -209,33 +216,15 @@ export default {
       for (let i = 0; i < moves.length; i++) {
         if (moves[i].from == from && moves[i].to == to) {
           this.chess.move(moves[i])
-          WS.makeMove(this.id, moves[i].lan)
+
+          BUS.emitter.emit('onBoardChange', {
+            move: moves[i].lan,
+          })
         }
       }
 
       this.movingPieceId = ''
-      this.redrawBoard()
-    },
-    onGameInfo(data: any) {
-      let userStore = useUserStore()
-
-      if (userStore.id == data.userIdBlack) {
-        this.pov = BLACK
-      }
-
-      this.chess.loadPgn(data.pgn)
-      this.redrawBoard()
-    },
-    onMoveMade(data: any) {
-      let moves = this.chess.moves({ verbose: true })
-      for (let i = 0; i < moves.length; i++) {
-        if (moves[i].lan == data.move) {
-          this.chess.move(moves[i])
-          this.redrawBoard()
-
-          break
-        }
-      }
+      this.drawBoard()
     },
   },
 }

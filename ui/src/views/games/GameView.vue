@@ -30,7 +30,7 @@ import Board from '@/components/Board.vue'
       </button>
     </div>
     <div>
-      <Board />
+      <Board ref="board" />
     </div>
     <div class="flex items-center">
       <div class="flex flex-row w-full lg:w-[300px] lg:flex-col flex-wrap justify-center content-center">
@@ -87,10 +87,19 @@ import router from '@/router'
 import * as WS from '@/utils/ws'
 import moment from 'moment'
 import { WHITE, BLACK } from 'chess.js'
+import { useUserStore } from '@/stores/user'
+import BoardComponent from '@/components/Board.vue'
+import { useRoute } from 'vue-router'
+import type { GameCreatedEvent } from '@/events/GameCreatedEvent'
+import type { GameStartedEvent } from '@/events/GameStartedEvent'
+import type { MoveMadeEvent } from '@/events/MoveMadeEvent'
+import type { GameInfoEvent } from '@/events/GameInfoEvent'
+import type { BoardChangeEvent } from '@/events/BoardChangeEvent'
 
 export default {
   data() {
     return {
+      id: '',
       createdAt: moment(),
       usernameWhite: '',
       usernameBlack: '',
@@ -105,18 +114,22 @@ export default {
     }
   },
   async mounted() {
+    this.id = useRoute().params.id!.toString()
+
     BUS.emitter.on('onGameStarted', this.onGameStarted)
     BUS.emitter.on('onGameInfo', this.onGameInfo)
     BUS.emitter.on('onMoveMade', this.onMoveMade)
+    BUS.emitter.on('onBoardChange', this.onBoardChange)
 
     this.clockCallback = setInterval(this.updateClock, 100)
 
-    await WS.getGameInfo(this.$route.params.id.toString())
+    await WS.getGameInfo(this.id)
   },
   unmounted() {
     BUS.emitter.off('onGameStarted', this.onGameStarted)
     BUS.emitter.off('onGameInfo', this.onGameInfo)
     BUS.emitter.off('onMoveMade', this.onMoveMade)
+    BUS.emitter.off('onBoardChange', this.onBoardChange)
 
     clearInterval(this.clockCallback)
   },
@@ -126,10 +139,18 @@ export default {
         console.log('start')
       }
     },
-    onGameStarted(data: any) {
-      this.inProgress = true
+    onGameStarted(data: GameStartedEvent) {
+      if (this.id == data.id) {
+        this.inProgress = true
+      }
     },
-    onGameInfo(data: any) {
+    onGameInfo(data: GameInfoEvent) {
+      let board = this.$refs.board as InstanceType<typeof BoardComponent>
+      let userStore = useUserStore()
+      let pov = userStore.id == data.userIdWhite ? WHITE : BLACK
+
+      board.setPgn(data.pgn, pov)
+
       this.createdAt = moment(data.createdAt)
       this.usernameWhite = data.usernameWhite
       this.usernameBlack = data.usernameBlack
@@ -139,17 +160,24 @@ export default {
       this.timeBlack = data.timeBlack
       this.pgn = data.pgn
 
-      if (data.sideToMove == 0) {
+      if (data.sideToMove == 'White') {
         this.sideToMove = WHITE
       } else {
         this.sideToMove = BLACK
       }
 
-      this.inProgress = data.status != 0
+      this.inProgress = data.status == 'InProgress'
     },
-    onMoveMade(data: any) {
+    onMoveMade(data: MoveMadeEvent) {
+      let board = this.$refs.board as InstanceType<typeof BoardComponent>
+
+      board.makeMove(data.move)
+
       this.timeWhite = data.timeWhite
       this.timeBlack = data.timeBlack
+    },
+    onBoardChange(data: BoardChangeEvent) {
+      WS.makeMove(this.id, data.move)
     },
   },
 }

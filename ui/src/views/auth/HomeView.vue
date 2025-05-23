@@ -27,6 +27,7 @@ import { ERRORS } from '@/utils/errors'
 import { HTTP } from '@/utils/http'
 import * as BUS from '@/utils/bus'
 import router from '@/router'
+import { GameCreatedEvent } from '@/events/GameCreatedEvent'
 
 export default {
   data() {
@@ -85,9 +86,9 @@ export default {
         this.roomId = ''
       }
     },
-    onGameCreated(id: any) {
+    onGameCreated(data: GameCreatedEvent) {
       router.push({
-        path: '/games/' + id,
+        path: '/games/' + data.id,
       })
     },
   },

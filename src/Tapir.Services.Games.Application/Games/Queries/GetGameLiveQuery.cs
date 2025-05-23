@@ -14,7 +14,6 @@ namespace Tapir.Services.Games.Application.Games.Queries
         public Guid Id { get; set; }
     }
 
-
     public interface IGetGameLiveQueryHandler : ICommandHandler<GetGameLiveQuery, GameDto?>
     {
 

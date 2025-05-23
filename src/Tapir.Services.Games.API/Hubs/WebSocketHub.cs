@@ -30,7 +30,25 @@ namespace Tapir.Services.Games.API.Hubs
                 Id = id
             }, Context.User);
 
-            await Clients.Client(Context.ConnectionId).SendAsync("onGameInfo", result);
+            var parameters = new
+            {
+                id = id,
+                createdAt = result.CreatedAt,
+                userIdWhite = result.UserIdWhite,
+                userIdBlack = result.UserIdBlack,
+                usernameWhite = result.UsernameWhite,
+                usernameBlack = result.UsernameBlack,
+                time = result.Time,
+                increment = result.Increment,
+                timeWhite = result.TimeWhite,
+                timeBlack = result.TimeBlack,
+                pgn = result.Pgn,
+                sideToMove = result.SideToMove,
+                result = result.Result,
+                status = result.Status
+            };
+
+            await Clients.Client(Context.ConnectionId).SendAsync("onGameInfo", parameters);
         }
 
         public async Task MakeMove(Guid id, string move, [FromServices] IMakeMoveCommandHandler handler)

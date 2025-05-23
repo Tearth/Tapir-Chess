@@ -18,9 +18,20 @@ namespace Tapir.Services.Games.API.Events
         {
             var whiteGroup = _hub.Clients.Group(@event.UserIdWhite.ToString());
             var blackGroup = _hub.Clients.Group(@event.UserIdBlack.ToString());
+            
+            var parameters = new
+            {
+                id = @event.AggregateId,
+                userIdWhite = @event.UserIdWhite,
+                userIdBlack = @event.UserIdBlack,
+                usernameWhite = @event.UsernameWhite,
+                usernameBlack = @event.UsernameBlack,
+            };
 
-            await whiteGroup.SendAsync("onGameCreated", @event.AggregateId);
-            await blackGroup.SendAsync("onGameCreated", @event.AggregateId);
+            await Task.WhenAll(
+                whiteGroup.SendAsync("onGameCreated", parameters),
+                blackGroup.SendAsync("onGameCreated", parameters)
+            );
         }
     }
 }
