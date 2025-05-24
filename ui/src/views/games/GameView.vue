@@ -34,7 +34,10 @@ import Board from '@/components/Board.vue'
     </div>
     <div class="flex items-center">
       <div class="flex flex-row w-full lg:w-[300px] lg:flex-col flex-wrap justify-center content-center">
-        <div class="grow-1 bg-green-600 border border-base-300 p-4 lg:rounded-t-md gap-3 text-5xl text-center font-medium">
+        <div
+          :class="sideToMove == WHITE ? 'bg-green-600' : 'bg-base-200'"
+          class="grow-1 w-0 lg:w-auto border border-base-300 p-4 lg:rounded-t-md gap-3 text-5xl text-center font-medium"
+        >
           {{ moment.utc(timeWhite).format('mm:ss') }}
         </div>
         <div class="hidden lg:block h-[200px] w-full bg-base-200 border border-base-300 p-4 gap-3">
@@ -48,7 +51,10 @@ import Board from '@/components/Board.vue'
             <img src="/assets/icons/flag.svg" class="button-icon" />
           </button>
         </div>
-        <div class="grow-1 bg-base-200 border border-base-300 p-4 lg:rounded-b-md gap-3 text-5xl text-center font-medium">
+        <div
+          :class="sideToMove == BLACK ? 'bg-green-600' : 'bg-base-200'"
+          class="grow-1 w-0 lg:w-auto border border-base-300 p-4 lg:rounded-b-md gap-3 text-5xl text-center font-medium"
+        >
           {{ moment.utc(timeBlack).format('mm:ss') }}
         </div>
       </div>
@@ -107,10 +113,13 @@ export default {
       increment: 0,
       timeWhite: 0,
       timeBlack: 0,
+      timeOriginal: 0,
       pgn: '',
+      pov: '',
       sideToMove: WHITE,
       inProgress: false,
       clockCallback: 0,
+      clockBase: moment(),
     }
   },
   async mounted() {
@@ -136,7 +145,31 @@ export default {
   methods: {
     updateClock() {
       if (this.inProgress) {
-        console.log('start')
+        let difference = moment().diff(this.clockBase, 'milliseconds')
+
+        switch (this.sideToMove) {
+          case WHITE: {
+            this.timeWhite = this.timeOriginal - difference
+            break
+          }
+          case BLACK: {
+            this.timeBlack = this.timeOriginal - difference
+            break
+          }
+        }
+      }
+    },
+    switchSideToMove() {
+      switch (this.sideToMove) {
+        case WHITE: {
+          this.sideToMove = BLACK
+          break
+        }
+
+        case BLACK: {
+          this.sideToMove = WHITE
+          break
+        }
       }
     },
     onGameStarted(data: GameStartedEvent) {
@@ -159,6 +192,7 @@ export default {
       this.timeWhite = data.timeWhite
       this.timeBlack = data.timeBlack
       this.pgn = data.pgn
+      this.pov = pov
 
       if (data.sideToMove == 'White') {
         this.sideToMove = WHITE
@@ -171,12 +205,45 @@ export default {
     onMoveMade(data: MoveMadeEvent) {
       let board = this.$refs.board as InstanceType<typeof BoardComponent>
 
-      board.makeMove(data.move)
-
       this.timeWhite = data.timeWhite
       this.timeBlack = data.timeBlack
+
+      // Don't go further if the move was made by us
+      if ((data.side == 'White' && this.pov == WHITE) || (data.side == 'Black' && this.pov == BLACK)) {
+        return
+      }
+
+      board.makeMove(data.move)
+
+      switch (data.side) {
+        case 'Black': {
+          this.sideToMove = WHITE
+          this.timeOriginal = this.timeWhite
+          break
+        }
+        case 'White': {
+          this.sideToMove = BLACK
+          this.timeOriginal = this.timeBlack
+          break
+        }
+      }
     },
     onBoardChange(data: BoardChangeEvent) {
+      this.clockBase = moment()
+
+      switch (this.pov) {
+        case WHITE: {
+          this.sideToMove = BLACK
+          this.timeOriginal = this.timeBlack
+          break
+        }
+        case BLACK: {
+          this.sideToMove = WHITE
+          this.timeOriginal = this.timeWhite
+          break
+        }
+      }
+
       WS.makeMove(this.id, data.move)
     },
   },

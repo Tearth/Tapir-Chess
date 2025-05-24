@@ -34,6 +34,7 @@ namespace Tapir.Services.Games.API.Events
                 id = @event.AggregateId,
                 move = @event.Move,
                 moveShort = @event.MoveShort,
+                side = @event.Side,
                 timeWhite = @event.TimeWhite,
                 timeBlack = @event.TimeBlack
             };
