@@ -44,7 +44,7 @@ namespace Tapir.Providers.Chess.PaxChess.Chessboard
                     Valid = false
                 };
             }
-            
+
             return new MakeMoveResult
             {
                 Valid = true,

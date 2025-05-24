@@ -58,6 +58,24 @@ namespace Tapir.Services.Games.API.Hubs
                 Id = id,
                 Move = move
             }, Context.User);
+
+            var whiteGroup = Clients.Group(result.UserIdWhite.ToString());
+            var blackGroup = Clients.Group(result.UserIdBlack.ToString());
+
+            var parameters = new
+            {
+                id = id,
+                move = result.Move,
+                moveShort = result.MoveShort,
+                side = result.Color,
+                timeWhite = result.TimeWhite,
+                timeBlack = result.TimeBlack
+            };
+
+            await Task.WhenAll(
+                whiteGroup.SendAsync("onMoveMade", parameters),
+                blackGroup.SendAsync("onMoveMade", parameters)
+            );
         }
     }
 }

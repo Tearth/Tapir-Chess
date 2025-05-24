@@ -21,7 +21,19 @@ namespace Tapir.Services.Games.Application.Games.Commands
         public string Move { get; set; }
     }
 
-    public interface IMakeMoveCommandHandler : ICommandHandler<MakeMoveCommand, Unit>
+    public class MakeMoveCommandResult
+    {
+        public Guid Id { get; set; }
+        public string Move { get; set; }
+        public string MoveShort { get; set; }
+        public Guid UserIdWhite { get; set; }
+        public Guid UserIdBlack { get; set; }
+        public int TimeWhite { get; set; }
+        public int TimeBlack { get; set; }
+        public SideToMove Color { get; set; }
+    }
+
+    public interface IMakeMoveCommandHandler : ICommandHandler<MakeMoveCommand, MakeMoveCommandResult>
     {
 
     }
@@ -37,7 +49,7 @@ namespace Tapir.Services.Games.Application.Games.Commands
             _boardFactory = boardFactory;
         }
 
-        public async Task<Unit> Process(MakeMoveCommand command, ClaimsPrincipal? user)
+        public async Task<MakeMoveCommandResult> Process(MakeMoveCommand command, ClaimsPrincipal? user)
         {
             var entity = await _gameRepository.Load(command.Id);
 
@@ -55,7 +67,8 @@ namespace Tapir.Services.Games.Application.Games.Commands
 
             var board = _boardFactory.CreateFromPgn(entity.Pgn);
             var result = board.MakeMove(command.Move);
-
+            var sideToMove = entity.SideToMove;
+            
             if (result.Valid)
             {
                 entity.MakeMove(command.Move, result.MoveShort, DateTime.UtcNow, result.Fen);
@@ -66,7 +79,18 @@ namespace Tapir.Services.Games.Application.Games.Commands
             }
 
             await _gameRepository.Save(entity);
-            return Unit.Default;
+
+            return new MakeMoveCommandResult
+            {
+                Id = command.Id,
+                Move = command.Move,
+                MoveShort = result.MoveShort,
+                UserIdWhite = entity.UserIdWhite,
+                UserIdBlack = entity.UserIdBlack,
+                TimeWhite = entity.TimeWhite,
+                TimeBlack = entity.TimeBlack,
+                Color = sideToMove
+            };
         }
     }
 }

@@ -41,10 +41,6 @@ WS.on('onGameCreated', function (data: GameCreatedEvent) {
   BUS.emitter.emit('onGameCreated', data)
 })
 
-WS.on('onGameStarted', function (data: GameStartedEvent) {
-  BUS.emitter.emit('onGameStarted', data)
-})
-
 WS.on('onGameInfo', function (data: GameInfoEvent) {
   BUS.emitter.emit('onGameInfo', data)
 })

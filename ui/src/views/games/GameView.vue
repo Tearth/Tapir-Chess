@@ -97,7 +97,6 @@ import { useUserStore } from '@/stores/user'
 import BoardComponent from '@/components/Board.vue'
 import { useRoute } from 'vue-router'
 import type { GameCreatedEvent } from '@/events/GameCreatedEvent'
-import type { GameStartedEvent } from '@/events/GameStartedEvent'
 import type { MoveMadeEvent } from '@/events/MoveMadeEvent'
 import type { GameInfoEvent } from '@/events/GameInfoEvent'
 import type { BoardChangeEvent } from '@/events/BoardChangeEvent'
@@ -125,7 +124,6 @@ export default {
   async mounted() {
     this.id = useRoute().params.id!.toString()
 
-    BUS.emitter.on('onGameStarted', this.onGameStarted)
     BUS.emitter.on('onGameInfo', this.onGameInfo)
     BUS.emitter.on('onMoveMade', this.onMoveMade)
     BUS.emitter.on('onBoardChange', this.onBoardChange)
@@ -135,7 +133,6 @@ export default {
     await WS.getGameInfo(this.id)
   },
   unmounted() {
-    BUS.emitter.off('onGameStarted', this.onGameStarted)
     BUS.emitter.off('onGameInfo', this.onGameInfo)
     BUS.emitter.off('onMoveMade', this.onMoveMade)
     BUS.emitter.off('onBoardChange', this.onBoardChange)
@@ -172,11 +169,6 @@ export default {
         }
       }
     },
-    onGameStarted(data: GameStartedEvent) {
-      if (this.id == data.id) {
-        this.inProgress = true
-      }
-    },
     onGameInfo(data: GameInfoEvent) {
       let board = this.$refs.board as InstanceType<typeof BoardComponent>
       let userStore = useUserStore()
@@ -207,6 +199,10 @@ export default {
 
       this.timeWhite = data.timeWhite
       this.timeBlack = data.timeBlack
+
+      if (this.id == data.id) {
+        this.inProgress = true
+      }
 
       // Don't go further if the move was made by us
       if ((data.side == 'White' && this.pov == WHITE) || (data.side == 'Black' && this.pov == BLACK)) {

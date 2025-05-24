@@ -38,8 +38,6 @@ namespace Tapir.Services.Games.API
 
             // Event handlers
             builder.Services.AddScoped<IEventHandler<GameCreatedEvent>, GameCreatedEventHandler>();
-            builder.Services.AddScoped<IEventHandler<GameStartedEvent>, GameStartedEventHandler>();
-            builder.Services.AddScoped<IEventHandler<MoveMadeEvent>, MoveMadeEventHandler>();
 
             var app = builder.Build();
             app.UseAuthorization();
