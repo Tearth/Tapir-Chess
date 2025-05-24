@@ -215,6 +215,8 @@ export default {
 
       board.makeMove(data.move)
 
+      this.clockBase = moment()
+
       switch (data.side) {
         case 'Black': {
           this.sideToMove = WHITE
