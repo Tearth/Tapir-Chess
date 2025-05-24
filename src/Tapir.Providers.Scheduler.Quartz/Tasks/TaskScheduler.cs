@@ -37,10 +37,41 @@ namespace Tapir.Providers.Scheduler.Quartz.Tasks
 
         public async Task Register<TTask>(TTask task, string cron) where TTask : ITask
         {
-            var scheduler = await _schedulerFactory.GetScheduler();
             var key = new JobKey(task.GetType().Name, "SCHEDULED");
+            var trigger = TriggerBuilder.Create()
+                .WithIdentity(task.GetType().Name)
+                .WithCronSchedule(cron)
+                .StartNow()
+                .Build();
 
             _logger.LogInformation($"Registering task {key} with cron '{cron}'");
+
+            await RegisterInternal(task, trigger, key);
+        }
+
+
+        public async Task Register<TTask>(TTask task, TimeSpan interval) where TTask : ITask
+        {
+            var key = new JobKey(task.GetType().Name, "SCHEDULED");
+            var trigger = TriggerBuilder.Create()
+                .WithIdentity(task.GetType().Name)
+                .WithSchedule(SimpleScheduleBuilder.Create().WithInterval(interval).RepeatForever())
+                .StartNow()
+                .Build();
+
+            _logger.LogInformation($"Registering task {key} with interval '{interval}'");
+
+            await RegisterInternal(task, trigger, key);
+        }
+
+        private async Task RegisterInternal<TTask>(TTask task, ITrigger trigger, JobKey key) where TTask : ITask
+        {
+            var scheduler = await _schedulerFactory.GetScheduler();
+
+            if (await scheduler.CheckExists(key))
+            {
+                await scheduler.DeleteJob(key);
+            }
 
             var job = JobBuilder.Create<TaskWrapper>()
                 .WithIdentity(key)
@@ -49,12 +80,6 @@ namespace Tapir.Providers.Scheduler.Quartz.Tasks
                 .DisallowConcurrentExecution()
                 .PersistJobDataAfterExecution()
                 .StoreDurably()
-                .Build();
-
-            var trigger = TriggerBuilder.Create()
-                .WithIdentity(task.GetType().Name)
-                .WithCronSchedule(cron)
-                .StartNow()
                 .Build();
 
             await scheduler.ScheduleJob(job, [trigger], true);
