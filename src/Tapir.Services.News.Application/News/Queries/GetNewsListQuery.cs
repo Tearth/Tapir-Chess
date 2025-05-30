@@ -13,7 +13,6 @@ namespace Tapir.Services.News.Application.News.Queries
         public required int PageSize { get; set; }
     }
 
-
     public interface IGetNewsListQueryHandler : ICommandHandler<GetNewsListQuery, PagedResult<NewsDto>>
     {
 

@@ -11,7 +11,6 @@ namespace Tapir.Services.News.Application.News.Queries
         public Guid Id { get; set; }
     }
 
-
     public interface IGetNewsQueryHandler : ICommandHandler<GetNewsQuery, NewsDto?>
     {
 
