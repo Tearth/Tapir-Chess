@@ -1,20 +1,21 @@
-﻿using Tapir.Core.Events;
+﻿using Microsoft.Extensions.Logging;
+using Tapir.Core.Events;
 using Tapir.Core.Scheduler;
 
 namespace Tapir.Services.Players.Application.Tasks
 {
-    public class DomainEventSynchronizationTask : ITask
+    public class ReadModelSynchronizationTask : ITask
     {
         private readonly IDomainEventSynchronizer _synchronizer;
 
-        public DomainEventSynchronizationTask(IDomainEventSynchronizer? synchronizer = null)
+        public ReadModelSynchronizationTask(IDomainEventSynchronizer? synchronizer = null)
         {
             _synchronizer = synchronizer!;
         }
 
         public async Task Run()
         {
-            await _synchronizer.PublishUncommittedEvents();
+            await _synchronizer.PublishEvents();
         }
     }
 }

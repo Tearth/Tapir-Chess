@@ -18,7 +18,9 @@ namespace Tapir.Services.News.Application.News.Projectors
         {
             using (var connection = _database.Open())
             {
-                await connection.ExecuteAsync("INSERT INTO News (Id, CreatedAt) VALUES (@AggregateId, @CreatedAt) ON CONFLICT (Id) DO NOTHING", new
+                var table = $"News{(@event.IsReplay() ? "_Rebuild" : "")}";
+
+                await connection.ExecuteAsync($"INSERT INTO {table} (Id, CreatedAt) VALUES (@AggregateId, @CreatedAt) ON CONFLICT (Id) DO NOTHING", new
                 {
                     @event.AggregateId,
                     @event.CreatedAt,

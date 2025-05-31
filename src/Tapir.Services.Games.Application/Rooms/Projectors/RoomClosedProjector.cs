@@ -19,7 +19,9 @@ namespace Tapir.Services.Games.Application.Rooms.Projectors
         {
             using (var connection = _database.Open())
             {
-                await connection.ExecuteAsync("UPDATE Rooms SET GameId = @GameId, Status = @Status, UpdatedAt = NOW() WHERE Id = @AggregateId", new
+                var table = $"Rooms{(@event.IsReplay() ? "_Rebuild" : "")}";
+
+                await connection.ExecuteAsync($"UPDATE {table} SET GameId = @GameId, Status = @Status, UpdatedAt = NOW() WHERE Id = @AggregateId", new
                 {
                     @event.GameId,
                     @event.AggregateId,

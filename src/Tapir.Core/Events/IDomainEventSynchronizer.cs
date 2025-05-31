@@ -2,6 +2,6 @@
 {
     public interface IDomainEventSynchronizer
     {
-        Task PublishUncommittedEvents(DateTime? from = null, DateTime? to = null);
+        Task PublishEvents(bool rebuild = false);
     }
 }

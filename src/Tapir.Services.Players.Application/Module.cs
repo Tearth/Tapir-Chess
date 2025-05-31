@@ -4,6 +4,7 @@ using Tapir.Core.Bus;
 using Tapir.Core.Events;
 using Tapir.Core.Messaging.Identity;
 using Tapir.Services.News.Application.News.Commands;
+using Tapir.Services.Players.Application.Admin.Commands;
 using Tapir.Services.Players.Application.Messages;
 using Tapir.Services.Players.Application.Players.Commands;
 using Tapir.Services.Players.Application.Players.Projectors;
@@ -28,6 +29,7 @@ namespace Tapir.Services.Players.Application
 
             // Command handlers
             services.AddScoped<ICreatePlayerCommandHandler, CreatePlayerCommandHandler>();
+            services.AddScoped<IRebuildReadModelCommandHandler, RebuildReadModelCommandHandler>();
             services.AddScoped<IUpdatePlayerIdentityCommandHandler, UpdatePlayerIdentityCommandHandler>();
             services.AddScoped<IUpdatePlayerProfileCommandHandler, UpdatePlayerProfileCommandHandler>();
 
@@ -47,7 +49,8 @@ namespace Tapir.Services.Players.Application
             services.AddScoped<IEventHandler<UserUpdatedMessage>, UserUpdatedMessageHandler>();
 
             // Tasks
-            services.AddScoped<DomainEventSynchronizationTask>();
+            services.AddScoped<ReadModelRebuildingTask>();
+            services.AddScoped<ReadModelSynchronizationTask>();
 
             return services;
         }

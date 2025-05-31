@@ -3,18 +3,18 @@ using Tapir.Core.Scheduler;
 
 namespace Tapir.Services.News.Application.Tasks
 {
-    public class DomainEventSynchronizationTask : ITask
+    public class ReadModelSynchronizationTask : ITask
     {
         private readonly IDomainEventSynchronizer _synchronizer;
 
-        public DomainEventSynchronizationTask(IDomainEventSynchronizer? synchronizer = null)
+        public ReadModelSynchronizationTask(IDomainEventSynchronizer? synchronizer = null)
         {
             _synchronizer = synchronizer!;
         }
 
         public async Task Run()
         {
-            await _synchronizer.PublishUncommittedEvents();
+            await _synchronizer.PublishEvents();
         }
     }
 }

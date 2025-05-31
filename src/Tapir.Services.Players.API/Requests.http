@@ -17,3 +17,13 @@ Content-Type: application/json
     "id": "c0e78186-fabc-4deb-b985-0e09cca7d87e",
     "country": "Poland"
 }
+
+#############
+### ADMIN ###
+#############
+
+POST {{HostAddress}}/api/admin/rebuild-read-model
+Content-Type: application/json
+{
+
+}

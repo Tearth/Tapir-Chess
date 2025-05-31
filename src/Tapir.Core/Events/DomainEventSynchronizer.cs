@@ -17,24 +17,52 @@ namespace Tapir.Core.Events
             _logger = logger;
         }
 
-        public async Task PublishUncommittedEvents(DateTime? from = null, DateTime? to = null)
+        public async Task PublishEvents(bool rebuild = false)
         {
-            from ??= await _eventStore.GetLastSynchronizationTime() ?? DateTime.MinValue;
-            to ??= DateTime.UtcNow.AddSeconds(-1);
+            var from = DateTime.MinValue;
+            var to = DateTime.UtcNow.AddSeconds(-1);
+            var lastSynchronizationTime = await _eventStore.GetLastSynchronizationTime() ?? DateTime.MinValue;
 
-            foreach (var @event in await _eventStore.GetByTimestamp(from.Value, to.Value))
+            if (!rebuild)
             {
-                try
-                {
-                    await _eventBus.Send(@event);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, $"Failed to publish event {@event.Id} from aggregate {@event.AggregateId}");
-                }
+                from = lastSynchronizationTime;
             }
 
-            await _eventStore.SetLastSynchronizationTime(to);
+            do
+            {
+                foreach (var @event in await _eventStore.GetByTimestamp(from, to))
+                {
+                    try
+                    {
+                        if (rebuild)
+                        {
+                            @event.MarkAsReplay();
+                        }
+
+                        await _eventBus.Send(@event);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, $"Failed to publish event {@event.Id} from aggregate {@event.AggregateId}");
+                    }
+                }
+
+                from = to;
+                to = DateTime.UtcNow.AddSeconds(-1);
+            }
+            while ((DateTime.UtcNow - from).TotalSeconds > 5);
+
+            if (rebuild)
+            {
+                await _eventStore.SetLastSynchronizationTime(to);
+            }
+            else
+            {
+                if (!await _eventStore.SetLastSynchronizationTime(to, lastSynchronizationTime))
+                {
+                    _logger.LogError($"Concurrent write detected while setting last synchronization time");
+                }
+            }
         }
     }
 }

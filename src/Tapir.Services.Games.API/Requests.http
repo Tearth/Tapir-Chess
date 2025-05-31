@@ -17,3 +17,13 @@ Content-Type: application/json
     "time": 10,
     "increment": 5
 }
+
+#############
+### ADMIN ###
+#############
+
+POST {{HostAddress}}/api/admin/rebuild-read-model
+Content-Type: application/json
+{
+
+}

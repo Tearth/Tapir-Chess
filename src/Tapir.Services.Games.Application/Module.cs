@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Tapir.Core.Bus;
 using Tapir.Core.Events;
+using Tapir.Services.Games.Application.Admin.Commands;
 using Tapir.Services.Games.Application.Games.Commands;
 using Tapir.Services.Games.Application.Games.Projectors;
 using Tapir.Services.Games.Application.Games.Queries;
@@ -33,6 +34,7 @@ namespace Tapir.Services.Games.Application
             services.AddScoped<ICloseRoomCommandHandler, CloseRoomCommandHandler>();
             services.AddScoped<ICreateRoomCommandHandler, CreateRoomCommandHandler>();
             services.AddScoped<IMakeMoveCommandHandler, MakeMoveCommandHandler>();
+            services.AddScoped<IRebuildReadModelCommandHandler, RebuildReadModelCommandHandler>();
 
             // Query handlers
             services.AddScoped<IGetGameLiveQueryHandler, GetGameLiveHandler>();
@@ -48,8 +50,9 @@ namespace Tapir.Services.Games.Application
             services.AddScoped<IEventHandler<RoomCreatedEvent>, RoomCreatedProjector>();
 
             // Tasks
-            services.AddScoped<DomainEventSynchronizationTask>();
             services.AddScoped<MatchmakingTask>();
+            services.AddScoped<ReadModelRebuildingTask>();
+            services.AddScoped<ReadModelSynchronizationTask>();
 
             return services;
         }

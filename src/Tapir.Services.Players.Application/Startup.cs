@@ -21,7 +21,7 @@ namespace Tapir.Services.Players.Application
                 var taskScheduler = scope.ServiceProvider.GetRequiredService<ITaskScheduler>();
 
                 // Tasks
-                await taskScheduler.Register(new DomainEventSynchronizationTask(), TimeSpan.FromMilliseconds(250));
+                await taskScheduler.Register(new ReadModelSynchronizationTask(), TimeSpan.FromMilliseconds(1000));
             }
         }
 

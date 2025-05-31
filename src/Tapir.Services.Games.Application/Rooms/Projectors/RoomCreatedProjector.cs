@@ -18,10 +18,12 @@ namespace Tapir.Services.Games.Application.Rooms.Projectors
         {
             using (var connection = _database.Open())
             {
+                var table = $"Rooms{(@event.IsReplay() ? "_Rebuild" : "")}";
+
                 await connection.ExecuteAsync(
-                    "INSERT INTO Rooms (Id, CreatedAt, UserId, Username, Time, Increment) " +
-                    "VALUES (@AggregateId, @CreatedAt, @UserId, @Username, @Time, @Increment) " +
-                    "ON CONFLICT (Id) DO NOTHING", 
+                    $"INSERT INTO {table} (Id, CreatedAt, UserId, Username, Time, Increment) " +
+                    $"VALUES (@AggregateId, @CreatedAt, @UserId, @Username, @Time, @Increment) " +
+                    $"ON CONFLICT (Id) DO NOTHING", 
                 new
                 {
                     @event.AggregateId,

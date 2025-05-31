@@ -105,6 +105,31 @@ namespace Tapir.Providers.EventStore.MongoDB.Persistence
             await _mongoDatabase.GetCollection<BsonDocument>(MetaDataCollectionName).UpdateOneAsync(filter, update, options);
         }
 
+        public async Task<bool> SetLastSynchronizationTime(DateTime? time, DateTime? expectedLastSynchronizationTime)
+        {
+            var collection = _mongoDatabase.GetCollection<BsonDocument>(MetaDataCollectionName);
+            var filter = Builders<BsonDocument>.Filter.Eq("Name", LastSynchronizationTimeKey);
+
+            if (await collection.CountDocumentsAsync(filter) == 0)
+            {
+                var update = Builders<BsonDocument>.Update.Set("Value", time);
+                var options = new UpdateOptions { IsUpsert = true };
+
+                await collection.UpdateOneAsync(filter, update, options);
+                
+                return true;
+            }
+            else
+            {
+                filter &= Builders<BsonDocument>.Filter.Eq("Value", expectedLastSynchronizationTime);
+
+                var update = Builders<BsonDocument>.Update.Set("Value", time);
+                var result = await collection.FindOneAndUpdateAsync(filter, update);
+
+                return result != null;
+            }
+        }
+
         private async Task<bool> SetAggregateVersion(Guid aggregateId, int eventsCount, int expectedVersion)
         {
             var collection = _mongoDatabase.GetCollection<AggregateDocument>(AggregatesCollectionName);
@@ -125,7 +150,7 @@ namespace Tapir.Providers.EventStore.MongoDB.Persistence
                 filter &= Builders<AggregateDocument>.Filter.Eq("Version", expectedVersion);
 
                 var update = Builders<AggregateDocument>.Update.Set("Version", expectedVersion + eventsCount);
-                var result = await _mongoDatabase.GetCollection<AggregateDocument>(AggregatesCollectionName).FindOneAndUpdateAsync(filter, update);
+                var result = await collection.FindOneAndUpdateAsync(filter, update);
 
                 return result != null;
             }

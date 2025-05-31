@@ -6,11 +6,23 @@
         public Guid AggregateId { get; set; }
         public DateTime Timestamp { get; set; }
 
+        private bool _replay;
+
         protected DomainEvent(Guid aggregateId)
         {
             Id = Guid.NewGuid();
             AggregateId = aggregateId;
             Timestamp = DateTime.UtcNow;
+        }
+
+        public void MarkAsReplay()
+        {
+            _replay = true;
+        }
+
+        public bool IsReplay()
+        {
+            return _replay;
         }
     }
 }

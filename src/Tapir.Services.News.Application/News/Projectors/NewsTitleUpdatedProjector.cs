@@ -18,7 +18,9 @@ namespace Tapir.Services.News.Application.News.Projectors
         {
             using (var connection = _database.Open())
             {
-                await connection.ExecuteAsync("UPDATE News SET Title = @Title, UpdatedAt = NOW() WHERE Id = @AggregateId", new
+                var table = $"News{(@event.IsReplay() ? "_Rebuild" : "")}";
+
+                await connection.ExecuteAsync($"UPDATE {table} SET Title = @Title, UpdatedAt = NOW() WHERE Id = @AggregateId", new
                 {
                     @event.Title,
                     @event.AggregateId,

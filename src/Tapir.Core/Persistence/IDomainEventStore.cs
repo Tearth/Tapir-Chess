@@ -11,5 +11,6 @@ namespace Tapir.Core.Persistence
 
         Task<DateTime?> GetLastSynchronizationTime();
         Task SetLastSynchronizationTime(DateTime? time);
+        Task<bool> SetLastSynchronizationTime(DateTime? time, DateTime? expectedLastSynchronizationTime);
     }
 }

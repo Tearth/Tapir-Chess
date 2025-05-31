@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Tapir.Core.Bus;
 using Tapir.Core.Events;
+using Tapir.Services.News.Application.Admin.Commands;
 using Tapir.Services.News.Application.News.Commands;
 using Tapir.Services.News.Application.News.Projectors;
 using Tapir.Services.News.Application.News.Queries;
@@ -27,6 +28,7 @@ namespace Tapir.Services.News.Application
             // Command handlers
             services.AddScoped<ICreateNewsCommandHandler, CreateNewsCommandHandler>();
             services.AddScoped<IDeleteNewsCommandHandler, DeleteNewsCommandHandler>();
+            services.AddScoped<IRebuildReadModelCommandHandler, RebuildReadModelCommandHandler>();
             services.AddScoped<IUpdateNewsCommandHandler, UpdateNewsCommandHandler>();
 
             // Query handlers
@@ -41,7 +43,8 @@ namespace Tapir.Services.News.Application
             services.AddScoped<IEventHandler<NewsTitleUpdatedEvent>, NewsTitleUpdatedProjector>();
 
             // Tasks
-            services.AddScoped<DomainEventSynchronizationTask>();
+            services.AddScoped<ReadModelRebuildingTask>();
+            services.AddScoped<ReadModelSynchronizationTask>();
 
             return services;
         }

@@ -32,3 +32,13 @@ Content-Type: application/json
 ###
 
 DELETE {{HostAddress}}/api/news/9c91f778-ed52-4204-84ab-68885e6f3df3
+
+#############
+### ADMIN ###
+#############
+
+POST {{HostAddress}}/api/admin/rebuild-read-model
+Content-Type: application/json
+{
+
+}
