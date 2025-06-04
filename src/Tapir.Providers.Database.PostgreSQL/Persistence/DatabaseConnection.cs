@@ -13,9 +13,12 @@ namespace Tapir.Providers.Database.PostgreSQL.Persistence
             _connectionString = connectionString;
         }
 
-        public IDbConnection Open()
+        public async Task<IDbConnection> Open()
         {
-            return new NpgsqlConnection(_connectionString);
+            var connection = new NpgsqlConnection(_connectionString);
+           
+            await connection.OpenAsync();
+            return connection;
         }
     }
 }

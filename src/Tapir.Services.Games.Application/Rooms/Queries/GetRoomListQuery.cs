@@ -31,7 +31,7 @@ namespace Tapir.Services.Games.Application.Rooms.Queries
 
         public async Task<PagedResult<RoomDto>> Process(GetRoomListQuery query, ClaimsPrincipal? user)
         {
-            using (var connection = _database.Open())
+            using (var connection = await _database.Open())
             {
                 var totalCount = await connection.ExecuteScalarAsync<int>("SELECT COUNT(*) FROM Rooms WHERE Status = @Status", new
                 {

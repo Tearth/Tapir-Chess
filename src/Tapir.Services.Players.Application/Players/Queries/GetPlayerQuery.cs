@@ -28,7 +28,7 @@ namespace Tapir.Services.Players.Application.Players.Queries
 
         public async Task<PlayerDto?> Process(GetPlayerQuery query, ClaimsPrincipal? user)
         {
-            using (var connection = _database.Open())
+            using (var connection = await _database.Open())
             {
                 return await connection.QueryFirstOrDefaultAsync<PlayerDto>("SELECT * FROM Players WHERE Id = @Id", new
                 {

@@ -19,10 +19,8 @@ namespace Tapir.Services.News.Application.Tasks
 
         public async Task Run()
         {
-            using (var connection = _database.Open())
+            using (var connection = await _database.Open())
             {
-                connection.Open();
-
                 using (var transaction = connection.BeginTransaction())
                 {
                     await connection.ExecuteAsync($"DROP TABLE IF EXISTS News_Rebuild", null, transaction);
@@ -34,10 +32,8 @@ namespace Tapir.Services.News.Application.Tasks
 
             await _synchronizer.PublishEvents(true);
 
-            using (var connection = _database.Open())
+            using (var connection = await _database.Open())
             {
-                connection.Open();
-
                 using (var transaction = connection.BeginTransaction())
                 {
                     await connection.ExecuteAsync($"ALTER TABLE News RENAME TO News_{DateTime.UtcNow:yyyyMMddHHmmss}", null, transaction);

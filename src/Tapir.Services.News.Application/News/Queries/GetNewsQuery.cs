@@ -27,7 +27,7 @@ namespace Tapir.Services.News.Application.News.Queries
 
         public async Task<NewsDto?> Process(GetNewsQuery query, ClaimsPrincipal? user)
         {
-            using (var connection = _database.Open())
+            using (var connection = await _database.Open())
             {
                 return await connection.QueryFirstOrDefaultAsync<NewsDto>("SELECT * FROM News WHERE Id = @Id AND Deleted = false", new
                 {

@@ -16,7 +16,7 @@ namespace Tapir.Services.News.Application.News.Projectors
 
         public async Task Process(NewsCreatedEvent @event)
         {
-            using (var connection = _database.Open())
+            using (var connection = await _database.Open())
             {
                 var table = $"News{(@event.IsReplay() ? "_Rebuild" : "")}";
 

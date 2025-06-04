@@ -16,7 +16,7 @@ namespace Tapir.Services.Games.Application.Games.Projectors
 
         public async Task Process(GameCreatedEvent @event)
         {
-            using (var connection = _database.Open())
+            using (var connection = await _database.Open())
             {
                 var table = $"Games{(@event.IsReplay() ? "_Rebuild" : "")}";
 

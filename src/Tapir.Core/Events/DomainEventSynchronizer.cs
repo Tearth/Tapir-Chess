@@ -50,6 +50,7 @@ namespace Tapir.Core.Events
                 from = to;
                 to = DateTime.UtcNow.AddSeconds(-1);
             }
+            // In case when processing events took a long time and `from` is not fresh anymore
             while ((DateTime.UtcNow - from).TotalSeconds > 5);
 
             if (rebuild)

@@ -38,6 +38,10 @@ namespace Tapir.Gateway
                         if (!string.IsNullOrEmpty(refreshToken))
                         {
                             transformContext.ProxyRequest.Headers.Add("X-Refresh-Token", refreshToken);
+                        }
+
+                        if (!string.IsNullOrEmpty(rememberMe))
+                        {
                             transformContext.ProxyRequest.Headers.Add("X-Remember-Me", rememberMe ?? "false");
                         }
 

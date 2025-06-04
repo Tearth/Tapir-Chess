@@ -17,7 +17,7 @@ namespace Tapir.Services.Games.Application.Rooms.Projectors
 
         public async Task Process(RoomCancelledEvent @event)
         {
-            using (var connection = _database.Open())
+            using (var connection = await _database.Open())
             {
                 var table = $"Rooms{(@event.IsReplay() ? "_Rebuild" : "")}";
 

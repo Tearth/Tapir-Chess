@@ -4,6 +4,6 @@ namespace Tapir.Core.Persistence
 {
     public interface IDatabaseConnection
     {
-        IDbConnection Open();
+        Task<IDbConnection> Open();
     }
 }

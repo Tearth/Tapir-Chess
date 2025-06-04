@@ -30,7 +30,7 @@ namespace Tapir.Services.Players.Application.Players.Queries
 
         public async Task<PagedResult<PlayerDto>> Process(GetPlayerListQuery query, ClaimsPrincipal? user)
         {
-            using (var connection = _database.Open())
+            using (var connection = await _database.Open())
             {
                 var totalCount = await connection.ExecuteScalarAsync<int>("SELECT COUNT(*) FROM Players");
                 var players = await connection.QueryAsync<PlayerDto>("SELECT * FROM Players ORDER BY CreatedAt DESC LIMIT @Limit OFFSET @Offset", new

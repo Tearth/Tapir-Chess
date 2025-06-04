@@ -16,7 +16,7 @@ namespace Tapir.Services.Players.Application.Players.Projectors
 
         public async Task Process(PlayerUsernameUpdatedEvent @event)
         {
-            using (var connection = _database.Open())
+            using (var connection = await _database.Open())
             {
                 var table = $"Players{(@event.IsReplay() ? "_Rebuild" : "")}";
 
