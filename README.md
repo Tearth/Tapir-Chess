@@ -4,28 +4,39 @@ Tapir Chess is a chess platform written in C#/.NET 8 + Vue, aiming to learn more
 
 ## Table of Contents
 
- - [General Architecture](#general-architecture)
-   - [Core](#core)
-   - [Gateway](#gateway)
-   - [Identity](#identity)
-   - [Providers](#providers)
-   - [Services](#services)
- - [Service Architecture](#service-architecture)
-   - [API](#api)
-   - [Application](#application)
-   - [Domain](#domain)
-   - [Infrastructure](#infrastructure)
- - [Persistence](#persistence)
-   - [Write Model](#write-model)
-   - [Read Model](#read-model)
-   - [Rebuilding](#rebuilding)
- - [WebSocket](#websocket)
- - [Security](#security)
- - [Deployment](#deployment)
+- [General Architecture](#general-architecture)
+  - [Frontend](#frontend)
+  - [Core](#core)
+  - [Gateway](#gateway)
+  - [Identity](#identity)
+  - [Providers](#providers)
+  - [Services](#services)
+- [Service Architecture](#service-architecture)
+  - [API](#api)
+  - [Application](#application)
+  - [Domain](#domain)
+  - [Infrastructure](#infrastructure)
+- [Persistence](#persistence)
+  - [Write Model](#write-model)
+  - [Read Model](#read-model)
+  - [Rebuilding](#rebuilding)
+- [WebSocket](#websocket)
+- [Security](#security)
+- [Deployment](#deployment)
 
 ## General Architecture
 
 ![General architecture](./docs/architecture.jpg "General architecture")
+
+### Frontend
+
+[Tapir Chess frontend](/ui/) is written in TypeScript using [Vue.js](https://vuejs.org/) as the backbone, [Tailwind CSS](https://tailwindcss.com/) with [daisyUI](https://daisyui.com/) plugin as the styling framework and other dependencies as follows.
+
+- [Pinia](https://pinia.vuejs.org/) - state management and stores
+- [Axios](https://axios-http.com) - promise-based HTTP client
+- [Moment.js](https://momentjs.com/) - time parsing and manipulation
+- [chess.js](https://github.com/jhlywa/chess.js) - chess moves generation and validation
+- [mitt](https://github.com/developit/mitt) - simple event emitter
 
 ### Core
 
