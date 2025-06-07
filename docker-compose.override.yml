@@ -64,7 +64,7 @@ services:
       - "5432:5432"
     environment:
       - POSTGRES_USER=tapir
-      - POSTGRES_PASSWORD=Bk4XPevMmNHnFDd
+      - POSTGRES_PASSWORD=Test123!
       - POSTGRES_MULTIPLE_DB=identity,news,players,games
     volumes: 
       - ./scripts/postgresql-init.sh:/docker-entrypoint-initdb.d/postgresql-init.sh
@@ -75,7 +75,7 @@ services:
         - "27017:27017"
     environment:
         MONGO_INITDB_ROOT_USERNAME: root
-        MONGO_INITDB_ROOT_PASSWORD: GTbBbzC86GJ73OZ
+        MONGO_INITDB_ROOT_PASSWORD: Test123!
     volumes:
       - ./scripts/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
       - ./scripts/mongo-replica.js:/scripts/mongo-replica.js:ro
@@ -112,8 +112,9 @@ services:
       - 15672:15672
     environment:
         RABBITMQ_DEFAULT_USER: tapir
-        RABBITMQ_DEFAULT_PASS: ajtXbrS5MYUas5k
+        RABBITMQ_DEFAULT_PASS: Test123!
     volumes:
+      - ./scripts/rabbitmq-init.sh:/docker-entrypoint-initdb.d/rabbitmq-init.sh
       - rabbitmq:/var/lib/rabbitmq/
       - rabbitmq:/var/log/rabbitmq/
 

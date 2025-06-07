@@ -4,7 +4,7 @@ databases.forEach((name) => {
     db = db.getSiblingDB(name);
     db.createUser({
         user: "tapir",
-        pwd: "JnhILirAtXrwILs",
+        pwd: "Test123!",
         roles: [{
             role: "readWrite",
             db: name
