@@ -58,26 +58,26 @@ namespace Tapir.Services.News.Infrastructure
             // Event store
             services.AddMongoDbEventStore(cfg =>
             {
-                if (settings.Database == null)
+                if (settings.EventStore == null)
                 {
-                    throw new InvalidOperationException("MongoDb settings not found.");
+                    throw new InvalidOperationException("Event store settings not found.");
                 }
 
-                if (settings.Database.Servers == null || settings.Database.Servers.Count == 0)
+                if (settings.EventStore.Servers == null || settings.EventStore.Servers.Count == 0)
                 {
-                    throw new InvalidOperationException("MongoDb server settings not found.");
+                    throw new InvalidOperationException("Event store server settings not found.");
                 }
 
-                cfg.Servers = settings.Database.Servers.Select(p => new ServerConfiguration
+                cfg.Servers = settings.EventStore.Servers.Select(p => new ServerConfiguration
                 {
                     Host = p.Host,
                     Port = p.Port
                 }).ToList();
 
-                cfg.DatabaseName = settings.Database.DatabaseName;
-                cfg.AuthenticationMethod = settings.Database.AuthenticationMethod;
-                cfg.Username = settings.Database.Username;
-                cfg.Password = settings.Database.Password;
+                cfg.DatabaseName = settings.EventStore.DatabaseName;
+                cfg.AuthenticationMethod = settings.EventStore.AuthenticationMethod;
+                cfg.Username = settings.EventStore.Username;
+                cfg.Password = settings.EventStore.Password;
             });
 
             // Task scheduler

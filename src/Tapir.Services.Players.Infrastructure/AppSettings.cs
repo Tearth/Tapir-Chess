@@ -3,7 +3,7 @@
     public class AppSettings
     {
         public JwtSettings? Jwt { get; set; }
-        public MongoDbSettings? MongoDb { get; set; }
+        public EventStoreSettings? EventStore { get; set; }
         public required MessageBusSettings MessageBus { get; set; }
     }
 
@@ -14,16 +14,16 @@
         public required string Secret { get; set; }
     }
 
-    public class MongoDbSettings
+    public class EventStoreSettings
     {
-        public List<MongoDbServer>? Servers { get; set; }
+        public List<EventStoreServer>? Servers { get; set; }
         public string? DatabaseName { get; set; }
         public string? AuthenticationMethod { get; set; }
         public string? Username { get; set; }
         public string? Password { get; set; }
     }
 
-    public class MongoDbServer
+    public class EventStoreServer
     {
         public string? Host { get; set; }
         public int? Port { get; set; }
