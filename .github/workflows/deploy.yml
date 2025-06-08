@@ -1,0 +1,40 @@
+on:
+  push:
+    branches: [ "master" ]
+jobs:
+  build:
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - name: Deploy Tapir.Gateway
+            dockerfile: ./src/Tapir.Gateway/Dockerfile
+            image: tapir-gateway
+            
+          - name: Deploy Tapir.Identity
+            dockerfile: ./src/Tapir.Identity.API/Dockerfile
+            image: tapir-identity
+            
+          - name: Deploy Tapir.Services.Games
+            dockerfile: ./src/Tapir.Services.Games.API/Dockerfile
+            image: tapir-services-games
+            
+          - name: Deploy Tapir.Services.News
+            dockerfile: ./src/Tapir.Services.News.API/Dockerfile
+            image: tapir-services-news
+            
+          - name: Deploy Tapir.Services.Players
+            dockerfile: ./src/Tapir.Services.Players.API/Dockerfile
+            image: tapir-services-players
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build the Docker image
+      run: docker build -f ${{ matrix.dockerfile }} -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.image }}:build.${{ github.run_number }} -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.image }}:latest . 
+    - name: Log into Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Push the image to Docker Hub
+      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.image }} --all-tags
