@@ -6,6 +6,7 @@ using System.Reflection;
 using Tapir.Providers.Scheduler.Quartz;
 using Serilog;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Tapir.Providers.MessageBus.RabbitMQ;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Tapir.Providers.Chess.PaxChess;
@@ -19,6 +20,7 @@ namespace Tapir.Services.Games.Infrastructure
             var settings = configuration.Get<AppSettings>() ?? throw new InvalidOperationException("AppSettings not found.");
 
             // Initialization
+            services.AddHostedService<Startup>();
             services.AddSingleton(settings);
 
             // Authentication
@@ -92,6 +94,16 @@ namespace Tapir.Services.Games.Infrastructure
                 }
 
                 cfg.ConnectionString = connectionString;
+            });
+
+            // Message bus
+            services.AddRabbitMqMessageBus(cfg =>
+            {
+                cfg.Host = settings.MessageBus.Host;
+                cfg.Port = settings.MessageBus.Port;
+                cfg.Username = settings.MessageBus.Username;
+                cfg.Password = settings.MessageBus.Password;
+                cfg.QueueName = settings.MessageBus.QueueName;
             });
 
             // Chess
