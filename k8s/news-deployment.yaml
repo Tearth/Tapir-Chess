@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: news
+  labels:
+    app: news
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: news
+  template:
+    metadata:
+      labels:
+        app: news
+    spec:
+      containers:
+      - name: news
+        image: tearthdev/tapir-services-news:build.1
+        ports:
+        - containerPort: 8080
+        envFrom:
+          - configMapRef:
+              name: news-config
+          - secretRef:
+              name: news-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: news
+spec:
+  selector:
+    app: news
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

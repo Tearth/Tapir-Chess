@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gateway-config
+data:
+  AllowedHosts: '*'
+  AllowedOrigins: 'localhost'
+  Jwt__Issuer: 'Tapir Chess'
+  Jwt__Audience: 'https://tapirchess.dev'
+  ReverseProxy__Clusters__identity__Destinations__destination-0__Address: "http://identity.services.svc.cluster.local:8080"
+  ReverseProxy__Clusters__news__Destinations__destination-0__Address: "http://news.services.svc.cluster.local:8080"
+  ReverseProxy__Clusters__players__Destinations__destination-0__Address: "http://players.services.svc.cluster.local:8080"
+  ReverseProxy__Clusters__games__Destinations__destination-0__Address: "http://games.services.svc.cluster.local:8080"

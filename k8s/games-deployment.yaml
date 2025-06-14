@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: games
+  labels:
+    app: games
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: games
+  template:
+    metadata:
+      labels:
+        app: games
+    spec:
+      containers:
+      - name: games
+        image: tearthdev/tapir-services-games:build.1
+        ports:
+        - containerPort: 8080
+        envFrom:
+          - configMapRef:
+              name: games-config
+          - secretRef:
+              name: games-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: games
+spec:
+  selector:
+    app: games
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

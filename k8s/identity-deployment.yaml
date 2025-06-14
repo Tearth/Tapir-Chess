@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: identity
+  labels:
+    app: identity
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: identity
+  template:
+    metadata:
+      labels:
+        app: identity
+    spec:
+      containers:
+      - name: identity
+        image: tearthdev/tapir-identity:build.1
+        ports:
+        - containerPort: 8080
+        envFrom:
+          - configMapRef:
+              name: identity-config
+          - secretRef:
+              name: identity-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: identity
+spec:
+  selector:
+    app: identity
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

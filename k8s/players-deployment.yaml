@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: players
+  labels:
+    app: players
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: players
+  template:
+    metadata:
+      labels:
+        app: players
+    spec:
+      containers:
+      - name: players
+        image: tearthdev/tapir-services-players:build.1
+        ports:
+        - containerPort: 8080
+        envFrom:
+          - configMapRef:
+              name: players-config
+          - secretRef:
+              name: players-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: players
+spec:
+  selector:
+    app: players
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

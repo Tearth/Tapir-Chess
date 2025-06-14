@@ -35,17 +35,17 @@ services:
       dockerfile: src/Tapir.Services.Games.API/Dockerfile
 
   postgresql:
-    image: postgres:latest
+    image: postgres:17.5
     hostname: postgresql
 
   mongodb:
-    image: mongo:latest
+    image: mongo:8.0.10-noble
     hostname: mongodb
 
   mailpit:
-    image: axllent/mailpit:latest
+    image: axllent/mailpit:v1.26
     hostname: mailpit
 
   rabbitmq:
-    image: rabbitmq:management
+    image: rabbitmq:4.1.1-management
     hostname: rabbitmq

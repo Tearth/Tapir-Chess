@@ -1,0 +1,6 @@
+auth:
+  username: tapir
+  existingPasswordSecret: "rabbitmq-secret"
+initScriptsSecret: "rabbitmq-init"
+persistence:
+  size: 1Gi

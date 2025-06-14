@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: identity-config
+data:
+  Jwt__Issuer: 'Tapir Chess'
+  Jwt__Audience: 'https://tapirchess.dev'
+  Jwt__AccessTokenExpirationTime: '15'
+  Jwt__RefreshTokenExpirationTime: '259200'
+  MessageBus__Host: 'rabbitmq-0.rabbitmq-headless.infrastructure.svc.cluster.local'
+  MessageBus__Port: '5672'
+  MessageBus__Username: 'identity'
+  MessageBus__QueueName: 'identity'
+  Mailing__Host: 'mailpit'
+  Mailing__Port: '1025'
+  Mailing__UseSsl: 'false'
+  Mailing__Username: 'username'
+  Mailing__From: 'no-reply@tapirchess.dev'
+  Endpoints__EmailConfirmation: 'http://localhost:5173/auth/confirm-registration?userId={USERID}&token={TOKEN}'
+  Endpoints__EmailChange: 'http://localhost:5173/account/settings/email/confirm?userId={USERID}&token={TOKEN}&email={EMAIL}'
+  Endpoints__PasswordReset: 'http://localhost:5173/auth/confirm-password-reset?userId={USERID}&token={TOKEN}'

@@ -399,5 +399,8 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
+# Kubernetes
+k8s/secrets
+
 # Misc folder
 misc
