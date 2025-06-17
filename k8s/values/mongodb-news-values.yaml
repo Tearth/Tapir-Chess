@@ -2,17 +2,13 @@ architecture: replicaset
 auth:
   rootUser: tapir
   usernames:
-    - games
     - news
-    - players
   databases:
-    - games
     - news
-    - players
-  existingSecret: "mongodb-secret"
+  existingSecret: mongodb-news-secret
 initdbScripts:
   init.js: |
-    let databases = ['news', 'players', 'games'];
+    let databases = ['news'];
     databases.forEach((name) => {
       db = db.getSiblingDB(name);
       db.grantRolesToUser(name, [{
@@ -22,6 +18,6 @@ initdbScripts:
       db.events.createIndex({ "AggregateId": 1 });
       db.events.createIndex({ "Timestamp": 1 });
     });
+replicaCount: 2
 persistence:
   size: 1Gi
-replicaCount: 1

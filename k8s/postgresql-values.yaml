@@ -1,9 +1,0 @@
-auth:
-  existingSecret: "postgresql-secret"
-  secretKeys:
-    adminPasswordKey: "postgresPassword"
-primary:
-  persistence:
-    size: 1Gi
-  initdb:
-    scriptsSecret: "postgresql-init"

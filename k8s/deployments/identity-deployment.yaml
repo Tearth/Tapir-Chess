@@ -1,37 +1,41 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: news
+  name: identity
+  namespace: services
   labels:
-    app: news
+    app: identity
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: news
+      app: identity
   template:
     metadata:
       labels:
-        app: news
+        app: identity
     spec:
       containers:
-      - name: news
-        image: tearthdev/tapir-services-news:build.1
+      - name: identity
+        image: tearthdev/tapir-identity:build.1
         ports:
         - containerPort: 8080
         envFrom:
           - configMapRef:
-              name: news-config
+              name: identity-config
           - secretRef:
-              name: news-secret
+              name: identity-secret
+
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
-  name: news
+  name: identity
+  namespace: services
 spec:
   selector:
-    app: news
+    app: identity
   ports:
     - protocol: TCP
       port: 8080

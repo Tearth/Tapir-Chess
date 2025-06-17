@@ -2,15 +2,16 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: players-config
+  namespace: services
 data:
   Jwt__Issuer: 'Tapir Chess'
   Jwt__Audience: 'https://tapirchess.dev'
-  EventStore__Servers__0__Host: 'mongodb-0.mongodb-headless.infrastructure.svc.cluster.local'
+  EventStore__Servers__0__Host: 'mongodb-players-headless.mongodb.svc.cluster.local'
   EventStore__Servers__0__Port: '27017'
   EventStore__DatabaseName: 'players'
   EventStore__AuthenticationMethod: 'SCRAM-SHA-256'
   EventStore__Username: 'players'
-  MessageBus__Host: 'rabbitmq-0.rabbitmq-headless.infrastructure.svc.cluster.local'
+  MessageBus__Host: 'rabbitmq-headless.rabbitmq.svc.cluster.local'
   MessageBus__Port: '5672'
   MessageBus__Username: 'players'
   MessageBus__QueueName: 'players'

@@ -2,12 +2,13 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: identity-config
+  namespace: services
 data:
   Jwt__Issuer: 'Tapir Chess'
   Jwt__Audience: 'https://tapirchess.dev'
   Jwt__AccessTokenExpirationTime: '15'
   Jwt__RefreshTokenExpirationTime: '259200'
-  MessageBus__Host: 'rabbitmq-0.rabbitmq-headless.infrastructure.svc.cluster.local'
+  MessageBus__Host: 'rabbitmq-0.rabbitmq-headless.rabbitmq.svc.cluster.local'
   MessageBus__Port: '5672'
   MessageBus__Username: 'identity'
   MessageBus__QueueName: 'identity'

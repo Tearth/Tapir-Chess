@@ -1,37 +1,41 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: identity
+  name: games
+  namespace: services
   labels:
-    app: identity
+    app: games
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: identity
+      app: games
   template:
     metadata:
       labels:
-        app: identity
+        app: games
     spec:
       containers:
-      - name: identity
-        image: tearthdev/tapir-identity:build.1
+      - name: games
+        image: tearthdev/tapir-services-games:build.1
         ports:
         - containerPort: 8080
         envFrom:
           - configMapRef:
-              name: identity-config
+              name: games-config
           - secretRef:
-              name: identity-secret
+              name: games-secret
+ 
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
-  name: identity
+  name: games
+  namespace: services
 spec:
   selector:
-    app: identity
+    app: games
   ports:
     - protocol: TCP
       port: 8080

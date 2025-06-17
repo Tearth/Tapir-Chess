@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: players
+  namespace: services
   labels:
     app: players
 spec:
@@ -24,11 +25,14 @@ spec:
               name: players-config
           - secretRef:
               name: players-secret
+
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
   name: players
+  namespace: services
 spec:
   selector:
     app: players

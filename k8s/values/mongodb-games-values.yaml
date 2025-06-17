@@ -1,0 +1,23 @@
+architecture: replicaset
+auth:
+  rootUser: tapir
+  usernames:
+    - games
+  databases:
+    - games
+  existingSecret: mongodb-games-secret
+initdbScripts:
+  init.js: |
+    let databases = ['games'];
+    databases.forEach((name) => {
+      db = db.getSiblingDB(name);
+      db.grantRolesToUser(name, [{
+        role: "readWrite",
+        db: name
+      }]);
+      db.events.createIndex({ "AggregateId": 1 });
+      db.events.createIndex({ "Timestamp": 1 });
+    });
+replicaCount: 2
+persistence:
+  size: 1Gi

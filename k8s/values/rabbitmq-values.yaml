@@ -1,0 +1,7 @@
+auth:
+  username: tapir
+  existingPasswordSecret: rabbitmq-secret
+initScriptsSecret: rabbitmq-init
+replicaCount: 2
+persistence:
+  size: 1Gi

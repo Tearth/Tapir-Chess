@@ -1,37 +1,41 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: games
+  name: news
+  namespace: services
   labels:
-    app: games
+    app: news
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: games
+      app: news
   template:
     metadata:
       labels:
-        app: games
+        app: news
     spec:
       containers:
-      - name: games
-        image: tearthdev/tapir-services-games:build.1
+      - name: news
+        image: tearthdev/tapir-services-news:build.1
         ports:
         - containerPort: 8080
         envFrom:
           - configMapRef:
-              name: games-config
+              name: news-config
           - secretRef:
-              name: games-secret
+              name: news-secret
+
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
-  name: games
+  name: news
+  namespace: services
 spec:
   selector:
-    app: games
+    app: news
   ports:
     - protocol: TCP
       port: 8080

@@ -1,0 +1,19 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgresql-news-cluster
+  namespace: postgresql
+spec:
+  instances: 2
+  enableSuperuserAccess: true
+  superuserSecret:
+    name: postgresql-news-postgres-secret
+  bootstrap:
+    initdb:
+      database: news
+      owner: news
+      secret:
+        name: postgresql-news-user-secret
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 1Gi
