@@ -21,5 +21,5 @@ helm install rabbitmq bitnami/rabbitmq --version 16.0.6 --values ./values/rabbit
 sleep 60
 
 kubectl apply -f ./clusters/
-kubectl apply -f ./ingresses/
+kubectl apply -f ./ingress/
 kubectl apply -f ./deployments/
