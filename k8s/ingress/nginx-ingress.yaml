@@ -5,6 +5,10 @@ metadata:
   namespace: services
 spec:
   ingressClassName: nginx
+  tls:
+    - hosts:
+        - tapirchess.dev
+      secretName: tls-secret
   rules:
     - host: tapirchess.dev
       http:
