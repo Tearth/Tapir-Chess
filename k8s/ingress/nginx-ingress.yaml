@@ -1,12 +1,12 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingess
+  name: ingress
   namespace: services
 spec:
   ingressClassName: nginx
   rules:
-    - host: tapirchess.localhost
+    - host: tapirchess.dev
       http:
         paths:
           - path: /
