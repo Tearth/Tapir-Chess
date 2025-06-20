@@ -1,7 +1,6 @@
 import * as signalR from '@microsoft/signalr'
 import * as BUS from '@/utils/bus'
 import { GameCreatedEvent } from '@/events/GameCreatedEvent'
-import type { GameStartedEvent } from '@/events/GameStartedEvent'
 import type { MoveMadeEvent } from '@/events/MoveMadeEvent'
 import type { GameInfoEvent } from '@/events/GameInfoEvent'
 
