@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: services
+  labels:
+    app: frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: tearthdev/tapir-frontend:build.5
+        ports:
+        - containerPort: 8080
+      nodeSelector:
+        type: services
+      resources:
+        requests:
+          cpu: 1
+          memory: 256Mi
+        limits:
+          cpu: 2
+          memory: 512Mi
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: services
+spec:
+  selector:
+    app: frontend
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
