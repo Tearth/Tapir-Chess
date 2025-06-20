@@ -1,0 +1,1 @@
+export KUBECONFIG="C:\Users\Pawel\.kube\hyperv"

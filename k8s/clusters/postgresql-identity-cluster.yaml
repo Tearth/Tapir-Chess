@@ -15,5 +15,16 @@ spec:
       secret:
         name: postgresql-identity-user-secret
   primaryUpdateStrategy: unsupervised
+  affinity:
+    nodeSelector:
+      type: database-identity
+    podAntiAffinityType: required
   storage:
     size: 1Gi
+  resources:
+    requests:
+      cpu: 1
+      memory: 256Mi
+    limits:
+      cpu: 2
+      memory: 512Mi

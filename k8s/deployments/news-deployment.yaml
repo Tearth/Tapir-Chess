@@ -6,7 +6,7 @@ metadata:
   labels:
     app: news
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: news
@@ -25,6 +25,15 @@ spec:
               name: news-config
           - secretRef:
               name: news-secret
+      nodeSelector:
+        type: services
+      resources:
+        requests:
+          cpu: 1
+          memory: 256Mi
+        limits:
+          cpu: 2
+          memory: 512Mi
 
 ---
 

@@ -19,5 +19,26 @@ initdbScripts:
       db.events.createIndex({ "Timestamp": 1 });
     });
 replicaCount: 2
+nodeSelector:
+  type: database-news
+arbiter:
+  nodeSelector:
+    type: database-news
+podAntiAffinityPreset: hard
 persistence:
   size: 1Gi
+resources:
+  requests:
+    cpu: 1
+    memory: 256Mi
+  limits:
+    cpu: 2
+    memory: 512Mi
+arbiter:
+  resources:
+    requests:
+      cpu: 1
+      memory: 256Mi
+    limits:
+      cpu: 2
+      memory: 512Mi

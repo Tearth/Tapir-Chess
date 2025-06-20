@@ -15,5 +15,16 @@ spec:
       secret:
         name: postgresql-games-user-secret
   primaryUpdateStrategy: unsupervised
+  affinity:
+    nodeSelector:
+      type: database-games
+    podAntiAffinityType: required
   storage:
     size: 1Gi
+  resources:
+    requests:
+      cpu: 1
+      memory: 256Mi
+    limits:
+      cpu: 2
+      memory: 512Mi
