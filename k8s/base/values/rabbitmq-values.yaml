@@ -15,3 +15,12 @@ resources:
   limits:
     cpu: 2
     memory: 512Mi
+metrics:
+  enabled: true
+  serviceMonitor:
+    default:
+      enabled: true
+    perObject:
+      enabled: true
+    detailed:
+      enabled: true

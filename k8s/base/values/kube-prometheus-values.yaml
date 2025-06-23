@@ -1,0 +1,5 @@
+prometheus:
+  prometheusSpec:
+    maximumStartupDurationSeconds: 900
+    podMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: false
