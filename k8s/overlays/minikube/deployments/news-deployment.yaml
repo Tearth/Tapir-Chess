@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: news
+  namespace: services
+  labels:
+    app: news
+spec:
+  replicas: 1
+  template:
+    spec:
+      nodeSelector: null

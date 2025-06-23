@@ -24,6 +24,13 @@ nodeSelector:
 arbiter:
   nodeSelector:
     type: database-games
+  resources:
+    requests:
+      cpu: 1
+      memory: 256Mi
+    limits:
+      cpu: 2
+      memory: 512Mi
 podAntiAffinityPreset: hard
 persistence:
   size: 1Gi
@@ -34,11 +41,3 @@ resources:
   limits:
     cpu: 2
     memory: 512Mi
-arbiter:
-  resources:
-    requests:
-      cpu: 1
-      memory: 256Mi
-    limits:
-      cpu: 2
-      memory: 512Mi

@@ -1,0 +1,4 @@
+replicaCount: 1
+nodeSelector: null
+arbiter:
+  nodeSelector: null

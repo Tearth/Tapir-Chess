@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: identity
+  namespace: services
+  labels:
+    app: identity
+spec:
+  replicas: 1
+  template:
+    spec:
+      nodeSelector: null

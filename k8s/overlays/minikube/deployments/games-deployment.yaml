@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: games
+  namespace: services
+  labels:
+    app: games
+spec:
+  replicas: 1
+  template:
+    spec:
+      nodeSelector: null

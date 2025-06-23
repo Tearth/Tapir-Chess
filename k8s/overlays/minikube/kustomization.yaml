@@ -1,0 +1,14 @@
+resources:
+  - ../../base
+
+patches:
+  - path: ./clusters/postgresql-games-cluster.yaml
+  - path: ./clusters/postgresql-identity-cluster.yaml
+  - path: ./clusters/postgresql-news-cluster.yaml
+  - path: ./clusters/postgresql-players-cluster.yaml
+  - path: ./deployments/frontend-deployment.yaml
+  - path: ./deployments/games-deployment.yaml
+  - path: ./deployments/gateway-deployment.yaml
+  - path: ./deployments/identity-deployment.yaml
+  - path: ./deployments/news-deployment.yaml
+  - path: ./deployments/players-deployment.yaml
