@@ -2,6 +2,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using Yarp.ReverseProxy.Transforms;
 
 namespace Tapir.Gateway
@@ -90,6 +91,11 @@ namespace Tapir.Gateway
                 {
                     policy.RequireClaim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", "admin");
                 });
+            });
+
+            builder.Services.AddSerilog((context, cfg) =>
+            {
+                cfg.ReadFrom.Configuration(builder.Configuration);
             });
 
             var app = builder.Build();
