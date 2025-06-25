@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: tearthdev/tapir-frontend:build.6
+        image: tearthdev/tapir-frontend:build.8
         ports:
         - containerPort: 8080
       nodeSelector:

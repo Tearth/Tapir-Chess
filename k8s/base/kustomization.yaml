@@ -18,6 +18,7 @@ resources:
   - ./secrets/games-secret.yaml
   - ./secrets/gateway-secret.yaml
   - ./secrets/identity-secret.yaml
+  - ./secrets/loki-secret.yaml
   - ./secrets/mongodb-games-secret.yaml
   - ./secrets/mongodb-news-secret.yaml
   - ./secrets/mongodb-players-secret.yaml

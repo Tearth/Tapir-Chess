@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: identity
-        image: tearthdev/tapir-identity:build.1
+        image: tearthdev/tapir-identity:build.8
         ports:
         - containerPort: 8080
         envFrom:

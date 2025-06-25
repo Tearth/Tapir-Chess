@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: news
-        image: tearthdev/tapir-services-news:build.1
+        image: tearthdev/tapir-services-news:build.8
         ports:
         - containerPort: 8080
         envFrom:

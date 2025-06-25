@@ -3,3 +3,9 @@ prometheus:
     maximumStartupDurationSeconds: 900
     podMonitorSelectorNilUsesHelmValues: false
     serviceMonitorSelectorNilUsesHelmValues: false
+grafana:
+  additionalDataSources:
+    - name: Loki
+      type: loki
+      basicAuth: false
+      url: "http://loki-gateway.loki.svc.cluster.local:80"

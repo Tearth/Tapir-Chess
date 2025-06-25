@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: games
-        image: tearthdev/tapir-services-games:build.1
+        image: tearthdev/tapir-services-games:build.8
         ports:
         - containerPort: 8080
         envFrom:

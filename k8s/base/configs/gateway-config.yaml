@@ -12,3 +12,10 @@ data:
   ReverseProxy__Clusters__news__Destinations__destination-0__Address: "http://news.services.svc.cluster.local:8080"
   ReverseProxy__Clusters__players__Destinations__destination-0__Address: "http://players.services.svc.cluster.local:8080"
   ReverseProxy__Clusters__games__Destinations__destination-0__Address: "http://games.services.svc.cluster.local:8080"
+  Serilog__Using__0: 'Serilog.Sinks.Grafana.Loki'
+  Serilog__MinimumLevel__Default: 'Debug'
+  Serilog__WriteTo__0__Name: 'Console'
+  Serilog__WriteTo__1__Name: 'GrafanaLoki'
+  Serilog__WriteTo__1__Args__uri: 'http://loki-gateway.loki.svc.cluster.local:80'
+  Serilog__WriteTo__1__Args__labels__0__key: 'service_name'
+  Serilog__WriteTo__1__Args__labels__0__value: 'gateway'

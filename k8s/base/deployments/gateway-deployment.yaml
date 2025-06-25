@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: gateway
-        image: tearthdev/tapir-gateway:build.2
+        image: tearthdev/tapir-gateway:build.9
         ports:
         - containerPort: 8080
         envFrom:
