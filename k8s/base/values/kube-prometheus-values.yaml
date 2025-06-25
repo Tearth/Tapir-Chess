@@ -3,9 +3,18 @@ prometheus:
     maximumStartupDurationSeconds: 900
     podMonitorSelectorNilUsesHelmValues: false
     serviceMonitorSelectorNilUsesHelmValues: false
+    nodeSelector:
+      node-role.kubernetes.io/control-plane: ""
 grafana:
   additionalDataSources:
     - name: Loki
       type: loki
       basicAuth: false
       url: "http://loki-gateway.loki.svc.cluster.local:80"
+prometheusOperator:
+  nodeSelector:
+    node-role.kubernetes.io/control-plane: ""
+alertmanager:
+  alertmanagerSpec:
+    nodeSelector:
+      node-role.kubernetes.io/control-plane: ""

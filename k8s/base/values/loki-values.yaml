@@ -1,4 +1,4 @@
-deploymentMode: SingleBinary
+deploymentMode: SimpleScalable
 loki:
   commonConfig:
     replication_factor: 1
@@ -28,24 +28,27 @@ loki:
   ingester:
     chunk_encoding: snappy
 backend:
+  replicas: 1
+  nodeSelector:
+    node-role.kubernetes.io/control-plane: ""
   extraArgs:
     - '-config.expand-env=true'
   extraEnvFrom: 
     - secretRef:
-      name: loki-secret
+        name: loki-secret
 read:
+  replicas: 1
+  nodeSelector:
+    node-role.kubernetes.io/control-plane: ""
   extraArgs:
     - '-config.expand-env=true'
   extraEnvFrom: 
     - secretRef:
-      name: loki-secret
+        name: loki-secret
 write:
-  extraArgs:
-    - '-config.expand-env=true'
-  extraEnvFrom: 
-    - secretRef:
-      name: loki-secret
-singleBinary:
+  replicas: 1
+  nodeSelector:
+    node-role.kubernetes.io/control-plane: ""
   extraArgs:
     - '-config.expand-env=true'
   extraEnvFrom: 
