@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
+using OpenTelemetry.Metrics;
 using Tapir.Services.News.API.Middleware;
 using Tapir.Services.News.Application;
 using Tapir.Services.News.Infrastructure;
@@ -23,6 +24,17 @@ namespace Tapir.Services.News.API
             builder.Services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.InvalidModelStateResponseFactory = (actionContext) => ValidationHandler.InvalidModelStateResponseFactory(options, actionContext);
+            });
+
+            // OpenTelemetry
+            builder.Services.AddOpenTelemetry().WithMetrics(cfg =>
+            {
+                cfg.AddPrometheusExporter();
+                cfg.AddMeter("Microsoft.AspNetCore.Hosting", "Microsoft.AspNetCore.Server.Kestrel");
+                cfg.AddView("http.server.request.duration", new ExplicitBucketHistogramConfiguration
+                {
+                    Boundaries = [0, 0.005, 0.01, 0.025, 0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1, 2.5, 5, 7.5, 10]
+                });
             });
 
             var app = builder.Build();
