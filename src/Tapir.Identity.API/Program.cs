@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
+using OpenTelemetry.Metrics;
 using Tapir.Identity.API.Middleware;
 using Tapir.Identity.Application;
 using Tapir.Identity.Infrastructure;
@@ -25,6 +26,17 @@ namespace Tapir.Identity.API
                 options.InvalidModelStateResponseFactory = (actionContext) => ValidationHandler.InvalidModelStateResponseFactory(options, actionContext);
             });
 
+            // OpenTelemetry
+            builder.Services.AddOpenTelemetry().WithMetrics(cfg =>
+            {
+                cfg.AddPrometheusExporter();
+                cfg.AddMeter("Microsoft.AspNetCore.Hosting", "Microsoft.AspNetCore.Server.Kestrel");
+                cfg.AddView("http.server.request.duration", new ExplicitBucketHistogramConfiguration
+                {
+                    Boundaries = [0, 0.005, 0.01, 0.025, 0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1, 2.5, 5, 7.5, 10]
+                });
+            });
+
             var app = builder.Build();
             app.UseAuthentication();
             app.UseAuthorization();
@@ -32,6 +44,7 @@ namespace Tapir.Identity.API
             app.UseSwagger();
             app.UseSwaggerUI();
             app.UseExceptionHandler();
+            app.MapPrometheusScrapingEndpoint();
             app.Run();
         }
     }
