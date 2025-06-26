@@ -15,6 +15,11 @@ resources:
   - ./deployments/news-deployment.yaml
   - ./deployments/players-deployment.yaml
   - ./ingress/nginx-ingress.yaml
+  - ./monitors/games-monitor.yaml
+  - ./monitors/gateway-monitor.yaml
+  - ./monitors/identity-monitor.yaml
+  - ./monitors/news-monitor.yaml
+  - ./monitors/players-monitor.yaml
   - ./secrets/games-secret.yaml
   - ./secrets/gateway-secret.yaml
   - ./secrets/identity-secret.yaml

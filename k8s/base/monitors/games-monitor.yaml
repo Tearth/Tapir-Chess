@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app: games
+  name: games-monitor
+  namespace: services
+spec:
+  endpoints:
+  - interval: 15s
+    targetPort: 8080
+    path: /metrics
+  selector:
+    matchLabels:
+      app: games

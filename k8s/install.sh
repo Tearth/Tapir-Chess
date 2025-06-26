@@ -25,5 +25,4 @@ helm install rabbitmq bitnami/rabbitmq --version 16.0.6 --values ./base/values/r
 sleep 60
 
 kubectl create secret tls tls-secret --key ./base/secrets/certificates/tapirchess.dev.key --cert ./base/secrets/certificates/tapirchess.dev.crt -n services
-
 kubectl apply -k ./base/

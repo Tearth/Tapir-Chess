@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: news
-        image: tearthdev/tapir-services-news:build.8
+        image: tearthdev/tapir-services-news:build.12
         ports:
         - containerPort: 8080
         envFrom:
@@ -34,14 +34,14 @@ spec:
         limits:
           cpu: 2
           memory: 512Mi
-
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
   name: news
   namespace: services
+  labels:
+    app: news
 spec:
   selector:
     app: news

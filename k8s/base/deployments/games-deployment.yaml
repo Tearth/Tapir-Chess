@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: games
-        image: tearthdev/tapir-services-games:build.8
+        image: tearthdev/tapir-services-games:build.12
         ports:
         - containerPort: 8080
         envFrom:
@@ -34,14 +34,14 @@ spec:
         limits:
           cpu: 2
           memory: 512Mi
- 
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
   name: games
   namespace: services
+  labels:
+    app: games
 spec:
   selector:
     app: games
