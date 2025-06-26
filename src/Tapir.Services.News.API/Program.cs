@@ -43,6 +43,7 @@ namespace Tapir.Services.News.API
             app.UseSwagger();
             app.UseSwaggerUI();
             app.UseExceptionHandler();
+            app.MapPrometheusScrapingEndpoint();
             app.Run();
         }
     }

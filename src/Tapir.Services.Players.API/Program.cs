@@ -43,6 +43,7 @@ namespace Tapir.Services.Players.API
             app.UseSwagger();
             app.UseSwaggerUI();
             app.UseExceptionHandler();
+            app.MapPrometheusScrapingEndpoint();
             app.Run();
         }
     }

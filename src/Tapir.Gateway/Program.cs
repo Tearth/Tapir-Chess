@@ -121,6 +121,7 @@ namespace Tapir.Gateway
             app.UseAuthorization();
             app.MapControllers();
             app.MapReverseProxy();
+            app.MapPrometheusScrapingEndpoint();
             app.Run();
         }
     }
