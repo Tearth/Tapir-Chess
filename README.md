@@ -1,6 +1,6 @@
 # Tapir Chess
 
-Tapir Chess is a chess platform written in C#/.NET 8 + Vue, aiming to learn more about modern technologies, patterns (CQRS, Domain-Driven Design, Event Sourcing), containerization (Docker, Docker Compose) and deployment (Kubernetes). The project uses microservices architecture as a basis, splitting features into a few easily scalable main areas of responsibility.
+Tapir Chess is a chess platform written in C#/.NET 8 + Vue.js, aiming to learn more about modern technologies, patterns (CQRS, Domain-Driven Design, Event Sourcing), containerization (Docker, Docker Compose) and deployment (Kubernetes). The project uses microservices architecture as a basis, splitting features into a few easily scalable main areas of responsibility.
 
 ## Table of Contents
 
@@ -21,8 +21,12 @@ Tapir Chess is a chess platform written in C#/.NET 8 + Vue, aiming to learn more
   - [Read Model](#read-model)
   - [Rebuilding](#rebuilding)
 - [WebSocket](#websocket)
-- [Security](#security)
 - [Deployment](#deployment)
+  - [Cluster Architecture](#cluster-architecture)
+  - [Storage](#storage)
+  - [Monitoring](#monitoring)
+  - [Logs](#logs)
+  - [Backups](#backups)
 
 ## General Architecture
 
@@ -299,7 +303,7 @@ public class NewsEntity : AggregateRoot
 
 ### Infrastructure
 
-The Infrastructure project initializes the Dependency Injection Container with all necessary providers, authentication and logging. Usually there is also `Migrations` directory with all necessary SQL scripts to initialize read model and task scheduler tables.
+The Infrastructure project initializes the Dependency Injection Container with all necessary providers, authentication and logging. Usually, there is also `Migrations` directory with all necessary SQL scripts to initialize read model and task scheduler tables.
 
 ## Persistence
 
@@ -499,10 +503,57 @@ public class WebSocketHub : Hub
 
 Hub methods structure-wise are similar to the controllers - command handlers are injected directly into the method by [[FromServices]](https://learn.microsoft.com/en-us/aspnet/core/mvc/controllers/dependency-injection?view=aspnetcore-9.0#action-injection-with-fromservices) and executed. To allow immediate response instead of waiting for read model synchronization, commands are permitted to return necessary data.
 
-## Security
-
-TODO
-
 ## Deployment
 
-TODO
+### Cluster Architecture
+
+![Cluster architecture](./docs/cluster.jpg "Cluster architecture")
+
+The design of the cluster has been made with the following assumptions.
+1. The number of nodes should be low enough to run a whole cluster locally with a set of virtual machines.
+2. Control planes and services should be highly available.
+
+The first point has been realized by creating 15 Hyper-V virtual machines, each one containing 2 CPU cores, 2 storages (for operating system and data), 2 network adapters (for NAT and internal network) and memory ranging from 1GB to 2GB (depending on the needs).
+- Nodes from 1 to 3 - control planes
+- Nodes from 4 to 11 - databases
+- Nodes from 12 to 13 - message broker
+- Nodes from 14 to 15 or more - services
+
+Networking has been configured using [flannel](https://github.com/flannel-io/flannel) - each node is assigned an address from the 192.168.100.0/24 network and every pod is assigned an address from the 10.244.0.0/16 network. Additionally, load balancer [MetalLB](https://github.com/metallb/metallb) has been installed to allow ingress to get its own IP address from a specified pool.
+
+High availability has been achieved by introducing replicas to all critical components: 3 control plane nodes, 1 replica for every PostgreSQL/MongoDB database, 1 replica for RabbitMQ and at least 1 replica for every service.
+
+![Hyper-V](./docs/hyperv.jpg "Hyper-V")
+![Node list](./docs/nodes.jpg "Node list")
+![Pod list](./docs/pods.jpg "Pod list")
+
+To allow easier testing without running a whole cluster, a minikube configuration in the form of [kustomize](https://github.com/kubernetes-sigs/kustomize) overlay has been prepared, which among others disables all replicas to save resources and initialization time.
+
+### Storage
+
+![Storage](./docs/storage.jpg "Storage")
+
+The cluster was designed to run database instances or their replicas only in the specific nodes - this way the data can be stored locally instead of using network solutions that add more latency. Since Kubernetes' [Local Volume Provisioner](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner) does not support dynamic provisioning, [Local Path Provisioner](https://github.com/rancher/local-path-provisioner) was selected instead.
+
+For storing larger files like backups or logs, an additional virtual machine outside of the cluster has been set. Both [Velero](https://velero.io/) and [Loki](https://github.com/grafana/loki) require S3-compatible object-based storage, which is provided by an instance of [MinIO](https://min.io/).
+
+### Monitoring
+
+![Grafana](./docs/grafana.jpg "Grafana")
+
+Monitoring has been realized using [Prometheus](https://prometheus.io/) as a metrics collector and [Grafana](https://grafana.com/) as a dashboard, with the following data services connected.
+- Kubernetes cluster
+- PostgreSQL
+- MongoDB
+- RabbitMQ
+- Application services
+
+### Logs
+
+![Loki](./docs/loki.jpg "Loki")
+
+[Grafana](https://grafana.com/) has a built-in integration with [Loki](https://grafana.com/oss/loki/), so that was the choice for log aggregating. While on local machines all logs are saved to a text file, in the cluster [Serilog.Sinks.Grafana.Loki](https://github.com/serilog-contrib/serilog-sinks-grafana-loki) is used instead. Persistence is provided by S3-compatible storage on a dedicated server.
+
+### Backups
+
+Data persisted by databases is stored directly in the nodes and backup has to be periodically made. This is done by [Velero](https://velero.io/) operator connected to S3-compatible storage, which can do it on demand or with specified intervals. 
