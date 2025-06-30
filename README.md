@@ -2,6 +2,12 @@
 
 Tapir Chess is a chess platform written in C#/.NET 8 + Vue.js, aiming to learn more about modern technologies, patterns (CQRS, Domain-Driven Design, Event Sourcing), containerization (Docker, Docker Compose) and deployment (Kubernetes). The project uses microservices architecture as a basis, splitting features into a few easily scalable main areas of responsibility.
 
+<div style="display: flex">
+    <a href="./docs/example1.jpg"><img src="./docs/example1.jpg" style="padding: 1px"/></a>
+    <a href="./docs/example2.jpg"><img src="./docs/example2.jpg" style="padding: 1px"/></a>
+    <a href="./docs/example3.jpg"><img src="./docs/example3.jpg" style="padding: 1px"/></a>
+</div>
+
 ## Table of Contents
 
 - [General Architecture](#general-architecture)
